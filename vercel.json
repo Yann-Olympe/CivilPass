@@ -5,18 +5,12 @@
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "frontend/dist/frontend/browser"
+        "distDir": "dist/frontend/browser"
       }
-    },
-    {
-      "src": "backend/index.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "backend/index.js" },
-    { "src": "/assets/(.*)", "dest": "frontend/dist/frontend/browser/assets/$1" },
-    { "src": "/(.*\\.[a-zA-Z0-9]+)", "dest": "frontend/dist/frontend/browser/$1" },
-    { "src": "/(.*)", "dest": "frontend/dist/frontend/browser/index.html" }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
