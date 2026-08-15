@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fond arrondi -->
+  <rect width="512" height="512" rx="96" fill="#0B3D2E"/>
+
+  <!-- Anneau d'accent jaune (safe zone maskable) -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#FCD116" stroke-width="6" opacity="0.35"/>
+
+  <!-- Document / carte d'identité -->
+  <g>
+    <rect x="146" y="148" width="220" height="216" rx="18" fill="#FFFFFF"/>
+    <rect x="146" y="148" width="220" height="216" rx="18" fill="none" stroke="#0B3D2E" stroke-width="4"/>
+
+    <!-- En-tête du document -->
+    <rect x="170" y="176" width="172" height="14" rx="7" fill="#0B3D2E" opacity="0.85"/>
+
+    <!-- Photo / avatar -->
+    <circle cx="206" cy="240" r="26" fill="#0B3D2E" opacity="0.85"/>
+    <rect x="180" y="272" width="52" height="10" rx="5" fill="#0B3D2E" opacity="0.35"/>
+
+    <!-- Lignes de texte -->
+    <rect x="250" y="222" width="92" height="10" rx="5" fill="#0B3D2E" opacity="0.55"/>
+    <rect x="250" y="244" width="92" height="10" rx="5" fill="#0B3D2E" opacity="0.55"/>
+    <rect x="250" y="266" width="70" height="10" rx="5" fill="#0B3D2E" opacity="0.55"/>
+
+    <!-- Ligne de séparation -->
+    <rect x="170" y="308" width="172" height="4" rx="2" fill="#CE1126" opacity="0.7"/>
+
+    <rect x="170" y="326" width="120" height="10" rx="5" fill="#0B3D2E" opacity="0.35"/>
+  </g>
+
+  <!-- Badge de validation (cercle rouge + coche jaune) -->
+  <circle cx="352" cy="352" r="54" fill="#CE1126"/>
+  <circle cx="352" cy="352" r="54" fill="none" stroke="#0B3D2E" stroke-width="6"/>
+  <path d="M 328 352 L 344 368 L 378 332" fill="none" stroke="#FCD116" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

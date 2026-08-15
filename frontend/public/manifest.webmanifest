@@ -6,7 +6,7 @@
   "start_url": "./",
   "icons": [
     {
-      "src": "icons/icon-72x72.png",
+      "src": "icons/iconApp/icon-72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "maskable any"
@@ -48,7 +48,7 @@
       "purpose": "maskable any"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "icons/iconApp/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
