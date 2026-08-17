@@ -1,0 +1,38 @@
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <img src="/logo-mark.svg" alt="" class="sidebar__logo" />
+    <span class="sidebar__brand-name">CIVILPASS</span>
+  </div>
+
+  <div class="sidebar__profile">
+    <div class="sidebar__avatar">A</div>
+    <div>
+      <p class="sidebar__profile-name">Mairie de Yaoundé I</p>
+      <p class="sidebar__profile-role">Agent de Service Public</p>
+    </div>
+  </div>
+
+  <button class="sidebar__cta" routerLink="/demandes/nouvelle">
+    <app-icon name="plus" />
+    Nouvelle Vérification
+  </button>
+
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.path) {
+      <a
+        class="sidebar__link"
+        [routerLink]="item.path"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
+        <app-icon [name]="item.icon" />
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+
+  <button class="sidebar__logout">
+    <app-icon name="logout" />
+    Déconnexion
+  </button>
+</aside>

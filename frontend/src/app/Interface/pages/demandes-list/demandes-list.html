@@ -1,0 +1,78 @@
+<div class="list-head">
+  <div>
+    <h1 class="list-title">{{ titre }}</h1>
+    <p class="list-subtitle">{{ sousTitre }}</p>
+  </div>
+
+  <div class="list-actions">
+    <label class="list-search">
+      <app-icon name="search" />
+      <input
+        type="text"
+        placeholder="Rechercher un citoyen, un n° ou une mairie..."
+        [value]="recherche()"
+        (input)="recherche.set($any($event.target).value)"
+      />
+    </label>
+  </div>
+</div>
+
+@if (filtresDisponibles.length) {
+  <div class="filter-bar">
+    <app-icon name="filter" />
+    @for (f of filtresDisponibles; track f.value) {
+      <button
+        class="filter-chip"
+        [class.is-active]="filtreActif() === f.value"
+        (click)="choisirFiltre(f.value)"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+}
+
+<section class="panel">
+  <div class="panel__header">
+    <h2 class="panel__title">{{ demandes().length }} demande(s)</h2>
+  </div>
+
+  @if (demandes().length) {
+    <div class="table-scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>N° demande</th>
+            <th>Citoyen</th>
+            <th>Année de l'acte</th>
+            <th>Mairie de retrait</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th class="table__action-col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (demande of demandes(); track demande.id; let i = $index) {
+            <tr class="table-row-in" [style.animation-delay.ms]="i * 30">
+              <td class="table__id">{{ demande.id }}</td>
+              <td>{{ demande.citoyen }}</td>
+              <td>{{ demande.anneeActe }}</td>
+              <td>{{ demande.mairieRetrait }}</td>
+              <td>{{ demande.date }}</td>
+              <td><app-status-badge [statut]="demande.statut" /></td>
+              <td class="table__action-col">
+                @if (estFinalisee(demande.statut)) {
+                  <button class="btn btn--ghost" (click)="ouvrir(demande.id)">Voir</button>
+                } @else {
+                  <button class="btn btn--primary" (click)="ouvrir(demande.id)">Vérifier</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p class="empty-state">Aucune demande ne correspond à ces critères.</p>
+  }
+</section>

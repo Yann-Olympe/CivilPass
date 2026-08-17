@@ -1,0 +1,68 @@
+<a class="verif-back" routerLink="/transferts">
+  <app-icon name="chevron-left" />
+  Retour aux transferts
+</a>
+
+<div class="transfer-head">
+  <h1 class="transfer-title">Demande {{ demandeId || 'CP-2026-000245' }}</h1>
+  <p class="transfer-subtitle">Suivi de la transmission du dossier d'état civil entre juridictions.</p>
+</div>
+
+<section class="panel">
+  <div class="flow">
+    <div class="flow__node">
+      <span class="flow__icon">
+        <app-icon name="building" />
+        <span class="flow__check"><app-icon name="check" /></span>
+      </span>
+      <span class="flow__label">Mairie d'origine</span>
+      <span class="flow__value">{{ transfert.mairieOrigine }}</span>
+    </div>
+
+    <div class="flow__line">
+      <span class="flow__pill flow__pill--done">
+        <app-icon name="check" />
+        Validée
+      </span>
+      <span class="flow__track"></span>
+      <span class="flow__pill flow__pill--secure">
+        <app-icon name="lock" />
+        Transmission sécurisée
+      </span>
+    </div>
+
+    <div class="flow__node">
+      <span class="flow__icon flow__icon--outline">
+        <app-icon name="building" />
+      </span>
+      <span class="flow__label">Mairie de retrait</span>
+      <span class="flow__value">{{ transfert.mairieRetrait }}</span>
+    </div>
+  </div>
+
+  <div class="status-banner">
+    <p class="status-banner__label">Statut du transfert</p>
+    <p class="status-banner__value">
+      <app-icon name="check-circle" />
+      Transfert effectué
+    </p>
+  </div>
+
+  <div class="detail-grid">
+    <div class="detail-card">
+      <span class="detail-card__icon"><app-icon name="file" /></span>
+      <div>
+        <p class="detail-card__label">Date de validation</p>
+        <p class="detail-card__value">{{ transfert.dateValidation }}</p>
+      </div>
+    </div>
+    <div class="detail-card">
+      <span class="detail-card__icon"><app-icon name="badge" /></span>
+      <div>
+        <p class="detail-card__label">Identifiant agent</p>
+        <p class="detail-card__value">{{ transfert.identifiantAgent }}</p>
+        <p class="detail-card__hint">Signature cryptographique validée</p>
+      </div>
+    </div>
+  </div>
+</section>

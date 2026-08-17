@@ -1,0 +1,17 @@
+<header class="topbar">
+  <div>
+    <h1 class="topbar__title">{{ title() }}</h1>
+    <p class="topbar__subtitle">{{ subtitle() }}</p>
+  </div>
+
+  <div class="topbar__actions">
+    <label class="topbar__search">
+      <app-icon name="search" />
+      <input type="text" placeholder="Rechercher une demande..." />
+    </label>
+
+    <button class="topbar__bell" [attr.data-alert]="hasNotification()">
+      <app-icon name="bell" />
+    </button>
+  </div>
+</header>

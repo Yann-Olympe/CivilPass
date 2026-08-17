@@ -1,0 +1,205 @@
+<div class="verif-head">
+  <a class="verif-back" routerLink="/tableau-de-bord">
+    <app-icon name="chevron-left" />
+    Retour aux demandes
+  </a>
+
+  <div class="verif-title-row">
+    <h1 class="verif-title">Demande {{ demandeId || '—' }}</h1>
+    <span class="verif-status" [attr.data-tone]="statutMeta().tone">
+      <span class="dot"></span>
+      {{ statutMeta().label }}
+    </span>
+
+    @if (!estFinalisee()) {
+      <ol class="verif-steps">
+        <li class="is-done">
+          <span class="verif-steps__icon"><app-icon name="check" /></span>
+          Soumission
+        </li>
+        <li class="is-active">
+          <span class="verif-steps__icon"><app-icon name="badge" /></span>
+          Vérification
+        </li>
+        <li>
+          <span class="verif-steps__icon"><app-icon name="file" /></span>
+          Édition
+        </li>
+      </ol>
+    }
+  </div>
+  <p class="verif-subtitle">
+    Citoyen : {{ demande()?.citoyen }} · Mairie de retrait : {{ demande()?.mairieRetrait }} · Soumise le {{ demande()?.date }}
+  </p>
+
+  @if (demande()?.statut === 'rejetee' && demande()?.motifRejet) {
+    <div class="verif-notice" data-tone="red">
+      <app-icon name="alert-triangle" />
+      <p><strong>Motif du rejet :</strong> {{ demande()?.motifRejet }}</p>
+    </div>
+  }
+
+  @if (demande()?.statut === 'correction_demandee' && demande()?.motifCorrection) {
+    <div class="verif-notice" data-tone="yellow">
+      <app-icon name="edit" />
+      <p><strong>Correction demandée au citoyen :</strong> {{ demande()?.motifCorrection }}</p>
+    </div>
+  }
+</div>
+
+<div class="verif-grid">
+  <div class="verif-side">
+    <section class="panel">
+      <h2 class="panel__title panel__title--icon">
+        <app-icon name="user" />
+        Détails du Demandeur
+      </h2>
+      <dl class="info-list">
+        <div>
+          <dt>Nom complet</dt>
+          <dd>{{ demandeur().nomComplet }}</dd>
+        </div>
+        <div>
+          <dt>Numéro CNI</dt>
+          <dd>{{ demandeur().numeroCni }}</dd>
+        </div>
+        <div>
+          <dt>Contact</dt>
+          <dd>{{ demandeur().telephone }}</dd>
+          <dd>{{ demandeur().email }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title panel__title--icon">
+        <app-icon name="file" />
+        Informations de l'acte
+      </h2>
+      <dl class="info-list">
+        <div>
+          <dt>Type d'acte</dt>
+          <dd>{{ acte().type }}</dd>
+        </div>
+        <div>
+          <dt>Numéro d'acte (déclaré)</dt>
+          <dd><span class="tag">{{ acte().numero }}</span></dd>
+        </div>
+        <div>
+          <dt>Date et lieu de naissance</dt>
+          <dd>{{ acte().dateLieu }}</dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <section class="panel verif-tool">
+    <div class="panel__header">
+      <h2 class="panel__title panel__title--icon">
+        <app-icon name="search" />
+        Outil de Vérification Registre
+      </h2>
+      <button class="btn btn--ghost">
+        <app-icon name="search" />
+        Rechercher dans le registre
+      </button>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <span class="compare-col__tag compare-col__tag--user">Déclaration Usager</span>
+        <p class="compare-col__caption">Données extraites de la demande</p>
+        @for (champ of champs(); track champ.label) {
+          <div class="compare-field" [class.is-highlight]="champ.divergence">
+            <span class="compare-field__label">{{ champ.label }}</span>
+            <span class="compare-field__value">{{ champ.declare }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="compare-col">
+        <span class="compare-col__tag compare-col__tag--registre">Registre Physique</span>
+        <p class="compare-col__caption">Données du registre central ({{ acte().numero }})</p>
+        @for (champ of champs(); track champ.label) {
+          <div class="compare-field">
+            <span class="compare-field__label">
+              {{ champ.label }}
+              @if (champ.divergence) {
+                <app-icon name="alert-triangle" class="warn-icon" />
+              }
+            </span>
+            <span class="compare-field__value">{{ champ.registre }}</span>
+          </div>
+        }
+
+        <div class="compare-field">
+          <span class="compare-field__label">Scan du registre associé</span>
+        </div>
+        <button class="scan-placeholder">
+          <app-icon name="image" />
+          Voir le scan de la souche
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+@if (!estFinalisee()) {
+  @if (panelAction() === 'reject') {
+    <div class="action-panel action-panel--danger">
+      <h3><app-icon name="x" /> Motif du rejet</h3>
+      <p>Expliquez pourquoi cette demande est rejetée. Le citoyen recevra ce message.</p>
+      <textarea
+        rows="3"
+        placeholder="Ex : Aucune correspondance trouvée dans le registre pour l'année déclarée..."
+        [value]="motif()"
+        (input)="motif.set($any($event.target).value)"
+      ></textarea>
+      <div class="action-panel__buttons">
+        <button class="btn btn--ghost" (click)="fermerPanneau()">Annuler</button>
+        <button class="btn btn--danger" [disabled]="!motif().trim()" (click)="confirmerRejet()">
+          <app-icon name="x" />
+          Confirmer le rejet
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (panelAction() === 'correction') {
+    <div class="action-panel action-panel--warn">
+      <h3><app-icon name="edit" /> Demander une correction</h3>
+      <p>Indiquez précisément ce que le citoyen doit corriger avant de soumettre à nouveau sa demande.</p>
+      <textarea
+        rows="3"
+        placeholder="Ex : Le numéro d'acte déclaré ne correspond à aucune souche du registre..."
+        [value]="motif()"
+        (input)="motif.set($any($event.target).value)"
+      ></textarea>
+      <div class="action-panel__buttons">
+        <button class="btn btn--ghost" (click)="fermerPanneau()">Annuler</button>
+        <button class="btn btn--primary" [disabled]="!motif().trim()" (click)="confirmerCorrection()">
+          <app-icon name="check" />
+          Envoyer la demande de correction
+        </button>
+      </div>
+    </div>
+  }
+
+  <footer class="verif-footer">
+    <p>Assurez-vous de vérifier toutes les divergences avant validation.</p>
+    <div class="verif-footer__actions">
+      <button class="btn btn--danger" (click)="ouvrirPanneau('reject')">
+        <app-icon name="x" />
+        Rejeter
+      </button>
+      <button class="btn btn--ghost" (click)="ouvrirPanneau('correction')">
+        <app-icon name="edit" />
+        Demander une correction
+      </button>
+      <button class="btn btn--primary" (click)="valider()">
+        <app-icon name="check" />
+        Valider la demande
+      </button>
+    </div>
+  </footer>
+}

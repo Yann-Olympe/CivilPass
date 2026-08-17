@@ -1,0 +1,31 @@
+.shell {
+  display: flex;
+  height: 100vh;
+}
+
+.shell__content {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 3.6rem 3.6rem 4.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 900px) {
+  .shell {
+    height: auto;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .shell__content {
+    height: auto;
+    overflow-y: visible;
+    padding: 2.4rem;
+  }
+}

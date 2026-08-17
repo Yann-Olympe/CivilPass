@@ -1,0 +1,75 @@
+<div class="list-head">
+  <div>
+    <h1 class="list-title">Dossiers transférés vers votre Mairie</h1>
+    <p class="list-subtitle">Vue d'ensemble des actes d'état civil en attente de traitement.</p>
+  </div>
+
+  <div class="list-actions">
+    <label class="list-search">
+      <app-icon name="search" />
+      <input type="text" placeholder="Rechercher un numéro..." />
+    </label>
+    <button class="btn btn--ghost">
+      <app-icon name="filter" />
+      Filtrer
+    </button>
+  </div>
+</div>
+
+<section class="stats-grid">
+  @for (stat of stats; track stat.label) {
+    <app-stat-card [data]="stat" />
+  }
+</section>
+
+<section class="panel">
+  <div class="panel__header">
+    <h2 class="panel__title">Dossiers Récents</h2>
+    <a class="panel__link" href="javascript:void(0)">
+      Voir tout
+      <app-icon name="chevron-right" />
+    </a>
+  </div>
+
+  <div class="table-scroll">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>N° demande</th>
+          <th>Citoyen</th>
+          <th>Mairie d'origine</th>
+          <th>Date de réception</th>
+          <th>Statut</th>
+          <th class="table__action-col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (dossier of dossiers; track dossier.id; let i = $index) {
+          <tr class="table-row-in" [style.animation-delay.ms]="i * 35">
+            <td class="table__id">{{ dossier.id }}</td>
+            <td>
+              <span class="citoyen">
+                <span class="citoyen__avatar">{{ dossier.avatarInitiales }}</span>
+                {{ dossier.citoyen }}
+              </span>
+            </td>
+            <td>{{ dossier.mairieOrigine }}</td>
+            <td>{{ dossier.dateReception }}</td>
+            <td><app-status-badge [statut]="dossier.statut" /></td>
+            <td class="table__action-col">
+              <button class="btn btn--primary" (click)="ouvrir(dossier.id)">Ouvrir le dossier</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span>Affichage 1-3 sur {{ total }} dossiers</span>
+    <div class="pagination__nav">
+      <button><app-icon name="chevron-left" /></button>
+      <button><app-icon name="chevron-right" /></button>
+    </div>
+  </div>
+</section>

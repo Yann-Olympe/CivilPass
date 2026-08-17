@@ -1,1 +1,154 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+  --font-family-base: 'Plus Jakarta Sans', sans-serif;
+  --font-size-root: 10px;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  --color-green-950: #0B1F14;
+  --color-green-900: #0F2A1C;
+  --color-green-850: #133423;
+  --color-green-800: #163D29;
+  --color-green-700: #1C4E33;
+  --color-green-600: #256A42;
+  --color-green-500: #2E8350;
+  --color-green-400: #3F9E62;
+  --color-green-300: #6BB884;
+  --color-green-100: #DCF0E3;
+  --color-green-50: #EFF9F2;
+
+  --color-gray-50: #F7F8F9;
+  --color-gray-100: #F1F2F4;
+  --color-gray-150: #ECEDF0;
+  --color-gray-200: #E4E6EA;
+  --color-gray-250: #DADDE2;
+  --color-gray-300: #D3D6DC;
+  --color-gray-400: #B4B9C2;
+  --color-gray-500: #8A919C;
+  --color-gray-600: #626873;
+  --color-gray-700: #454B54;
+  --color-gray-800: #2C3138;
+  --color-gray-900: #1A1D22;
+
+  --color-red-50: #FBEAEA;
+  --color-red-500: #DD5252;
+  --color-red-600: #C33B3B;
+
+  --color-yellow-50: #FDF3DC;
+  --color-yellow-500: #D89A1F;
+  --color-yellow-600: #B27E13;
+
+  --color-blue-50: #E9F1FC;
+  --color-blue-500: #2E6FDA;
+  --color-blue-600: #1E56B5;
+
+  --color-black-a05: rgba(0, 0, 0, 0.05);
+  --color-black-a08: rgba(0, 0, 0, 0.08);
+  --color-black-a12: rgba(0, 0, 0, 0.12);
+  --color-black-a30: rgba(0, 0, 0, 0.3);
+  --color-green-950-a40: rgba(11, 31, 20, 0.4);
+
+  --radius-sm: 0.6rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.4rem;
+  --radius-pill: 999rem;
+
+  --shadow-sm: 0 0.1rem 0.3rem var(--color-black-a05);
+  --shadow-card: 0 0.2rem 0.8rem var(--color-black-a05);
+  --shadow-md: 0 0.4rem 1.2rem var(--color-black-a08);
+  --shadow-lg: 0 0.8rem 2.4rem var(--color-black-a12);
+
+  --transition-base: 0.18s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-root);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-gray-50);
+  color: var(--color-gray-900);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Utilitaires d'animation partagés */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn {
+  transition: background var(--transition-base), border-color var(--transition-base),
+    color var(--transition-base), transform 0.12s ease, box-shadow var(--transition-base);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}

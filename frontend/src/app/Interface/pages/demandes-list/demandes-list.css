@@ -1,0 +1,105 @@
+@import '../../shared/styles/panel.css';
+
+.list-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  animation: fade-in-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  margin-bottom: 3rem;
+}
+
+.list-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.list-subtitle {
+  margin-top: 0.4rem;
+  font-size: 1.35rem;
+  color: var(--color-gray-500);
+}
+
+.list-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.list-search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.6rem;
+  width: 32rem;
+  max-width: 100%;
+  color: var(--color-gray-500);
+}
+
+.list-search app-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+}
+
+.list-search input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1.3rem;
+  background: transparent;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  color: var(--color-gray-400);
+  animation: fade-in-up 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 40ms;
+  margin-bottom: 3rem;
+}
+
+.filter-bar > app-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 0.4rem;
+}
+
+.filter-chip {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-200);
+  color: var(--color-gray-600);
+  transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base), transform 0.12s ease;
+}
+
+.filter-chip:hover {
+  background: var(--color-gray-50);
+}
+
+.filter-chip:active {
+  transform: scale(0.96);
+}
+
+.filter-chip.is-active {
+  background: var(--color-green-700);
+  border-color: var(--color-green-700);
+  color: var(--color-white);
+}
+
+.empty-state {
+  padding: 3.2rem 1rem;
+  text-align: center;
+  color: var(--color-gray-500);
+  font-size: 1.35rem;
+}

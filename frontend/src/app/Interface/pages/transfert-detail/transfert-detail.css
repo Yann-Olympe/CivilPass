@@ -1,0 +1,245 @@
+@import '../../shared/styles/panel.css';
+
+.verif-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gray-500);
+  width: fit-content;
+}
+
+.verif-back app-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.transfer-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.transfer-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.transfer-subtitle {
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: 16rem 1fr 16rem;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.2rem 0 3.2rem;
+}
+
+@media (max-width: 700px) {
+  .flow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flow__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.flow__icon {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-600);
+}
+
+.flow__icon--outline {
+  background: var(--color-white);
+  border: 0.15rem solid var(--color-green-500);
+  color: var(--color-green-600);
+}
+
+.flow__icon app-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.flow__check {
+  position: absolute;
+  bottom: -0.4rem;
+  right: -0.4rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--color-green-500);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.2rem solid var(--color-white);
+}
+
+.flow__check app-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.flow__label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+}
+
+.flow__value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.flow__line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+}
+
+.flow__track {
+  height: 0.2rem;
+  width: 100%;
+  background: var(--color-green-300);
+  border-radius: var(--radius-pill);
+}
+
+.flow__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-pill);
+}
+
+.flow__pill app-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.flow__pill--done {
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+}
+
+.flow__pill--secure {
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-250);
+  color: var(--color-gray-600);
+}
+
+.status-banner {
+  background: var(--color-green-50);
+  border: 0.1rem solid var(--color-green-100);
+  border-radius: var(--radius-sm);
+  padding: 1.8rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.status-banner__label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-green-700);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-banner__value {
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--color-green-700);
+}
+
+.status-banner__value app-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
+}
+
+@media (max-width: 700px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  border: 0.1rem solid var(--color-gray-150);
+  border-radius: var(--radius-sm);
+  padding: 1.8rem;
+}
+
+.detail-card__icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detail-card__icon app-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.detail-card__label {
+  font-size: 1.1rem;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.detail-card__value {
+  margin-top: 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.detail-card__hint {
+  margin-top: 0.3rem;
+  font-size: 1.15rem;
+  color: var(--color-gray-500);
+}

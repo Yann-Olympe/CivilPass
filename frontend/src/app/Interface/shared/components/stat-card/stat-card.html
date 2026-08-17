@@ -1,0 +1,10 @@
+<article class="stat-card">
+  <div class="stat-card__top">
+    <span class="stat-card__label">{{ data().label }}</span>
+    <span class="stat-card__icon" [attr.data-bg]="data().iconBg">
+      <app-icon [name]="data().icon" />
+    </span>
+  </div>
+  <p class="stat-card__value">{{ data().value }}</p>
+  <p class="stat-card__footer" [attr.data-tone]="data().footerTone">{{ data().footer }}</p>
+</article>

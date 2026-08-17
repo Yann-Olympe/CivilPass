@@ -1,0 +1,107 @@
+.toast-stack {
+  position: fixed;
+  top: 2.4rem;
+  right: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 200;
+  max-width: 38rem;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-150);
+  border-left: 0.4rem solid var(--color-green-600);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: 1.4rem 1.6rem;
+  animation: toast-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast[data-tone='danger'] {
+  border-left-color: var(--color-red-500);
+}
+
+.toast[data-tone='info'] {
+  border-left-color: var(--color-yellow-500);
+}
+
+.toast__icon {
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+}
+
+.toast[data-tone='danger'] .toast__icon {
+  background: var(--color-red-50);
+  color: var(--color-red-600);
+}
+
+.toast[data-tone='info'] .toast__icon {
+  background: var(--color-yellow-50);
+  color: var(--color-yellow-600);
+}
+
+.toast__icon app-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.toast__text {
+  flex: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  line-height: 1.4;
+}
+
+.toast__close {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  border-radius: 50%;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.toast__close:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
+
+.toast__close app-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(1.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .toast-stack {
+    left: 1.6rem;
+    right: 1.6rem;
+    max-width: none;
+  }
+}

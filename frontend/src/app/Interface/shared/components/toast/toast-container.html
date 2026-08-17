@@ -1,0 +1,11 @@
+<div class="toast-stack">
+  @for (toast of toasts(); track toast.id) {
+    <div class="toast" [attr.data-tone]="toast.tone">
+      <span class="toast__icon"><app-icon [name]="iconFor(toast.tone)" /></span>
+      <p class="toast__text">{{ toast.text }}</p>
+      <button class="toast__close" (click)="dismiss(toast.id)" aria-label="Fermer">
+        <app-icon name="x" />
+      </button>
+    </div>
+  }
+</div>
