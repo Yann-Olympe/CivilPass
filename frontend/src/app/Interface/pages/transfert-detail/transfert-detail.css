@@ -1,4 +1,4 @@
-@import '../../shared/styles/panel.css';
+@import '../../shared/components/styles/panel.css';
 
 .verif-back {
   display: inline-flex;

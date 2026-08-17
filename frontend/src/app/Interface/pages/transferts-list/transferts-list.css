@@ -1,4 +1,4 @@
-@import '../../shared/styles/panel.css';
+@import '../../shared/components/styles/panel.css';
 
 .list-head {
   display: flex;
