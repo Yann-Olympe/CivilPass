@@ -1,1 +1,18 @@
-<p>comment-ca-marche works!</p>
+<section class="ccm">
+  <p class="ccm-notice">📍 Plus besoin de voyager vers votre mairie de naissance.</p>
+  <h2>Comment ça marche ?</h2>
+
+  <ol class="ccm-etapes">
+    @for (etape of etapes; track etape.num) {
+      <li appScrollReveal>
+        <span class="ccm-num">{{ etape.num }}.</span>
+        <div>
+          <p class="ccm-titre">{{ etape.titre }}</p>
+          <p class="ccm-texte">{{ etape.texte }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+
+  <a routerLink="/nouvelle-demande" class="btn btn-primary">Commencer ma demande</a>
+</section>

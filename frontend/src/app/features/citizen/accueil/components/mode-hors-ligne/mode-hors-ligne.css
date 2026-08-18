@@ -1,0 +1,40 @@
+/* mode-hors-ligne.css */
+.mhl { padding: 4rem 2rem; background: var(--color-green-950); color: var(--color-white); }
+
+.eyebrow { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-green-400); margin: 0 0 0.8rem; }
+
+h2 { font-size: 2.2rem; margin: 0 0 1.6rem; }
+
+.mhl-texte { font-size: 1.4rem; color: var(--color-green-100); line-height: 1.5; margin: 0 0 2.4rem; }
+
+.sync-card {
+  background: var(--color-green-850);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem;
+  margin-bottom: 2.4rem;
+}
+
+.sync-title { font-size: 1.2rem; font-weight: 700; color: var(--color-green-300); margin: 0 0 1.2rem; }
+
+.sync-item { font-size: 1.3rem; display: flex; align-items: center; gap: 0.8rem; margin: 0 0 0.8rem; }
+.sync-item:last-child { margin-bottom: 0; }
+
+.dot { width: 0.9rem; height: 0.9rem; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: var(--color-green-400); }
+.dot-yellow { background: var(--color-yellow-500); }
+
+.btn-outline-light {
+  display: block;
+  text-align: center;
+  padding: 1.4rem 2.4rem;
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 0.15rem solid var(--color-green-300);
+  color: var(--color-white);
+  min-height: 4.4rem;
+  transition: background var(--transition-base);
+}
+.btn-outline-light:hover { background: var(--color-green-850); }
+.btn-outline-light:focus-visible { outline: 0.2rem solid var(--color-green-300); outline-offset: 0.2rem; }

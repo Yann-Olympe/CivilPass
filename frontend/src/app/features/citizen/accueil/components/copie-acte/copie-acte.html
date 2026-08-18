@@ -1,1 +1,10 @@
-<p>copie-acte works!</p>
+<section class="copie-acte">
+  <h2>Demander une copie de votre acte de naissance</h2>
+  <p>Vous vivez loin de votre ville de naissance ? Adressez votre demande en ligne et récupérez votre acte auprès d'une mairie proche de chez vous.</p>
+
+  <ul class="copie-acte-features">
+    @for (f of features; track f.texte) {
+      <li><span aria-hidden="true">{{ f.icon }}</span> {{ f.texte }}</li>
+    }
+  </ul>
+</section>

@@ -1,0 +1,14 @@
+.copie-acte { padding: 4rem 2rem; background: var(--color-green-900); color: var(--color-white); }
+
+h2 { font-size: 2.2rem; margin: 0 0 1.6rem; }
+
+.copie-acte p { font-size: 1.4rem; line-height: 1.5; color: var(--color-green-100); margin: 0 0 2.4rem; }
+
+.copie-acte-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+
+.copie-acte-features li {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
