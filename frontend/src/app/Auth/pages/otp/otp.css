@@ -1,0 +1,141 @@
+@import '../../shared/auth-form.css';
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 53rem;
+}
+
+.otp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: none;
+}
+
+.otp-icon {
+  width: 6.4rem;
+  height: 6.4rem;
+  border-radius: 50%;
+  background: var(--color-green-100);
+  color: var(--color-green-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.otp-icon app-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.otp-icon.is-success {
+  background: var(--color-green-500);
+  color: var(--color-white);
+  animation: popIn 0.4s ease both;
+}
+
+.otp-card__title {
+  text-align: center;
+}
+
+.otp-card__subtitle {
+  text-align: center;
+}
+
+.otp-boxes {
+  margin-top: 2.8rem;
+  display: flex;
+  gap: 1.4rem;
+}
+
+.otp-box {
+  width: 5.6rem;
+  height: 6.4rem;
+  border-radius: var(--radius-sm);
+  border: 0.15rem solid var(--color-gray-250);
+  background: var(--color-white);
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--color-gray-900);
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.otp-box:focus {
+  border-color: var(--color-green-500);
+  box-shadow: 0 0 0 0.4rem var(--color-green-100);
+  transform: translateY(-0.2rem);
+}
+
+.otp-box.is-filled {
+  border-color: var(--color-green-400);
+}
+
+.otp-box.is-error {
+  border-color: var(--color-red-500);
+}
+
+.otp-timer {
+  margin-top: 1.8rem;
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.otp-timer strong {
+  color: var(--color-green-600);
+  font-weight: 800;
+}
+
+.otp-error {
+  margin-top: 1.8rem;
+  font-size: 1.3rem;
+  color: var(--color-red-600);
+  font-weight: 700;
+  animation: fadeIn 0.2s ease;
+}
+
+.otp-card .auth-submit {
+  margin-top: 2.4rem;
+  max-width: 34rem;
+}
+
+.otp-card .auth-alert {
+  margin-top: 2.4rem;
+}
+
+.otp-resend {
+  margin-top: 1.8rem;
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.otp-resend a {
+  color: var(--color-green-600);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.otp-resend a.is-disabled {
+  color: var(--color-gray-400);
+  pointer-events: none;
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .otp-boxes {
+    gap: 1rem;
+  }
+
+  .otp-box {
+    width: 4.6rem;
+    height: 5.6rem;
+    font-size: 2rem;
+  }
+}

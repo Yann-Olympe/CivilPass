@@ -144,6 +144,51 @@ ul, ol {
   }
 }
 
+/* Alias camelCase + animations utilisées par le module Auth (login, register, otp) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-0.1rem); }
+  20%, 80% { transform: translateX(0.2rem); }
+  30%, 50%, 70% { transform: translateX(-0.4rem); }
+  40%, 60% { transform: translateX(0.4rem); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(1.2rem, -1.4rem) scale(1.05); }
+}
+
 .btn {
   transition: background var(--transition-base), border-color var(--transition-base),
     color var(--transition-base), transform 0.12s ease, box-shadow var(--transition-base);

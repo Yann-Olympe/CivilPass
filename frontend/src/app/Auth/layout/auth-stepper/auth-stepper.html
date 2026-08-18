@@ -1,0 +1,38 @@
+<aside class="auth-stepper">
+  <div class="auth-stepper__blob auth-stepper__blob--a"></div>
+  <div class="auth-stepper__blob auth-stepper__blob--b"></div>
+  <div class="auth-stepper__blob auth-stepper__blob--c"></div>
+
+  <div class="auth-stepper__inner">
+    <div class="auth-stepper__brand">
+      <app-icon name="shield-check" />
+      <span>CivilPass</span>
+    </div>
+
+    <ol class="auth-stepper__list">
+      @for (etape of etapes; track etape.id) {
+        <li [attr.data-state]="etat(etape.id)">
+          <span class="auth-stepper__badge">
+            @if (etat(etape.id) === 'done') {
+              <app-icon name="check" />
+            } @else {
+              {{ etape.id }}
+            }
+          </span>
+          <span class="auth-stepper__text">
+            <strong>{{ etape.titre }}</strong>
+            <small>{{ etape.description }}</small>
+          </span>
+        </li>
+        @if (etape.id !== etapes.length) {
+          <span class="auth-stepper__connector" [attr.data-state]="etat(etape.id)"></span>
+        }
+      }
+    </ol>
+
+    <p class="auth-stepper__footer">
+      Déjà un compte ?
+      <a routerLink="/auth/login">Se connecter</a>
+    </p>
+  </div>
+</aside>

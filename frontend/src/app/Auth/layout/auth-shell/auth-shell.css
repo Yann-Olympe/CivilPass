@@ -1,0 +1,40 @@
+.auth-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-gray-50);
+}
+
+.auth-shell__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2.4rem;
+}
+
+.auth-shell__brand-mobile {
+  display: none;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--color-green-700);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2.8rem;
+}
+
+.auth-shell__brand-mobile app-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+@media (max-width: 900px) {
+  .auth-shell__content {
+    padding: 3.2rem 2rem;
+  }
+
+  .auth-shell__brand-mobile {
+    display: flex;
+  }
+}

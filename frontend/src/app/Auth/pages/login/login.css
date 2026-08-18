@@ -1,0 +1,87 @@
+@import '../../shared/auth-form.css';
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  background: linear-gradient(150deg, var(--color-green-50) 0%, var(--color-green-100) 100%);
+}
+
+.login-page__blob {
+  position: absolute;
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  background: linear-gradient(135deg, var(--color-green-300), var(--color-green-100));
+  filter: blur(0.2rem);
+  opacity: 0.85;
+  animation: blobFloat 14s ease-in-out infinite;
+}
+
+.login-page__blob--a {
+  width: 26rem;
+  height: 26rem;
+  top: -8rem;
+  right: 6rem;
+}
+
+.login-page__blob--b {
+  width: 18rem;
+  height: 18rem;
+  bottom: 8rem;
+  right: -6rem;
+  animation-delay: -3s;
+}
+
+.login-page__blob--c {
+  width: 14rem;
+  height: 14rem;
+  bottom: -5rem;
+  left: 8rem;
+  animation-delay: -7s;
+}
+
+.login-page__blob--d {
+  width: 20rem;
+  height: 20rem;
+  top: 10rem;
+  left: -8rem;
+  animation-delay: -10s;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-green-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 3.6rem 3.2rem;
+}
+
+.login-card__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--color-green-700);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2.4rem;
+}
+
+.login-card__brand app-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.login-card__title {
+  margin-bottom: 0.6rem;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2.8rem 2.2rem;
+  }
+}

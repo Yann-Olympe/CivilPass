@@ -1,0 +1,10 @@
+<div class="auth-shell">
+  <app-auth-stepper [etapeCourante]="etapeCourante()" />
+  <main class="auth-shell__content">
+    <div class="auth-shell__brand-mobile">
+      <app-icon name="shield-check" />
+      <span>CivilPass</span>
+    </div>
+    <router-outlet />
+  </main>
+</div>

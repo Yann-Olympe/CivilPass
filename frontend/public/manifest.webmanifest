@@ -1,15 +1,39 @@
 {
-  "name": "CivilPass",
+  "id": "/",
+  "name": "CivilPass — Espace Agent",
   "short_name": "CivilPass",
-  "theme_color": "#0F2A1C",
+  "description": "Portail numérique de gestion des actes d'état civil pour les mairies du Cameroun.",
+  "lang": "fr",
+  "theme_color": "#2E8350",
   "background_color": "#F7F8F9",
   "display": "standalone",
-  "start_url": "/",
+  "orientation": "any",
+  "scope": "/",
+  "start_url": "/?source=pwa",
+  "categories": ["government", "productivity", "utilities"],
   "icons": [
+    { "src": "icons/icon-72.png", "sizes": "72x72", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
     {
-      "src": "favicon.ico",
-      "sizes": "48x48",
-      "type": "image/x-icon"
+      "name": "Tableau de bord",
+      "short_name": "Accueil",
+      "url": "/tableau-de-bord",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Nouvelle vérification",
+      "short_name": "Vérifier",
+      "url": "/demandes",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
     }
   ]
 }

@@ -1,0 +1,90 @@
+<div class="login-page">
+  <div class="login-page__blob login-page__blob--a"></div>
+  <div class="login-page__blob login-page__blob--b"></div>
+  <div class="login-page__blob login-page__blob--c"></div>
+  <div class="login-page__blob login-page__blob--d"></div>
+
+  <form class="login-card auth-card" [class.is-shake]="secousse()" [formGroup]="formulaire" (ngSubmit)="soumettre()" novalidate>
+    <div class="login-card__brand">
+      <app-icon name="shield-check" />
+      <span>CivilPass</span>
+    </div>
+
+    <h1 class="auth-card__title login-card__title">Connexion</h1>
+
+    @if (inscriptionReussie()) {
+      <div class="auth-alert auth-alert--success">
+        <app-icon name="check-circle" />
+        Compte créé avec succès, connectez-vous.
+      </div>
+    }
+
+    @if (erreurConnexion()) {
+      <div class="auth-alert auth-alert--error">
+        <app-icon name="alert-triangle" />
+        Adresse e-mail ou mot de passe incorrect.
+      </div>
+    }
+
+    <div class="auth-form">
+      <div class="auth-field">
+        <label for="email">Adresse email</label>
+        <div class="auth-field__control">
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Entrez votre email"
+            [class.is-invalid]="invalide('email')"
+          />
+        </div>
+        @if (erreur('email', 'required')) {
+          <span class="auth-field__error">L'adresse email est requise.</span>
+        } @else if (erreur('email', 'email')) {
+          <span class="auth-field__error">Entrez une adresse email valide.</span>
+        }
+      </div>
+
+      <div class="auth-field">
+        <label for="motDePasse">Mot de passe</label>
+        <div class="auth-field__control">
+          <input
+            id="motDePasse"
+            [type]="motDePasseVisible() ? 'text' : 'password'"
+            formControlName="motDePasse"
+            placeholder="Entrez votre mot de passe"
+            [class.is-invalid]="invalide('motDePasse')"
+            style="padding-right: 4.4rem;"
+          />
+          <button class="auth-field__toggle" type="button" (click)="basculerMotDePasse()" tabindex="-1">
+            <app-icon [name]="motDePasseVisible() ? 'eye-off' : 'eye'" />
+          </button>
+        </div>
+        @if (erreur('motDePasse', 'required')) {
+          <span class="auth-field__error">Le mot de passe est requis.</span>
+        } @else if (erreur('motDePasse', 'minlength')) {
+          <span class="auth-field__error">Le mot de passe doit contenir au moins 6 caractères.</span>
+        }
+      </div>
+
+      <button class="auth-submit" type="submit" [disabled]="envoiEnCours()">
+        @if (envoiEnCours()) {
+          <span class="auth-spinner"></span>
+        }
+        Se connecter
+      </button>
+
+      <div class="auth-divider">ou</div>
+
+      <button class="auth-google" type="button" (click)="continuerAvecGoogle()" [disabled]="envoiEnCours()">
+        <app-icon name="google" />
+        Se connecter avec Google
+      </button>
+    </div>
+
+    <p class="auth-switch">
+      Pas encore de compte ?
+      <a routerLink="/auth/register">Créer un compte</a>
+    </p>
+  </form>
+</div>

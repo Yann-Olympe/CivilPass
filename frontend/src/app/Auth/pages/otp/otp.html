@@ -1,0 +1,74 @@
+<div class="auth-card otp-card" [class.is-shake]="secousse()">
+  <div class="otp-icon" [class.is-success]="reussi()">
+    <app-icon [name]="reussi() ? 'check' : 'mail'" />
+  </div>
+
+  <h1 class="auth-card__title otp-card__title">Vérifiez votre adresse e-mail</h1>
+  <p class="auth-card__subtitle otp-card__subtitle">
+    Nous avons envoyé un code à {{ authFlow.emailMasque() }}.
+  </p>
+
+  <div class="otp-boxes" (paste)="coller($event)">
+    @for (chiffre of chiffres(); track $index) {
+      <input
+        #caseOtp
+        class="otp-box"
+        [class.is-error]="erreurCode()"
+        [class.is-filled]="chiffre !== ''"
+        type="text"
+        inputmode="numeric"
+        maxlength="1"
+        [value]="chiffre"
+        (input)="saisir($index, $event)"
+        (keydown)="surRetourArriere($index, $event)"
+        [disabled]="reussi()"
+      />
+    }
+  </div>
+
+  @if (erreurCode()) {
+    <p class="otp-error">Code incorrect. Veuillez réessayer.</p>
+  } @else if (!reussi()) {
+    <p class="otp-timer">
+      @if (peutRenvoyer()) {
+        Le code a expiré
+      } @else {
+        Le code expire dans <strong>{{ minuteurAffiche() }}</strong>
+      }
+    </p>
+  }
+
+  @if (reussi()) {
+    <div class="auth-alert auth-alert--success">
+      <app-icon name="check-circle" />
+      Adresse vérifiée, redirection en cours...
+    </div>
+  } @else {
+    <button class="auth-submit" type="button" [disabled]="!codeComplet() || envoiEnCours()" (click)="verifier()">
+      @if (envoiEnCours()) {
+        <span class="auth-spinner"></span>
+      }
+      Vérifier le code
+    </button>
+
+    <p class="otp-resend">
+      Vous n'avez rien reçu ?
+      <a
+        href="javascript:void(0)"
+        [class.is-disabled]="!peutRenvoyer()"
+        (click)="renvoyer()"
+      >Renvoyer le code</a>
+    </p>
+  }
+
+  <div class="auth-progress-dots">
+    <span data-state="done"></span>
+    <span [attr.data-state]="reussi() ? 'done' : 'active'"></span>
+    <span [attr.data-state]="reussi() ? 'active' : ''"></span>
+  </div>
+
+  <p class="auth-switch">
+    Déjà un compte ?
+    <a routerLink="/auth/login">Se connecter</a>
+  </p>
+</div>

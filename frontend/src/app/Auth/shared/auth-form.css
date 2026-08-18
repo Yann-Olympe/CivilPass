@@ -1,0 +1,308 @@
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 52rem;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-green-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 3.6rem 3.6rem 3.2rem;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.auth-card.is-shake {
+  animation: shake 0.4s ease;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 2.8rem 2.2rem;
+  }
+}
+
+.auth-card__title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.auth-card__subtitle {
+  margin-top: 0.6rem;
+  font-size: 1.35rem;
+  color: var(--color-gray-500);
+}
+
+.auth-field {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.auth-field label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.auth-field__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-field__control input {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  border: 0.1rem solid var(--color-green-100);
+  border-radius: var(--radius-sm);
+  font-size: 1.35rem;
+  background: var(--color-green-50);
+  color: var(--color-gray-900);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.auth-field__control input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.auth-field__control input:focus {
+  outline: none;
+  background: var(--color-white);
+  border-color: var(--color-green-500);
+  box-shadow: 0 0 0 0.35rem var(--color-green-100);
+}
+
+.auth-field__control input.is-invalid {
+  background: var(--color-white);
+  border-color: var(--color-red-500);
+}
+
+.auth-field__control input.is-invalid:focus {
+  box-shadow: 0 0 0 0.35rem var(--color-red-50);
+}
+
+.auth-field__control input[type='password'],
+.auth-field__control input[data-with-toggle] {
+  padding-right: 4.4rem;
+}
+
+.auth-field__toggle {
+  position: absolute;
+  right: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-500);
+  transition: color var(--transition-base);
+}
+
+.auth-field__toggle:hover {
+  color: var(--color-green-600);
+}
+
+.auth-field__toggle app-icon {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.auth-field__error {
+  font-size: 1.15rem;
+  color: var(--color-red-600);
+  animation: fadeIn 0.2s ease both;
+}
+
+.auth-forgot {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.auth-forgot a {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-green-600);
+}
+
+.auth-forgot a:hover {
+  text-decoration: underline;
+}
+
+.auth-checkbox {
+  margin-top: 1.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 1.25rem;
+  color: var(--color-gray-600);
+}
+
+.auth-checkbox input {
+  margin-top: 0.3rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  accent-color: var(--color-green-500);
+}
+
+.auth-checkbox a {
+  color: var(--color-green-600);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.auth-submit {
+  margin-top: 2.4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.3rem 1.4rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-green-500);
+  color: var(--color-white);
+  font-size: 1.4rem;
+  font-weight: 700;
+  transition: background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: 0 0.3rem 1rem rgba(46, 131, 80, 0.28);
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: var(--color-green-600);
+  transform: translateY(-0.1rem);
+}
+
+.auth-submit:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.auth-submit:disabled {
+  background: var(--color-gray-300);
+  color: var(--color-gray-500);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.auth-spinner {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: 0.25rem solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  animation: spin 0.7s linear infinite;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 2.2rem 0;
+  color: var(--color-gray-400);
+  font-size: 1.2rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 0.1rem;
+  background: var(--color-gray-200);
+}
+
+.auth-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.15rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 0.1rem solid var(--color-gray-250);
+  background: var(--color-white);
+  color: var(--color-gray-700);
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: background var(--transition-base), border-color var(--transition-base), transform var(--transition-base);
+}
+
+.auth-google:hover:not(:disabled) {
+  background: var(--color-gray-50);
+  border-color: var(--color-gray-300);
+  transform: translateY(-0.1rem);
+}
+
+.auth-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-google app-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.auth-progress-dots {
+  margin-top: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.auth-progress-dots span {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-gray-250);
+  transition: width var(--transition-base), background var(--transition-base);
+}
+
+.auth-progress-dots span[data-state='active'] {
+  width: 2.4rem;
+  background: var(--color-green-500);
+}
+
+.auth-progress-dots span[data-state='done'] {
+  background: var(--color-green-400);
+}
+
+.auth-switch {
+  margin-top: 2.2rem;
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.auth-switch a {
+  color: var(--color-green-600);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.auth-alert {
+  margin-top: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  font-weight: 600;
+  animation: fadeInUp 0.3s ease both;
+}
+
+.auth-alert--error {
+  background: var(--color-red-50);
+  color: var(--color-red-600);
+}
+
+.auth-alert--success {
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+}
+
+.auth-alert app-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+}

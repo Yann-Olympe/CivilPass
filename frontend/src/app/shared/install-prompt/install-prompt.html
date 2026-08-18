@@ -1,0 +1,34 @@
+@if (visible()) {
+  <div class="install-banner" [attr.data-platform]="plateforme()">
+    <button class="install-banner__close" type="button" (click)="fermer()" aria-label="Fermer">
+      <app-icon name="x" />
+    </button>
+
+    <div class="install-banner__icon">
+      <app-icon name="shield-check" />
+    </div>
+
+    <div class="install-banner__text">
+      <strong>Installer CivilPass</strong>
+      @if (plateforme() === 'ios') {
+        <p>
+          Appuyez sur <app-icon name="share" class="install-banner__inline-icon" /> puis sur
+          « Sur l'écran d'accueil » pour un accès rapide, même hors connexion.
+        </p>
+      } @else {
+        <p>Ajoutez CivilPass à votre écran d'accueil pour un accès plus rapide, même hors connexion.</p>
+      }
+    </div>
+
+    @if (plateforme() !== 'ios') {
+      <button class="install-banner__cta" type="button" (click)="installer()" [disabled]="installationEnCours()">
+        @if (installationEnCours()) {
+          <span class="install-banner__spinner"></span>
+        } @else {
+          <app-icon name="download" />
+        }
+        Installer
+      </button>
+    }
+  </div>
+}

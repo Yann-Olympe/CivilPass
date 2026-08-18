@@ -1,0 +1,12 @@
+@import '../../shared/auth-form.css';
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 52rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: none;
+}

@@ -1,0 +1,89 @@
+<form class="auth-card register-card" [class.is-shake]="secousse()" [formGroup]="formulaire" (ngSubmit)="soumettre()" novalidate>
+  <h1 class="auth-card__title">Créer un compte</h1>
+  <p class="auth-card__subtitle">Rejoignez votre espace agent CivilPass.</p>
+
+  <div class="auth-form">
+    <div class="auth-field">
+      <label for="nomComplet">Nom complet</label>
+      <div class="auth-field__control">
+        <input
+          id="nomComplet"
+          type="text"
+          formControlName="nomComplet"
+          placeholder="Entrez votre nom complet"
+          [class.is-invalid]="invalide('nomComplet')"
+        />
+      </div>
+      @if (erreur('nomComplet', 'required')) {
+        <span class="auth-field__error">Le nom complet est requis.</span>
+      } @else if (erreur('nomComplet', 'minlength')) {
+        <span class="auth-field__error">Le nom doit contenir au moins 3 caractères.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="email">Adresse email</label>
+      <div class="auth-field__control">
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Entrez votre email"
+          [class.is-invalid]="invalide('email')"
+        />
+      </div>
+      @if (erreur('email', 'required')) {
+        <span class="auth-field__error">L'adresse email est requise.</span>
+      } @else if (erreur('email', 'email')) {
+        <span class="auth-field__error">Entrez une adresse email valide.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="motDePasse">Mot de passe</label>
+      <div class="auth-field__control">
+        <input
+          id="motDePasse"
+          [type]="motDePasseVisible() ? 'text' : 'password'"
+          formControlName="motDePasse"
+          placeholder="Entrez votre mot de passe"
+          [class.is-invalid]="invalide('motDePasse')"
+          style="padding-right: 4.4rem;"
+        />
+        <button class="auth-field__toggle" type="button" (click)="basculerMotDePasse()" tabindex="-1">
+          <app-icon [name]="motDePasseVisible() ? 'eye-off' : 'eye'" />
+        </button>
+      </div>
+      @if (erreur('motDePasse', 'required')) {
+        <span class="auth-field__error">Le mot de passe est requis.</span>
+      } @else if (erreur('motDePasse', 'minlength')) {
+        <span class="auth-field__error">Le mot de passe doit contenir au moins 8 caractères.</span>
+      }
+    </div>
+
+    <button class="auth-submit" type="submit" [disabled]="envoiEnCours()">
+      @if (envoiEnCours()) {
+        <span class="auth-spinner"></span>
+      }
+      Créer mon compte
+    </button>
+
+    <div class="auth-divider">ou</div>
+
+    <button class="auth-google" type="button" (click)="continuerAvecGoogle()" [disabled]="envoiEnCours()">
+      <app-icon name="google" />
+      S'inscrire avec Google
+    </button>
+  </div>
+
+  <div class="auth-progress-dots">
+    <span data-state="active"></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <p class="auth-switch">
+    Vous avez déjà un compte ?
+    <a routerLink="/auth/login">Se connecter</a>
+  </p>
+</form>
