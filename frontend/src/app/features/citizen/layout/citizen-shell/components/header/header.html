@@ -6,12 +6,14 @@
     <nav class="header__nav">
       <a routerLink="/espace" class="header__link">Mon espace</a>
       <a routerLink="/espace/demandes" class="header__link">Mes demandes</a>
+      <button type="button" class="header-menu" aria-label="Menu">☰</button>
       </nav>
     } @else {
 
       <nav class="header__nav">
         <a routerLink="/connexion" class="header__link">Connexion</a>
         <button type="button" class="header__lang">FR / EN</button>
+        <button type="button" class="header-menu" aria-label="Menu">☰</button>
         </nav>
     }
 </header>
