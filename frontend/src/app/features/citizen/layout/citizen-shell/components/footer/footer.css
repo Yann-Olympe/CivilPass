@@ -1,0 +1,38 @@
+.footer {
+  padding: 3.2rem 2rem 2.4rem;
+  background: var(--color-green-950);
+  color: var(--color-gray-100);
+  text-align: center;
+}
+  .footer__brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--color-white);
+    margin:0 0 1.6rem;
+  }
+
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+
+    & a {
+      font-size: 1.3rem;
+      color: var(--color-gray-100);
+      text-decoration: none;
+      transition: color var(--transition-base);
+
+      &:hover,:focus-visible {
+        color: var(--color-white);
+      }
+    }
+  }
+
+  .footer__copy {
+    font-size: 1.1rem;
+    color: var(--color-gray-300);
+    line-height: 1.5;
+    margin: 0;
+  }

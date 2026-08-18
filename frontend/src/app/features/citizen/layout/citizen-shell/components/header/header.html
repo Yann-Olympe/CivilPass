@@ -1,0 +1,17 @@
+<header class="header">
+  <a routerLink="/accueil" class="header__logo">
+    CivilPass
+  </a>
+  @if(auth.isLoggedIn()){
+    <nav class="header__nav">
+      <a routerLink="/espace" class="header__link">Mon espace</a>
+      <a routerLink="/espace/demandes" class="header__link">Mes demandes</a>
+      </nav>
+    } @else {
+
+      <nav class="header__nav">
+        <a routerLink="/connexion" class="header__link">Connexion</a>
+        <button type="button" class="header__lang">FR / EN</button>
+        </nav>
+    }
+</header>

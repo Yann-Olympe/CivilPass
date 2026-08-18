@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CitizenShell } from './features/citizen/layout/citizen-shell/citizen-shell';
 import { Shell } from './Interface/layout/shell/shell';
 import { Dashboard } from './Interface/pages/dashboard/dashboard';
 import { Verification } from './Interface/pages/verification/verification';
@@ -7,8 +8,28 @@ import { TransfertsList } from './Interface/pages/transferts-list/transferts-lis
 import { TransfertDetail } from './Interface/pages/transfert-detail/transfert-detail';
 
 export const routes: Routes = [
+  // ===== Racine : redirige vers TA partie (citoyen) =====
+  { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+
+  // ===== Ta partie (citoyen) =====
   {
     path: '',
+    component: CitizenShell,
+    children: [
+      {
+        path: 'accueil',
+        loadComponent: () =>
+          import('./features/citizen/accueil/accueil').then((m) => m.Accueil),
+      },
+      // { path: 'connexion', loadComponent: () => ... }
+      // { path: 'demande', loadComponent: () => ... }
+      // { path: 'suivi/:qrToken', loadComponent: () => ... }
+    ],
+  },
+
+  // ===== Partie de ton collègue (mairie), préfixée =====
+  {
+    path: 'mairie',
     component: Shell,
     children: [
       { path: '', redirectTo: 'tableau-de-bord', pathMatch: 'full' },
@@ -23,4 +44,7 @@ export const routes: Routes = [
       { path: '**', redirectTo: 'tableau-de-bord' },
     ],
   },
+
+  // ===== Wildcard global, tout en bas =====
+  { path: '**', redirectTo: 'accueil' },
 ];
