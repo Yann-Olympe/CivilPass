@@ -1,1 +1,17 @@
-<p>solution works!</p>
+<!-- solution.html -->
+<section class="solution">
+  <p class="eyebrow">La solution</p>
+  <h2>CivilPass simplifie le parcours.</h2>
+
+  <ol class="etapes">
+    @for (etape of etapes; track etape.num) {
+      <li class="etape" appScrollReveal>
+        <span class="etape-num">{{ etape.num }}</span>
+        <div>
+          <p class="etape-acteur">{{ etape.acteur }}</p>
+          <p class="etape-texte">{{ etape.texte }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+</section>

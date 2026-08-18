@@ -1,0 +1,32 @@
+.probleme { padding: 4rem 2rem; background: var(--color-white); }
+
+.eyebrow {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-green-600);
+  margin: 0 0 0.8rem;
+}
+
+h2 {
+  font-size: 2.4rem;
+  line-height: 1.25;
+  color: var(--color-green-950);
+  margin: 0 0 3.2rem;
+}
+
+.probleme-list { display: flex; flex-direction: column; gap: 1.6rem; }
+
+.probleme-card {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.probleme-icon { font-size: 2.4rem; display: block; margin-bottom: 1.2rem; }
+
+h3 { font-size: 1.6rem; color: var(--color-green-900); margin: 0 0 0.8rem; }
+
+.probleme-card p { font-size: 1.4rem; color: var(--color-gray-600); line-height: 1.5; margin: 0; }

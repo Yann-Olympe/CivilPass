@@ -1,1 +1,15 @@
-<p>probleme works!</p>
+<!-- probleme.html -->
+<section class="probleme">
+  <p class="eyebrow">Le problème</p>
+  <h2>Les démarches administratives ne devraient pas être un parcours du combattant.</h2>
+
+  <div class="probleme-list">
+    @for (item of items; track item.titre) {
+      <article class="probleme-card" appScrollReveal>
+        <span class="probleme-icon" aria-hidden="true">{{ item.icon }}</span>
+        <h3>{{ item.titre }}</h3>
+        <p>{{ item.texte }}</p>
+      </article>
+    }
+  </div>
+</section>
