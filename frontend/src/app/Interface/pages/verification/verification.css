@@ -1,4 +1,4 @@
-
+@import '../../shared/components/styles/panel.css';
 .verif-head {
   display: flex;
   flex-direction: column;

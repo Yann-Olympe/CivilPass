@@ -1,5 +1,5 @@
 
-
+@import '../../shared/components/styles/panel.css';
 .list-head {
   display: flex;
   align-items: flex-start;
