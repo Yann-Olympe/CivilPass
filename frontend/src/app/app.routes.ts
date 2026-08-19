@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { CitizenShell } from './features/citizen/layout/citizen-shell/citizen-shell';
-import { Shell } from './Interface/layout/shell/shell';
-import { Dashboard } from './Interface/pages/dashboard/dashboard';
-import { Verification } from './Interface/pages/verification/verification';
-import { DemandesList } from './Interface/pages/demandes-list/demandes-list';
-import { TransfertsList } from './Interface/pages/transferts-list/transferts-list';
-import { TransfertDetail } from './Interface/pages/transfert-detail/transfert-detail';
+import { Shell } from './mairie/layout/shell/shell';
+import { Dashboard } from './mairie/pages/dashboard/dashboard';
+import { Verification } from './mairie/pages/verification/verification';
+import { DemandesList } from './mairie/pages/demandes-list/demandes-list';
+import { TransfertsList } from './mairie/pages/transferts-list/transferts-list';
+import { TransfertDetail } from './mairie/pages/transfert-detail/transfert-detail';
 import { citizenAuthGuard } from './core/guards/citizen-auth.guard';
 
 export const routes: Routes = [
