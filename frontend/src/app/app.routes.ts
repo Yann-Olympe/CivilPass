@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { CitizenShell } from './features/citizen/layout/citizen-shell/citizen-shell';
-import { Shell } from './mairie/layout/shell/shell';
-import { Dashboard } from './mairie/pages/dashboard/dashboard';
-import { Verification } from './mairie/pages/verification/verification';
-import { DemandesList } from './mairie/pages/demandes-list/demandes-list';
-import { TransfertsList } from './mairie/pages/transferts-list/transferts-list';
-import { TransfertDetail } from './mairie/pages/transfert-detail/transfert-detail';
 import { citizenAuthGuard } from './core/guards/citizen-auth.guard';
+import { CitizenShell } from './features/citizen/layout/citizen-shell/citizen-shell';
+import { Shell } from './features/mairie/layout/shell/shell';
+import { Dashboard } from './features/mairie/pages/dashboard/dashboard';
+import { DemandesList } from './features/mairie/pages/demandes-list/demandes-list';
+import { Verification } from './features/mairie/pages/verification/verification';
+import { TransfertsList } from './features/mairie/pages/transferts-list/transferts-list';
+import { TransfertDetail } from './features/mairie/pages/transfert-detail/transfert-detail';
 
 export const routes: Routes = [
   // ===== Racine : redirige vers TA partie (citoyen) =====
