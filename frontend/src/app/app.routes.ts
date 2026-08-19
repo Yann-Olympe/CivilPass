@@ -13,14 +13,30 @@ export const routes: Routes = [
 
   // ===== Ta partie (citoyen) =====
   {
-    path: '',
-    component: CitizenShell,
-    children: [
-      {
-        path: 'accueil',
-        loadComponent: () =>
-          import('./features/citizen/accueil/accueil').then((m) => m.Accueil),
-      },
+   // app.routes.ts
+{
+  path: '',
+  component: CitizenShell,
+  children: [
+    // --- Routes publiques ---
+    { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
+    { path: 'connexion', loadComponent: () => import('./features/citizen/auth/connexion/connexion').then(m => m.Connexion) },
+    { path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
+    { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },
+
+    // --- Routes protégées (regroupées sous un guard commun) ---
+    {
+      path: '',
+      canActivate: [citizenAuthGuard],
+      children: [
+        { path: 'demande', loadComponent: () => import('./features/citizen/demande/demande').then(m => m.Demande) },
+        { path: 'mes-demandes', loadComponent: () => import('./features/citizen/mes-demandes/mes-demandes').then(m => m.MesDemandes) },
+        { path: 'suivi/:qrToken', loadComponent: () => import('./features/citizen/suivi/suivi').then(m => m.Suivi) },
+        { path: 'profil', loadComponent: () => import('./features/citizen/profil/profil').then(m => m.Profil) },
+      ],
+    },
+  ],
+},
       // { path: 'connexion', loadComponent: () => ... }
       // { path: 'demande', loadComponent: () => ... }
       // { path: 'suivi/:qrToken', loadComponent: () => ... }
