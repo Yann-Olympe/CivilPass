@@ -6,13 +6,14 @@ import { Verification } from './Interface/pages/verification/verification';
 import { DemandesList } from './Interface/pages/demandes-list/demandes-list';
 import { TransfertsList } from './Interface/pages/transferts-list/transferts-list';
 import { TransfertDetail } from './Interface/pages/transfert-detail/transfert-detail';
+import { citizenAuthGuard } from './core/guards/citizen-auth.guard';
 
 export const routes: Routes = [
   // ===== Racine : redirige vers TA partie (citoyen) =====
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
 
   // ===== Ta partie (citoyen) =====
-  {
+  
    // app.routes.ts
 {
   path: '',
@@ -20,19 +21,19 @@ export const routes: Routes = [
   children: [
     // --- Routes publiques ---
     { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
-    { path: 'connexion', loadComponent: () => import('./features/citizen/auth/connexion/connexion').then(m => m.Connexion) },
+   /* { path: 'connexion', loadComponent: () => import('./features/citizen/auth/connexion/connexion').then(m => m.Connexion) },
     { path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
-    { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },
+    { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },*/
 
     // --- Routes protégées (regroupées sous un guard commun) ---
     {
       path: '',
-      canActivate: [citizenAuthGuard],
+     /* canActivate: [citizenAuthGuard],*/
       children: [
-        { path: 'demande', loadComponent: () => import('./features/citizen/demande/demande').then(m => m.Demande) },
+       /* { path: 'demande', loadComponent: () => import('./features/citizen/demande/demande').then(m => m.Demande) },
         { path: 'mes-demandes', loadComponent: () => import('./features/citizen/mes-demandes/mes-demandes').then(m => m.MesDemandes) },
         { path: 'suivi/:qrToken', loadComponent: () => import('./features/citizen/suivi/suivi').then(m => m.Suivi) },
-        { path: 'profil', loadComponent: () => import('./features/citizen/profil/profil').then(m => m.Profil) },
+        { path: 'profil', loadComponent: () => import('./features/citizen/profil/profil').then(m => m.Profil) },*/
       ],
     },
   ],
@@ -40,8 +41,7 @@ export const routes: Routes = [
       // { path: 'connexion', loadComponent: () => ... }
       // { path: 'demande', loadComponent: () => ... }
       // { path: 'suivi/:qrToken', loadComponent: () => ... }
-    ],
-  },
+
 
   // ===== Partie de ton collègue (mairie), préfixée =====
   {
