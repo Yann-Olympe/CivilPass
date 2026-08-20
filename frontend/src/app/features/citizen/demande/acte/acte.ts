@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DemandeActeStateService } from '../../../../Services/demande-acte-state.service';
 
 @Component({
   selector: 'app-acte',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
 })
 export class Acte {
    private fb = inject(FormBuilder);
-  private router = inject(Router);
+   private router = inject(Router);
+   private stateService = inject(DemandeActeStateService);
 
   currentYear = new Date().getFullYear();
   years: number[] = Array.from({ length: this.currentYear - 1950 + 1 }, (_, i) => this.currentYear - i);
@@ -33,17 +35,16 @@ export class Acte {
   }
 
   onPrecedent(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/accueil']);
   }
 
   onSuivant(): void {
     this.formSubmitted = true;
-
-    if (this.acteForm.valid) {
-      console.log(this.acteForm.value);
-      this.router.navigate(['/demande/mairie']);
-    } else {
-      this.acteForm.markAllAsTouched();
-    }
+  if (this.acteForm.valid) {
+    this.stateService.setActe(this.acteForm.value);
+    this.router.navigate(['/demande/mairie']);
+  } else {
+    this.acteForm.markAllAsTouched();
+  }
   }
 }

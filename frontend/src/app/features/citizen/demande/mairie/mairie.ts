@@ -1,12 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DemandeActeStateService } from '../../../../Services/demande-acte-state.service';
+import { MairieService } from '../../../../Services/mairie.service';
 
 
-interface _Mairie {
-  id: number;
-  nom: string;
-}
 
 
 @Component({
@@ -16,20 +14,12 @@ interface _Mairie {
   styleUrl: './mairie.css',
 })
 export class Mairie {
-  
-  private fb = inject(FormBuilder);
+ private fb = inject(FormBuilder);
   private router = inject(Router);
+  private stateService = inject(DemandeActeStateService);
+  mairieService = inject(MairieService); // public — utilisé directement dans le template
 
   formSubmitted = false;
-
-  // Données mockées en attendant l'endpoint GET /api/mairies
-  mairies: _Mairie[] = [
-    { id: 1, nom: 'Mairie de Douala 1er' },
-    { id: 2, nom: 'Mairie de Douala 2e' },
-    { id: 3, nom: 'Mairie de Douala 3e' },
-    { id: 4, nom: 'Mairie de Yaoundé I' },
-    { id: 5, nom: 'Mairie de Yaoundé II' }
-  ];
 
   mairiesForm: FormGroup = this.fb.group({
     mairieOrigineId: ['', [Validators.required]],
@@ -43,15 +33,15 @@ export class Mairie {
   }
 
   onRetour(): void {
-    this.router.navigate(['/demande/acte']);
+    this.router.navigate(['demande/identite']);
   }
 
   onContinuer(): void {
     this.formSubmitted = true;
 
     if (this.mairiesForm.valid) {
-      console.log(this.mairiesForm.value);
-      this.router.navigate(['/demande/validation']);
+      this.stateService.setMairies(this.mairiesForm.value);
+      this.router.navigate(['demande/validation']);
     } else {
       this.mairiesForm.markAllAsTouched();
     }

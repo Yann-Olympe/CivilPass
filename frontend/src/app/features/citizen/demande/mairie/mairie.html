@@ -54,18 +54,21 @@
         </div>
         <p class="mairie-card__question">Où votre acte de naissance a-t-il été enregistré ?</p>
         <select
-          formControlName="mairieOrigineId"
-          class="mairie-card__select"
-          [class.input--error]="isInvalid('mairieOrigineId')"
-        >
-          <option value="" disabled selected>Sélectionner une mairie</option>
-          @for (mairie of mairies; track mairie.id) {
-            <option [value]="mairie.id">{{ mairie.nom }}</option>
+            formControlName="mairieOrigineId"
+            class="mairie-card__select"
+            [class.input--error]="isInvalid('mairieOrigineId')"
+          >
+            <option value="" disabled selected>Sélectionner une mairie</option>
+            @for (mairie of mairieService.mairies(); track mairie.id) {
+              <option [ngValue]="mairie.id">{{ mairie.nom }}</option>
+            }
+          </select>
+          @if (mairieService.isLoading()) {
+            <span class="loading-hint">Chargement des mairies...</span>
           }
-        </select>
-        @if (isInvalid('mairieOrigineId')) {
-          <span class="error-message">La mairie d'origine est obligatoire.</span>
-        }
+          @if (isInvalid('mairieOrigineId')) {
+            <span class="error-message">La mairie d'origine est obligatoire.</span>
+          }
       </div>
 
       <div class="transfert-divider fade-in-item">
@@ -85,18 +88,21 @@
         </div>
         <p class="mairie-card__question">Où souhaitez-vous récupérer votre acte ?</p>
         <select
-          formControlName="mairieRetraitId"
-          class="mairie-card__select"
-          [class.input--error]="isInvalid('mairieRetraitId')"
-        >
-          <option value="" disabled selected>Sélectionner une mairie</option>
-          @for (mairie of mairies; track mairie.id) {
-            <option [value]="mairie.id">{{ mairie.nom }}</option>
+            formControlName="mairieRetraitId"
+            class="mairie-card__select"
+            [class.input--error]="isInvalid('mairieOrigineId')"
+          >
+            <option value="" disabled selected>Sélectionner une mairie</option>
+            @for (mairie of mairieService.mairies(); track mairie.id) {
+              <option [ngValue]="mairie.id">{{ mairie.nom }}</option>
+            }
+          </select>
+          @if (mairieService.isLoading()) {
+            <span class="loading-hint">Chargement des mairies...</span>
           }
-        </select>
-        @if (isInvalid('mairieRetraitId')) {
-          <span class="error-message">La mairie de retrait est obligatoire.</span>
-        }
+          @if (isInvalid('mairieOrigineId')) {
+            <span class="error-message">La mairie d'origine est obligatoire.</span>
+          }
       </div>
 
       <div class="info-banner fade-in-item">

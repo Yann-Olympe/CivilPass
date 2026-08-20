@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { DemandeActeStateService } from '../../../../Services/demande-acte-state.service';
+import { DemandeService } from '../../../../Services/demande.service';
+import { MairieService } from '../../../../Services/mairie.service';
 
 interface LigneInfo {
   label: string;
@@ -18,57 +22,51 @@ interface BlocValidation {
   styleUrl: './validation.css',
 })
 export class Validation {
-   etapes = [
-    { numero: 1, label: 'Identité', etat: 'termine' as const },
-    { numero: 2, label: 'Acte', etat: 'termine' as const },
-    { numero: 3, label: 'Mairies', etat: 'termine' as const },
-    { numero: 4, label: 'Validation', etat: 'actuelle' as const },
-  ];
+    private router = inject(Router);
+  private stateService = inject(DemandeActeStateService);
+  private demandeService = inject(DemandeService);
+  private mairieService = inject(MairieService);
 
-  blocs: BlocValidation[] = [
-    {
-      icone: 'demandeur',
-      titre: 'Demandeur',
-      lignes: [
-        { label: 'Nom complet', valeur: 'Jean Dupont' },
-        { label: 'CNI', valeur: '123456789' },
-        { label: 'Téléphone', valeur: '+237 600 000 000' },
-      ],
-    },
-    {
-      icone: 'acte',
-      titre: "Informations de l'acte",
-      lignes: [
-        { label: "Type d'acte", valeur: 'Acte de Naissance' },
-        { label: "Numéro d'acte", valeur: 'AN-2023-890' },
-        { label: 'Année de registre', valeur: '1990' },
-      ],
-    },
-    {
-      icone: 'mairie-origine',
-      titre: "Mairie d'origine",
-      lignes: [
-        { label: 'Région', valeur: 'Centre' },
-        { label: 'Département', valeur: 'Mfoundi' },
-        { label: 'Commune', valeur: 'Yaoundé I' },
-      ],
-    },
-    {
-      icone: 'mairie-retrait',
-      titre: 'Mairie de retrait',
-      lignes: [
-        { label: 'Lieu de retrait', valeur: 'Yaoundé I' },
-        { label: 'Frais', valeur: '1 000 FCFA' },
-      ],
-    },
-  ];
+  isSubmitting = signal(false);
+  errorMessage = signal<string | null>(null);
 
-  modifier(bloc: BlocValidation): void {
-    // TODO: naviguer vers l'étape correspondante du formulaire
-    console.log('Modifier', bloc.titre);
+  data = this.stateService.getState();
+
+  mairies = this.mairieService.mairies; // signal, depuis httpResource (ou mock selon ta version actuelle)
+
+  mairieOrigineNom = computed(() =>
+    this.mairies()?.find(m => m.id === this.data.mairies?.mairieOrigineId)?.nom ?? '—'
+  );
+
+  mairieRetraitNom = computed(() =>
+    this.mairies()?.find(m => m.id === this.data.mairies?.mairieRetraitId)?.nom ?? '—'
+  );
+
+  onModifier(section: 'identite' | 'acte' | 'mairie'): void {
+    this.router.navigate([`demande/${section}`]);
   }
 
-  envoyerDemande(): void {
-    // TODO: appeler le service de création de demande
+  onEnvoyer(): void {
+    const payload = this.stateService.buildPayload();
+
+    if (!payload) {
+      this.errorMessage.set('Certaines informations sont manquantes. Merci de reprendre le parcours depuis le début.');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.errorMessage.set(null);
+
+    this.demandeService.creerDemande(payload).subscribe({
+      next: (response) => {
+        this.isSubmitting.set(false);
+        this.stateService.reset();
+        this.router.navigate(['/suivi', response.qr_token]);
+      },
+      error: () => {
+        this.isSubmitting.set(false);
+        this.errorMessage.set("L'envoi de votre demande a échoué. Veuillez réessayer.");
+      }
+    });
   }
 }
