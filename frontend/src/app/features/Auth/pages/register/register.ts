@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Icon } from '../../../features/mairies/shared/icon/icon';
+import { Icon } from '../../../mairies/shared/icon/icon';
 import { AuthFlow } from '../../services/auth-flow';
 
 @Component({

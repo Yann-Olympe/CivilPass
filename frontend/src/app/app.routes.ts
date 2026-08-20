@@ -5,10 +5,10 @@ import { Verification } from './features/mairies/pages/verification/verification
 import { DemandesList } from './features/mairies/pages/demandes-list/demandes-list';
 import { TransfertsList } from './features/mairies/pages/transferts-list/transferts-list';
 import { TransfertDetail } from './features/mairies/pages/transfert-detail/transfert-detail';
-import { AuthShell } from './Auth/layout/auth-shell/auth-shell';
-import { Login } from './Auth/pages/login/login';
-import { Register } from './Auth/pages/register/register';
-import { Otp } from './Auth/pages/otp/otp';
+import { AuthShell } from './features/Auth/layout/auth-shell/auth-shell';
+import { Login } from './features/Auth/pages/login/login';
+import { Register } from './features/Auth/pages/register/register';
+import { Otp } from './features/Auth/pages/otp/otp';
 
 export const routes: Routes = [
   {
