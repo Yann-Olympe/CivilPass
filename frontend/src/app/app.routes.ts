@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { Shell } from './mairies/layout/shell/shell';
-import { Dashboard } from './mairies/pages/dashboard/dashboard';
-import { Verification } from './mairies/pages/verification/verification';
-import { DemandesList } from './mairies/pages/demandes-list/demandes-list';
-import { TransfertsList } from './mairies/pages/transferts-list/transferts-list';
-import { TransfertDetail } from './mairies/pages/transfert-detail/transfert-detail';
+import { Shell } from './features/mairies/layout/shell/shell';
+import { Dashboard } from './features/mairies/pages/dashboard/dashboard';
+import { Verification } from './features/mairies/pages/verification/verification';
+import { DemandesList } from './features/mairies/pages/demandes-list/demandes-list';
+import { TransfertsList } from './features/mairies/pages/transferts-list/transferts-list';
+import { TransfertDetail } from './features/mairies/pages/transfert-detail/transfert-detail';
 import { AuthShell } from './Auth/layout/auth-shell/auth-shell';
 import { Login } from './Auth/pages/login/login';
 import { Register } from './Auth/pages/register/register';

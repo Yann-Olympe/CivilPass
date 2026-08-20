@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Icon } from '../../../mairies/shared/icon/icon';
+import { Icon } from '../../../features/mairies/shared/icon/icon';
 
 @Component({
   selector: 'app-login',
