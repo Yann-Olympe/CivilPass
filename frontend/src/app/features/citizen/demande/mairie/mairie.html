@@ -1,314 +1,121 @@
-<main class="request-page">
-  <div class="request-container">
+<div class="mairies-page">
 
-    <!-- Progression -->
-    <nav class="progress" aria-label="Progression de la demande">
-      <div class="progress-step progress-step--completed">
-        <span class="progress-step__icon" aria-hidden="true">✓</span>
-        <span class="progress-step__label">Identité</span>
+  <div class="stepper fade-in">
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
+      <span class="step__label">Identité</span>
+    </div>
 
-      <span class="progress-line progress-line--completed" aria-hidden="true"></span>
+    <div class="step__connector step__connector--done"></div>
 
-      <div class="progress-step progress-step--completed">
-        <span class="progress-step__icon" aria-hidden="true">✓</span>
-        <span class="progress-step__label">Acte</span>
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
+      <span class="step__label">Acte</span>
+    </div>
 
-      <span class="progress-line progress-line--active" aria-hidden="true"></span>
+    <div class="step__connector step__connector--done"></div>
 
-      <div
-        class="progress-step progress-step--active"
-        aria-current="step"
-      >
-        <span class="progress-step__icon">3</span>
-        <span class="progress-step__label">Mairies</span>
-      </div>
+    <div class="step step--active">
+      <div class="step__circle">3</div>
+      <span class="step__label">Mairies</span>
+    </div>
 
-      <span class="progress-line" aria-hidden="true"></span>
+    <div class="step__connector"></div>
 
-      <div class="progress-step">
-        <span class="progress-step__icon">4</span>
-        <span class="progress-step__label">Validation</span>
-      </div>
-    </nav>
+    <div class="step">
+      <div class="step__circle">4</div>
+      <span class="step__label">Validation</span>
+    </div>
+  </div>
 
-    <!-- Introduction -->
-    <header class="page-header">
-      <p class="page-header__eyebrow">Étape 3 sur 4</p>
+  <div class="mairies-content fade-in">
+    <h1 class="mairies-title">Choix des Mairies</h1>
+    <p class="mairies-subtitle">
+      Sélectionnez votre mairie d'origine et la mairie où vous souhaitez retirer votre document.
+    </p>
 
-      <h1 class="page-header__title">
-        Choix des Mairies
-      </h1>
+    <form class="mairies-form" [formGroup]="mairiesForm" (ngSubmit)="onContinuer()">
 
-      <p class="page-header__description">
-        Sélectionnez votre mairie d'origine et la mairie où vous souhaitez
-        retirer votre document.
-      </p>
-    </header>
-
-    <!-- Formulaire -->
-    <form
-      class="municipalities-form"
-      [formGroup]="form"
-      (ngSubmit)="onNext()"
-      novalidate
-    >
-
-      <!-- Mairie d'origine -->
-      <section class="municipality-card">
-        <div class="municipality-card__icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 21H21M5 21V10H19V21M8 10V6L12 3L16 6V10M9 21V15H15V21"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+      <div class="mairie-card fade-in-item">
+        <div class="mairie-card__header">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="mairie-card__icon mairie-card__icon--origine">
+            <path d="M2 7L8 2L14 7V13.5C14 13.78 13.78 14 13.5 14H2.5C2.22 14 2 13.78 2 13.5V7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M6 14V9.5H10V14" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
           </svg>
+          <span class="mairie-card__label">MAIRIE D'ORIGINE</span>
         </div>
-
-        <div class="municipality-card__content">
-          <h2 class="municipality-card__title">
-            Mairie d'origine
-          </h2>
-
-          <p class="municipality-card__description">
-            Sélectionnez la mairie qui détient la souche ou les informations
-            de votre acte.
-          </p>
-
-          <div class="form-field">
-            <label
-              class="form-field__label"
-              for="mairieOrigine"
-            >
-              Mairie d'origine
-              <span aria-hidden="true">*</span>
-            </label>
-
-            <div
-              class="select-wrapper"
-              [class.select-wrapper--error]="isInvalid('mairieOrigineId')"
-            >
-              <select
-                id="mairieOrigine"
-                class="form-field__select"
-                formControlName="mairieOrigineId"
-                [attr.aria-invalid]="isInvalid('mairieOrigineId')"
-                [attr.aria-describedby]="
-                  isInvalid('mairieOrigineId')
-                    ? 'mairieOrigine-error'
-                    : null
-                "
-              >
-                <option value="" disabled>
-                  Sélectionnez une mairie
-                </option>
-
-                @for (mairie of mairies; track mairie.id) {
-                  <option [value]="mairie.id">
-                    {{ mairie.nom }}
-                  </option>
-                }
-              </select>
-
-              <span class="select-wrapper__icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-
-            @if (isInvalid('mairieOrigineId')) {
-              <p
-                id="mairieOrigine-error"
-                class="form-field__error"
-                role="alert"
-              >
-                Veuillez sélectionner une mairie.
-              </p>
-            }
-          </div>
-        </div>
-      </section>
-
-      <!-- Transfert sécurisé -->
-      <div class="secure-transfer" role="note">
-        <div class="secure-transfer__icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 3L20 6V11C20 16.2 16.6 20.1 12 21C7.4 20.1 4 16.2 4 11V6L12 3Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M9 12L11 14L15 10"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-
-        <div class="secure-transfer__content">
-          <h2 class="secure-transfer__title">
-            TRANSFERT SÉCURISÉ
-          </h2>
-
-          <p class="secure-transfer__text">
-            Votre Mairie d'origine vérifie votre demande avant de transmettre
-            les informations à la Mairie de retrait de manière sécurisée.
-          </p>
-        </div>
-      </div>
-
-      <!-- Mairie de retrait -->
-      <section class="municipality-card">
-        <div class="municipality-card__icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 21H21M5 21V10H19V21M8 10V6L12 3L16 6V10M9 21V15H15V21"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-
-        <div class="municipality-card__content">
-          <h2 class="municipality-card__title">
-            Mairie de retrait
-          </h2>
-
-          <p class="municipality-card__description">
-            Sélectionnez la mairie dans laquelle vous souhaitez récupérer
-            votre document.
-          </p>
-
-          <div class="form-field">
-            <label
-              class="form-field__label"
-              for="mairieRetrait"
-            >
-              Mairie de retrait
-              <span aria-hidden="true">*</span>
-            </label>
-
-            <div
-              class="select-wrapper"
-              [class.select-wrapper--error]="isInvalid('mairieRetraitId')"
-            >
-              <select
-                id="mairieRetrait"
-                class="form-field__select"
-                formControlName="mairieRetraitId"
-                [attr.aria-invalid]="isInvalid('mairieRetraitId')"
-                [attr.aria-describedby]="
-                  isInvalid('mairieRetraitId')
-                    ? 'mairieRetrait-error'
-                    : null
-                "
-              >
-                <option value="" disabled>
-                  Sélectionnez une mairie
-                </option>
-
-                @for (mairie of mairies; track mairie.id) {
-                  <option [value]="mairie.id">
-                    {{ mairie.nom }}
-                  </option>
-                }
-              </select>
-
-              <span class="select-wrapper__icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-
-            @if (isInvalid('mairieRetraitId')) {
-              <p
-                id="mairieRetrait-error"
-                class="form-field__error"
-                role="alert"
-              >
-                Veuillez sélectionner une mairie.
-              </p>
-            }
-          </div>
-        </div>
-      </section>
-
-      <!-- Actions -->
-      <div class="form-actions">
-        <button
-          type="button"
-          class="button button--secondary"
+        <p class="mairie-card__question">Où votre acte de naissance a-t-il été enregistré ?</p>
+        <select
+          formControlName="mairieOrigineId"
+          class="mairie-card__select"
+          [class.input--error]="isInvalid('mairieOrigineId')"
         >
-          Précédent
-        </button>
+          <option value="" disabled selected>Sélectionner une mairie</option>
+          @for (mairie of mairies; track mairie.id) {
+            <option [value]="mairie.id">{{ mairie.nom }}</option>
+          }
+        </select>
+        @if (isInvalid('mairieOrigineId')) {
+          <span class="error-message">La mairie d'origine est obligatoire.</span>
+        }
+      </div>
 
-        <button
-          type="submit"
-          class="button button--primary"
-        >
-          Suivant
-          <svg
-            class="button__icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M5 12H19M13 6L19 12L13 18"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+      <div class="transfert-divider fade-in-item">
+        <span class="transfert-divider__line"></span>
+        <span class="transfert-divider__pill">TRANSFERT SÉCURISÉ</span>
+        <span class="transfert-divider__line"></span>
+      </div>
+
+      <div class="mairie-card fade-in-item">
+        <div class="mairie-card__header">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="mairie-card__icon mairie-card__icon--retrait">
+            <path d="M8 2V10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M4.5 7L8 10.5L11.5 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2.5 13H13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
           </svg>
-        </button>
+          <span class="mairie-card__label mairie-card__label--retrait">MAIRIE DE RETRAIT</span>
+        </div>
+        <p class="mairie-card__question">Où souhaitez-vous récupérer votre acte ?</p>
+        <select
+          formControlName="mairieRetraitId"
+          class="mairie-card__select"
+          [class.input--error]="isInvalid('mairieRetraitId')"
+        >
+          <option value="" disabled selected>Sélectionner une mairie</option>
+          @for (mairie of mairies; track mairie.id) {
+            <option [value]="mairie.id">{{ mairie.nom }}</option>
+          }
+        </select>
+        @if (isInvalid('mairieRetraitId')) {
+          <span class="error-message">La mairie de retrait est obligatoire.</span>
+        }
+      </div>
+
+      <div class="info-banner fade-in-item">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="info-banner__icon">
+          <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M9 5.5V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="9" cy="12.3" r="1" fill="currentColor"/>
+        </svg>
+        <p class="info-banner__text">
+          <strong>Information importante :</strong> Votre Mairie d'origine vérifie votre demande avant de transmettre les informations à la Mairie de retrait de manière sécurisée.
+        </p>
+      </div>
+
+      <div class="form-actions fade-in-item">
+        <button type="submit" class="btn btn--primary">Continuer</button>
+        <button type="button" class="btn btn--secondary" (click)="onRetour()">Retour</button>
       </div>
 
     </form>
   </div>
-</main>
+
+</div>

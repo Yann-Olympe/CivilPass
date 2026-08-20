@@ -1,0 +1,216 @@
+.validation-step {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2.4rem 1.6rem 4rem;
+  font-family: var(--font-family-base);
+
+  .validation-step__titre {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--color-green-950);
+    margin: 0;
+  }
+
+  .validation-step__sous-titre {
+    font-size: 1.4rem;
+    color: var(--color-gray-600);
+    margin: -1.2rem 0 0;
+  }
+
+  .validation-step__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 0.4rem;
+  }
+}
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  .stepper__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .stepper__cercle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: var(--radius-pill);
+    border: 0.15rem solid var(--color-gray-300);
+    color: var(--color-gray-500);
+    background: var(--color-white);
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
+  .stepper__label {
+    font-size: 1.2rem;
+    color: var(--color-gray-500);
+  }
+
+  .stepper__item--termine,
+  .stepper__item--actuelle {
+    .stepper__cercle {
+      border-color: var(--color-green-800);
+      background: var(--color-green-800);
+      color: var(--color-white);
+    }
+
+    .stepper__label {
+      color: var(--color-green-800);
+      font-weight: 600;
+    }
+  }
+
+  .stepper__trait {
+    flex: 1;
+    height: 0.15rem;
+    background: var(--color-gray-300);
+    margin-top: 1.6rem;
+
+    &.stepper__trait--termine {
+      background: var(--color-green-800);
+    }
+  }
+}
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.8rem;
+
+  .carte__entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .carte__titre {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-green-950);
+    margin: 0;
+  }
+
+  .carte__icone {
+    display: flex;
+    color: var(--color-green-700);
+
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+
+  .carte__modifier {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    background: transparent;
+    color: var(--color-gray-500);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+
+    svg {
+      width: 1.7rem;
+      height: 1.7rem;
+    }
+
+    &:hover {
+      color: var(--color-green-700);
+      background: var(--color-green-50);
+    }
+  }
+
+  .carte__liste {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .carte__ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+
+    dt {
+      color: var(--color-gray-600);
+      font-weight: 400;
+    }
+
+    dd {
+      color: var(--color-green-950);
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+}
+
+.bouton {
+  font-family: var(--font-family-base);
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-sm);
+  border: 0.15rem solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  &.bouton--primaire {
+    background: var(--color-green-950);
+    color: var(--color-white);
+
+    &:hover {
+      background: var(--color-green-900);
+    }
+  }
+
+  &.bouton--secondaire {
+    background: var(--color-white);
+    color: var(--color-green-800);
+    border-color: var(--color-gray-250);
+
+    &:hover {
+      background: var(--color-gray-50);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .validation-step * {
+    transition: none !important;
+  }
+}

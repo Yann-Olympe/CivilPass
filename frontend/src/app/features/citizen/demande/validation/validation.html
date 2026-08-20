@@ -1,0 +1,93 @@
+<section class="validation-step">
+  <ol class="stepper">
+    @for (etape of etapes; track etape.numero; let last = $last) {
+      <li
+        class="stepper__item"
+        [class.stepper__item--termine]="etape.etat === 'termine'"
+        [class.stepper__item--actuelle]="etape.etat === 'actuelle'"
+      >
+        <span class="stepper__cercle">
+          @if (etape.etat === 'termine') {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          } @else {
+            {{ etape.numero }}
+          }
+        </span>
+        <span class="stepper__label">{{ etape.label }}</span>
+      </li>
+      @if (!last) {
+        <li class="stepper__trait" [class.stepper__trait--termine]="etape.etat === 'termine'" aria-hidden="true"></li>
+      }
+    }
+  </ol>
+
+  <h1 class="validation-step__titre">Vérifiez votre demande</h1>
+  <p class="validation-step__sous-titre">
+    Étape 4 sur 4 : Veuillez vérifier les informations ci-dessous avant de valider votre demande.
+  </p>
+
+  @for (bloc of blocs; track bloc.titre) {
+    <div class="carte">
+      <div class="carte__entete">
+        <p class="carte__titre">
+          <span class="carte__icone">
+            @switch (bloc.icone) {
+              @case ('demandeur') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-linecap="round" />
+                </svg>
+              }
+              @case ('acte') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 3h7l5 5v13H7z" stroke-linejoin="round" />
+                  <path d="M14 3v5h5" stroke-linejoin="round" />
+                  <path d="M9.5 13h5M9.5 16.5h5" stroke-linecap="round" />
+                </svg>
+              }
+              @case ('mairie-origine') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 11l9-7 9 7" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 10v10h14V10" stroke-linejoin="round" />
+                </svg>
+              }
+              @case ('mairie-retrait') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v13m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M4 19h16" stroke-linecap="round" />
+                </svg>
+              }
+            }
+          </span>
+          {{ bloc.titre }}
+        </p>
+        <button type="button" class="carte__modifier" (click)="modifier(bloc)" [attr.aria-label]="'Modifier ' + bloc.titre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9" stroke-linecap="round" />
+            <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      <dl class="carte__liste">
+        @for (ligne of bloc.lignes; track ligne.label) {
+          <div class="carte__ligne">
+            <dt>{{ ligne.label }}</dt>
+            <dd>{{ ligne.valeur }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+  }
+
+  <div class="validation-step__actions">
+    <button type="button" class="bouton bouton--primaire" (click)="envoyerDemande()">
+      Envoyer ma demande
+    </button>
+    <button type="button" class="bouton bouton--secondaire" (click)="modifier(blocs[0])">
+      Modifier
+    </button>
+  </div>
+</section>
