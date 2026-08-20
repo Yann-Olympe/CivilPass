@@ -1,5 +1,5 @@
 <section class="hero">
-  <img src="frontend\public\assets\hero-usagere.png" alt="Usagère souriante tenant un document" class="hero-image">
+  <img src="\assets\hero-usagere.png" alt="Usagère souriante tenant un document" class="hero-image">
 
   <div class="hero-content reveal">
     <p class="eyebrow">L'état civil, repensé</p>
@@ -10,8 +10,8 @@
     </p>
 
     <div class="hero-actions">
-      <a routerLink="/demande/identite" class="btn btn-primary">Nouvelle Demande</a>
-        <a routerLink="/verification" class="btn btn-secondary">
+      <button class="btn btn-primary" (click)="onRequest()">Nouvelle Demande</button>
+        <button  class="btn btn-secondary" (click)="onVerification()">
         <span class="icon-shield" aria-hidden="true">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2 L20 6 L20 12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 L4 6 Z"/>
@@ -19,7 +19,7 @@
             </svg>
         </span>
         Vérifier un acte
-        </a>
+      </button>
     </div>
   </div>
 </section>
