@@ -5,22 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Demande;
 use App\Models\Filiation;
-use App\Models\Usager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class DemandeController extends Controller
 {
-    // POST /api/demandes
-    // Crée l'usager (ou le réutilise via téléphone) + la demande + la filiation.
+    // POST /api/demandes — protégée par auth:sanctum (citoyen connecté requis, cf. doc archi §4)
     // Couvre à la fois le pré-enrôlement (Parcours A) et la demande à distance (Parcours B),
     // car dans ce MVP toute demande passe par le choix d'une Mairie d'origine et de retrait.
     public function store(Request $request)
     {
         $data = $request->validate([
-            'usager.nom' => 'required|string|max:100',
-            'usager.prenom' => 'required|string|max:100',
-            'usager.telephone' => 'required|string|max:20',
             'mairie_origine_id' => 'required|exists:mairies,id',
             'mairie_retrait_id' => 'required|exists:mairies,id|different:mairie_origine_id',
             'numero_acte' => 'nullable|string|max:50',
@@ -29,10 +24,7 @@ class DemandeController extends Controller
             'filiation.mere_nom' => 'nullable|string|max:150',
         ]);
 
-        $usager = Usager::firstOrCreate(
-            ['telephone' => $data['usager']['telephone']],
-            ['nom' => $data['usager']['nom'], 'prenom' => $data['usager']['prenom']]
-        );
+        $usager = $request->user(); // le citoyen authentifié (token Sanctum)
 
         $demande = Demande::create([
             'type_demande' => 'naissance',
@@ -77,7 +69,7 @@ class DemandeController extends Controller
             ->with(['usager', 'filiation', 'mairieOrigine', 'mairieRetrait'])
             ->firstOrFail();
 
-        $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(200)->generate($demande->qr_token);
+        $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(200)->generate($demande->qr_token);
 
         $pdf = \PDF::loadView('pdf.recapitulatif', compact('demande', 'qrSvg'));
 

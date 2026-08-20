@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Demande;
+use App\Models\Notification;
 use App\Models\Transfert;
 use Illuminate\Http\Request;
 
@@ -40,25 +41,51 @@ class AgentDashboardController extends Controller
     }
 
     // POST /api/agent/demandes/{id}/valider
-    // L'agent de la Mairie d'origine vérifie la souche et valide le transfert vers la Mairie de retrait.
+    // L'agent de la Mairie d'origine enregistre le résultat de la recherche de souche,
+    // valide, et déclenche le transfert vers la Mairie de retrait (avec notification).
     public function valider(Request $request, Demande $demande)
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutValiderOrigine() && (int) $demande->mairie_origine_id === (int) $agent->mairie_id, 403,
+        abort_unless($agent->peutValiderOrigine() && $demande->mairie_origine_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie d'origine peut valider cette demande.");
 
         abort_unless($demande->statut === 'en_attente_validation_origine', 409,
             "Cette demande n'est plus en attente de validation.");
 
-        $demande->update(['statut' => 'validee_origine']);
+        $data = $request->validate([
+            'souche_retrouvee' => 'required|boolean',
+            'observation_origine' => 'nullable|string|max:1000',
+        ]);
+
+        // Souche introuvable : on arrête le flux sans transférer (règle à confirmer avec l'équipe,
+        // cf. point ouvert §13 du doc archi — pour l'instant on bloque le dossier en l'état).
+        if (! $data['souche_retrouvee']) {
+            $demande->update([
+                'souche_retrouvee' => false,
+                'observation_origine' => $data['observation_origine'] ?? null,
+            ]);
+
+            return response()->json($demande->fresh(), 422);
+        }
+
+        $demande->update([
+            'statut' => 'transferee',
+            'souche_retrouvee' => true,
+            'observation_origine' => $data['observation_origine'] ?? null,
+        ]);
 
         $transfert = Transfert::updateOrCreate(
             ['demande_id' => $demande->id],
             ['statut' => 'valide', 'date_validation_origine' => now()]
         );
 
-        $demande->update(['statut' => 'transferee']);
+        Notification::create([
+            'mairie_id' => $demande->mairie_retrait_id,
+            'demande_id' => $demande->id,
+            'type' => 'dossier_transfere',
+            'message' => "Nouveau dossier transféré par {$demande->mairieOrigine->nom} — n°{$demande->id}",
+        ]);
 
         return response()->json([
             'demande' => $demande->fresh(),
@@ -72,7 +99,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutReceptionnerRetrait() && (int) $demande->mairie_retrait_id === (int) $agent->mairie_id, 403,
+        abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie de retrait peut réceptionner ce dossier.");
 
         abort_unless($demande->statut === 'transferee', 409,
@@ -85,6 +112,13 @@ class AgentDashboardController extends Controller
             'date_reception_retrait' => now(),
         ]);
 
+        Notification::create([
+            'mairie_id' => $demande->mairie_origine_id,
+            'demande_id' => $demande->id,
+            'type' => 'dossier_recu',
+            'message' => "Le dossier n°{$demande->id} a été reçu par {$demande->mairieRetrait->nom}",
+        ]);
+
         return response()->json($demande->fresh()->load('transfert'));
     }
 
@@ -94,7 +128,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutReceptionnerRetrait() && (int) $demande->mairie_retrait_id === (int) $agent->mairie_id, 403);
+        abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403);
         abort_unless($demande->statut === 'disponible_retrait', 409, "Le dossier n'est pas encore disponible.");
 
         $demande->update(['statut' => 'remise']);
@@ -119,8 +153,8 @@ class AgentDashboardController extends Controller
     private function autoriserAcces(Request $request, Demande $demande): void
     {
         $agent = $request->user();
-        $concerne = (int) $demande->mairie_origine_id === (int) $agent->mairie_id
-            || (int) $demande->mairie_retrait_id === (int) $agent->mairie_id;
+        $concerne = $demande->mairie_origine_id === $agent->mairie_id
+            || $demande->mairie_retrait_id === $agent->mairie_id;
 
         abort_unless($concerne, 403, "Ce dossier ne concerne pas votre Mairie.");
     }
