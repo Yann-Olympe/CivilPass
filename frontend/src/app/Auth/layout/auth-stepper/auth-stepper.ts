@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Icon } from '../../../Interface/shared/icon/icon';
+import { Icon } from '../../../mairies/shared/icon/icon';
 
 interface Etape {
   id: number;

@@ -2,7 +2,7 @@ import { Component, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AuthStepper } from '../auth-stepper/auth-stepper';
-import { Icon } from '../../../Interface/shared/icon/icon';
+import { Icon } from '../../../mairies/shared/icon/icon';
 
 @Component({
   selector: 'app-auth-shell',
