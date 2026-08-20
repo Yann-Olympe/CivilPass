@@ -34,13 +34,14 @@ CREATE TABLE agents (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 3. usagers — les citoyens qui initient une démarche
+-- 3. usagers — les citoyens, authentifiés par téléphone + mot de passe
 -- ------------------------------------------------------------
 CREATE TABLE usagers (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nom             VARCHAR(100) NOT NULL,
     prenom          VARCHAR(100) NOT NULL,
-    telephone       VARCHAR(20) NOT NULL,
+    telephone       VARCHAR(20) NOT NULL UNIQUE,
+    password        VARCHAR(255) NOT NULL,
     created_at      TIMESTAMP NULL DEFAULT NULL,
     updated_at      TIMESTAMP NULL DEFAULT NULL
 ) ENGINE=InnoDB;
@@ -62,6 +63,8 @@ CREATE TABLE demandes (
     numero_acte         VARCHAR(50) NULL,
     annee_acte          SMALLINT NULL,
     qr_token            VARCHAR(64) NOT NULL UNIQUE,
+    souche_retrouvee    BOOLEAN NULL,
+    observation_origine TEXT NULL,
     usager_id           BIGINT UNSIGNED NOT NULL,
     mairie_origine_id   BIGINT UNSIGNED NOT NULL,
     mairie_retrait_id   BIGINT UNSIGNED NOT NULL,
@@ -97,6 +100,22 @@ CREATE TABLE transferts (
     date_reception_retrait      TIMESTAMP NULL DEFAULT NULL,
     created_at                  TIMESTAMP NULL DEFAULT NULL,
     updated_at                  TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (demande_id) REFERENCES demandes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ------------------------------------------------------------
+-- 7. notifications — alertes dashboard mairie (ex: dossier transféré/reçu)
+-- ------------------------------------------------------------
+CREATE TABLE notifications (
+    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    mairie_id       BIGINT UNSIGNED NOT NULL,
+    demande_id      BIGINT UNSIGNED NOT NULL,
+    type            VARCHAR(50) NOT NULL,
+    message         VARCHAR(255) NOT NULL,
+    lue             BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at      TIMESTAMP NULL DEFAULT NULL,
+    updated_at      TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (mairie_id) REFERENCES mairies(id) ON DELETE CASCADE,
     FOREIGN KEY (demande_id) REFERENCES demandes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
