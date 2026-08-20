@@ -50,7 +50,12 @@
       background: var(--color-gray-150);
     }
   }
-  
+
+  .header-menu{
+    font-weight:700;
+    font-size:1.2rem;
+    color:var(--color-green-700);
+  }  
   .header__avatar{
     width: 3.2rem;
     height:3.2rem;

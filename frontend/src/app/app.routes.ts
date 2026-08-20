@@ -21,6 +21,8 @@ export const routes: Routes = [
   children: [
     // --- Routes publiques ---
     { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
+    { path:'demande/identite',loadComponent:() => import('./features/citizen/demande/acte/acte').then(m => m.Acte)},
+    { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
    /* { path: 'connexion', loadComponent: () => import('./features/citizen/auth/connexion/connexion').then(m => m.Connexion) },
     { path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
     { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },*/
