@@ -54,7 +54,7 @@ export class Login implements OnInit {
     this.envoiEnCours.set(true);
     setTimeout(() => {
       this.envoiEnCours.set(false);
-      this.router.navigate(['/tableau-de-bord']);
+      this.router.navigate(['/demande/identite']);
     }, 700);
   }
 

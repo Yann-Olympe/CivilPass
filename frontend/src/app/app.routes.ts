@@ -28,8 +28,8 @@ export const routes: Routes = [
     { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
     { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
 
-   /* { path: 'connexion', loadComponent: () => import('./features/citizen/auth/connexion/connexion').then(m => m.Connexion) },
-    { path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
+    { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
+    /*{ path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
     { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },*/
 
     // --- Routes protégées (regroupées sous un guard commun) ---
