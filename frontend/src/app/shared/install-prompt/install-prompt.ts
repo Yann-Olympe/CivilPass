@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Icon } from '../../features/mairies/shared/icon/icon';
+import { Icon } from '../../features/mairie/shared/icon/icon';
 
 interface EvenementInstallationDiffere extends Event {
   prompt: () => Promise<void>;
