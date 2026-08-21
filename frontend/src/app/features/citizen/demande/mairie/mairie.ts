@@ -33,7 +33,7 @@ export class Mairie {
   }
 
   onRetour(): void {
-    this.router.navigate(['demande/identite']);
+    this.router.navigate(['demande/acte']);
   }
 
   onContinuer(): void {

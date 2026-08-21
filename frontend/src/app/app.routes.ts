@@ -23,7 +23,8 @@ export const routes: Routes = [
     { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
 
      // --- Parcours "Nouvelle Demande" (3 étapes, public pour l'instant) ---
-    { path:'demande/identite',loadComponent:() => import('./features/citizen/demande/acte/acte').then(m => m.Acte)},
+    { path:'demande/identite',loadComponent:() => import('./features/citizen/demande/identite/identite').then(m => m.Identite)},
+    { path:'demande/acte',loadComponent:() => import('./features/citizen/demande/acte/acte').then(m => m.Acte)},
     { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
     { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
 

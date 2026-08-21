@@ -35,7 +35,7 @@ export class Acte {
   }
 
   onPrecedent(): void {
-    this.router.navigate(['/accueil']);
+    this.router.navigate(['/demande/identite']);
   }
 
   onSuivant(): void {
