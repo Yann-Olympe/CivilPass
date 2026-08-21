@@ -1,0 +1,146 @@
+<div class="acte-page">
+
+  <div class="stepper fade-in">
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="step__label">Identité</span>
+    </div>
+
+    <div class="step__connector step__connector--done"></div>
+
+    <div class="step step--active">
+      <div class="step__circle">2</div>
+      <span class="step__label">Acte</span>
+    </div>
+
+    <div class="step__connector"></div>
+
+    <div class="step">
+      <div class="step__circle">3</div>
+      <span class="step__label">Mairies</span>
+    </div>
+
+    <div class="step__connector"></div>
+
+    <div class="step">
+      <div class="step__circle">4</div>
+      <span class="step__label">Validation</span>
+    </div>
+  </div>
+
+  <div class="acte-content fade-in">
+    <h1 class="acte-title">Nouvelle Demande d'Acte</h1>
+    <p class="acte-subtitle">
+      Veuillez remplir les informations ci-dessous pour procéder à la vérification.
+    </p>
+
+    <div class="info-banner">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="info-banner__icon">
+        <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M9 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="9" cy="5.5" r="1" fill="currentColor"/>
+      </svg>
+      <p class="info-banner__text">
+        Ces informations permettent à la Mairie d'origine de retrouver et vérifier votre acte.
+        Saisissez-les exactement comme sur l'original.
+      </p>
+    </div>
+
+    <form class="acte-form" [formGroup]="acteForm" (ngSubmit)="onSuivant()">
+
+      <div class="form-field fade-in-item">
+        <label for="numeroActe">Numéro de l'acte <span class="required">*</span></label>
+        <input
+          id="numeroActe"
+          type="text"
+          formControlName="numeroActe"
+          placeholder="Ex: 1234/2023"
+          [class.input--error]="isInvalid('numeroActe')"
+        />
+        @if (isInvalid('numeroActe')) {
+          <span class="error-message">Le numéro de l'acte est obligatoire.</span>
+        }
+      </div>
+
+      <div class="form-field fade-in-item">
+        <label for="anneeEnregistrement">Année d'enregistrement <span class="required">*</span></label>
+        <select
+          id="anneeEnregistrement"
+          formControlName="anneeEnregistrement"
+          [class.input--error]="isInvalid('anneeEnregistrement')"
+        >
+          <option value="" disabled selected>Sélectionner une année</option>
+          @for (year of years; track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+        @if (isInvalid('anneeEnregistrement')) {
+          <span class="error-message">L'année d'enregistrement est obligatoire.</span>
+        }
+      </div>
+
+      <div class="form-field fade-in-item">
+        <label for="nom">Nom <span class="required">*</span></label>
+        <input
+          id="nom"
+          type="text"
+          formControlName="nom"
+          placeholder="Saisir le nom"
+          [class.input--error]="isInvalid('nom')"
+        />
+        @if (isInvalid('nom')) {
+          <span class="error-message">Le nom est obligatoire.</span>
+        }
+      </div>
+
+      <div class="form-field fade-in-item">
+        <label for="prenoms">Prénom(s)</label>
+        <input
+          id="prenoms"
+          type="text"
+          formControlName="prenoms"
+          placeholder="Saisir le(s) prénom(s)"
+        />
+      </div>
+
+      <div class="form-divider"></div>
+
+      <h2 class="form-section-title fade-in-item">Filiation</h2>
+
+      <div class="form-field fade-in-item">
+        <label for="nomPere">Nom complet du père</label>
+        <input
+          id="nomPere"
+          type="text"
+          formControlName="nomPere"
+          placeholder="Nom et prénom(s) du père"
+        />
+      </div>
+
+      <div class="form-field fade-in-item">
+        <label for="nomMere">Nom complet de la mère</label>
+        <input
+          id="nomMere"
+          type="text"
+          formControlName="nomMere"
+          placeholder="Nom et prénom(s) de la mère"
+        />
+      </div>
+
+      <div class="form-actions fade-in-item">
+        <button type="button" class="btn btn--secondary" (click)="onPrecedent()">
+          Précédent
+        </button>
+        <button type="submit" class="btn btn--primary">
+          Suivant
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

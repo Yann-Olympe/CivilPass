@@ -1,5 +1,5 @@
 export const environment = {
-    production:true,
-    serverUrl:'https://CivilPass.cm',
-    siteName:"CivilPass"
+  production: true,
+  apiUrl: 'https://api.civilpass.cm/api',
+  siteName: 'CivilPass'
 };

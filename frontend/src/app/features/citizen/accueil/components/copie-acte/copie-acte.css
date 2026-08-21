@@ -1,0 +1,40 @@
+/* copie-acte.css */
+.copie-acte { padding: 4rem 2rem; background: var(--color-green-900); color: var(--color-white); }
+
+h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.3;
+  margin: 0 0 1.6rem;
+}
+
+.copie-acte p {
+  font-family: var(--font-family-base);
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: var(--color-green-100);
+  margin: 0 0 2.4rem;
+}
+
+.copie-acte-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+
+.copie-acte-features li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-white);
+  background: var(--color-green-800);
+  border: 0.1rem solid var(--color-green-600);
+  border-radius: var(--radius-pill);
+  padding: 1.2rem 1.8rem;
+  width: fit-content;
+}
+
+.feature-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--color-green-300);
+}

@@ -1,0 +1,16 @@
+<section class="solution reveal">
+  <p class="eyebrow eyebrow-center">La solution</p>
+  <h2>CivilPass simplifie le parcours.</h2>
+
+  <ol class="etapes">
+    @for (etape of etapes; track etape.num) {
+      <li class="etape" [class.etape-active]="etape.num === 2" appScrollReveal>
+        <div class="etape-head">
+          <span class="etape-num">{{ etape.num }}</span>
+          <span class="etape-acteur">{{ etape.acteur }}</span>
+        </div>
+        <p class="etape-texte">{{ etape.texte }}</p>
+      </li>
+    }
+  </ol>
+</section>

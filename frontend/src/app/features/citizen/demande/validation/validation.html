@@ -1,0 +1,184 @@
+<div class="validation-page">
+
+  <div class="stepper fade-in">
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="step__label">Identité</span>
+    </div>
+
+    <div class="step__connector step__connector--done"></div>
+
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="step__label">Acte</span>
+    </div>
+
+    <div class="step__connector step__connector--done"></div>
+
+    <div class="step step--done">
+      <div class="step__circle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7L5.5 10.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="step__label">Mairies</span>
+    </div>
+
+    <div class="step__connector step__connector--done"></div>
+
+    <div class="step step--active">
+      <div class="step__circle">4</div>
+      <span class="step__label">Validation</span>
+    </div>
+  </div>
+
+  <div class="validation-content fade-in">
+    <h1 class="validation-title">Vérifiez votre demande</h1>
+    <p class="validation-subtitle">
+      Étape 4 sur 4 : Veuillez vérifier les informations ci-dessous avant de valider votre demande.
+    </p>
+
+    <!-- Demandeur -->
+    <div class="summary-card fade-in-item">
+      <div class="summary-card__header">
+        <div class="summary-card__title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M2.5 14C2.5 11 5 9.5 8 9.5C11 9.5 13.5 11 13.5 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span>Demandeur</span>
+        </div>
+        <button type="button" class="edit-btn" (click)="onModifier('identite')" aria-label="Modifier le demandeur">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9.5 1.5L12.5 4.5L4.5 12.5H1.5V9.5L9.5 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Nom complet</span>
+        <span class="summary-row__value">{{ data.identite?.nom }} {{ data.identite?.prenom }}</span>
+      </div>
+      @if (data.identite?.cni) {
+        <div class="summary-row">
+          <span class="summary-row__label">CNI</span>
+          <span class="summary-row__value">{{ data.identite?.cni }}</span>
+        </div>
+      }
+      <div class="summary-row">
+        <span class="summary-row__label">Téléphone</span>
+        <span class="summary-row__value">{{ data.identite?.telephone }}</span>
+      </div>
+    </div>
+
+    <!-- Informations de l'acte -->
+    <div class="summary-card fade-in-item">
+      <div class="summary-card__header">
+        <div class="summary-card__title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 1.5H10L12.5 4V14.5H4V1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <span>Informations de l'acte</span>
+        </div>
+        <button type="button" class="edit-btn" (click)="onModifier('acte')" aria-label="Modifier l'acte">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9.5 1.5L12.5 4.5L4.5 12.5H1.5V9.5L9.5 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Type d'acte</span>
+        <span class="summary-row__value">Acte de Naissance</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Numéro d'acte</span>
+        <span class="summary-row__value">{{ data.acte?.numeroActe }}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Année de registre</span>
+        <span class="summary-row__value">{{ data.acte?.anneeEnregistrement }}</span>
+      </div>
+    </div>
+
+    <!-- Mairie d'origine -->
+    <div class="summary-card fade-in-item">
+      <div class="summary-card__header">
+        <div class="summary-card__title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 7L8 2L14 7V13.5C14 13.78 13.78 14 13.5 14H2.5C2.22 14 2 13.78 2 13.5V7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <span>Mairie d'origine</span>
+        </div>
+        <button type="button" class="edit-btn" (click)="onModifier('mairie')" aria-label="Modifier la mairie d'origine">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9.5 1.5L12.5 4.5L4.5 12.5H1.5V9.5L9.5 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Mairie</span>
+        <span class="summary-row__value">{{ mairieOrigineNom() }}</span>
+      </div>
+    </div>
+
+    <!-- Mairie de retrait -->
+    <div class="summary-card fade-in-item">
+      <div class="summary-card__header">
+        <div class="summary-card__title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2V10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M4.5 7L8 10.5L11.5 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2.5 13H13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span>Mairie de retrait</span>
+        </div>
+        <button type="button" class="edit-btn" (click)="onModifier('mairie')" aria-label="Modifier la mairie de retrait">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9.5 1.5L12.5 4.5L4.5 12.5H1.5V9.5L9.5 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Lieu de retrait</span>
+        <span class="summary-row__value">{{ mairieRetraitNom() }}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Frais</span>
+        <span class="summary-row__value">1 000 FCFA</span>
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="error-banner fade-in-item">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <div class="form-actions fade-in-item">
+      <button
+        type="button"
+        class="btn btn--primary"
+        (click)="onEnvoyer()"
+        [disabled]="isSubmitting()"
+      >
+        @if (isSubmitting()) {
+          Envoi en cours...
+        } @else {
+          Envoyer ma demande
+        }
+      </button>
+      <button type="button" class="btn btn--secondary" (click)="onModifier('identite')" [disabled]="isSubmitting()">
+        Modifier
+      </button>
+    </div>
+
+  </div>
+
+</div>

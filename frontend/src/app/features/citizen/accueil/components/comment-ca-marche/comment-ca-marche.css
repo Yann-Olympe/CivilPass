@@ -1,0 +1,66 @@
+/* comment-ca-marche.css */
+.ccm { padding: 4rem 2rem; background: var(--color-white); }
+
+h2 {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--color-green-900);
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+.ccm-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: fit-content;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-red-600);
+  background: var(--color-red-50);
+  border-radius: var(--radius-pill);
+  padding: 0.8rem 1.6rem;
+  margin: 0 auto 3.2rem;
+}
+.ccm-notice-icon { display: flex; flex-shrink: 0; }
+
+.ccm-etapes { list-style: none; margin: 0 0 2.8rem; padding: 0; display: flex; flex-direction: column; gap: 1.6rem; }
+
+.ccm-card {
+  background: var(--color-red-50);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+
+.ccm-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+  margin-bottom: 1.2rem;
+}
+
+.ccm-titre { font-size: 1.6rem; font-weight: 700; color: var(--color-gray-900); margin: 0 0 0.8rem; }
+
+.ccm-texte { font-size: 1.4rem; color: var(--color-gray-600); line-height: 1.5; margin: 0; }
+
+.btn-primary {
+  display: block;
+  text-align: center;
+  padding: 1.4rem 2.4rem;
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--color-green-800);
+  color: var(--color-white);
+  min-height: 4.4rem;
+  transition: background var(--transition-base);
+}
+.btn-primary:hover { background: var(--color-green-700); }
+.btn-primary:focus-visible { outline: 0.2rem solid var(--color-green-400); outline-offset: 0.2rem; }

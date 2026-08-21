@@ -1,0 +1,75 @@
+.mhl { padding: 4rem 2rem; background: var(--color-gray-50); color: var(--color-gray-900); }
+
+.mhl-badge {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  background: var(--color-gray-900);
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1.4rem;
+  margin: 0 0 1.6rem;
+}
+
+h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.3;
+  color: var(--color-gray-900);
+  margin: 0 0 1.6rem;
+}
+
+.mhl-texte {
+  font-family: var(--font-family-base);
+  font-size: 1.4rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+  margin: 0 0 2.4rem;
+}
+
+.sync-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.8rem;
+  margin-bottom: 2.4rem;
+}
+
+.sync-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.1rem solid var(--color-gray-150);
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.sync-title { font-size: 1.3rem; font-weight: 700; color: var(--color-gray-900); margin: 0; }
+
+.sync-icon { color: var(--color-yellow-500); display: flex; }
+
+.sync-item { font-size: 1.3rem; color: var(--color-gray-700); display: flex; align-items: center; gap: 0.8rem; margin: 0 0 0.8rem; }
+.sync-item:last-child { margin-bottom: 0; }
+
+.dot { width: 0.9rem; height: 0.9rem; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: var(--color-green-500); }
+.dot-yellow { background: var(--color-gray-400); }
+
+.btn-primary {
+  display: block;
+  text-align: center;
+  padding: 1.4rem 2.4rem;
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--color-green-800);
+  color: var(--color-white);
+  min-height: 4.4rem;
+  transition: background var(--transition-base);
+}
+.btn-primary:hover { background: var(--color-green-700); }
+.btn-primary:focus-visible { outline: 0.2rem solid var(--color-green-400); outline-offset: 0.2rem; }

@@ -1,0 +1,73 @@
+/* probleme.css */
+.probleme { padding: 4rem 2rem; background: var(--color-white); }
+
+.eyebrow {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-red-600);
+  margin: 0 0 1.2rem;
+}
+.eyebrow::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.15rem;
+  width: 0.3rem;
+  height: 1.3rem;
+  background: var(--color-red-600);
+}
+
+h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.6rem;
+  line-height: 1.25;
+  font-weight: 400;
+  color: var(--color-green-950);
+  margin: 0 0 3.2rem;
+}
+
+.probleme-list { display: flex; flex-direction: column; }
+
+.probleme-row {
+  padding: 2rem 0;
+  border-bottom: 0.1rem solid var(--color-gray-200);
+}
+.probleme-row:last-child { border-bottom: none; }
+
+.probleme-head {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.probleme-icon {
+  flex-shrink: 0;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-red-50);
+  color: var(--color-red-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  color: var(--color-green-950);
+  margin: 0;
+}
+
+.probleme-row p {
+  font-family: var(--font-family-base);
+  font-size: 1.4rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+  margin: 0;
+}

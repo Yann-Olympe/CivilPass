@@ -1,0 +1,257 @@
+:host {
+  display: block;
+}
+
+.identite-page {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.fade-in-item {
+  animation: fadeInUp 0.35s ease-out both;
+}
+
+.fade-in-item:nth-child(1) { animation-delay: 0.02s; }
+.fade-in-item:nth-child(2) { animation-delay: 0.07s; }
+.fade-in-item:nth-child(3) { animation-delay: 0.12s; }
+.fade-in-item:nth-child(4) { animation-delay: 0.17s; }
+.fade-in-item:nth-child(5) { animation-delay: 0.22s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .fade-in-item {
+    animation: none;
+  }
+}
+
+/* Stepper (identique aux autres écrans) */
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 28px;
+  gap: 6px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.step__circle {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-gray-200);
+  color: var(--color-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: white;
+  transition: var(--transition-base);
+}
+
+.step__label {
+  font-size: 0.72rem;
+  color: var(--color-gray-500);
+  white-space: nowrap;
+}
+
+.step--active .step__circle {
+  background: var(--color-green-950);
+  border-color: var(--color-green-950);
+  color: white;
+}
+
+.step--active .step__label {
+  color: var(--color-green-950);
+  font-weight: 600;
+}
+
+.step__connector {
+  width: 28px;
+  height: 1px;
+  background: var(--color-gray-200);
+  margin-top: 17px;
+}
+
+/* Content */
+.identite-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--color-green-950);
+  margin: 0 0 8px;
+}
+
+.identite-subtitle {
+  font-size: 0.9rem;
+  color: var(--color-gray-700);
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+
+/* Info banner */
+.info-banner {
+  display: flex;
+  gap: 10px;
+  background: var(--color-gray-100, #f2f0ee);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 24px;
+}
+
+.info-banner__icon {
+  color: var(--color-green-600);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-banner__text {
+  font-size: 0.85rem;
+  color: var(--color-gray-700);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Form */
+.identite-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-field label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.required {
+  color: var(--color-red-500);
+}
+
+.form-field input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--color-gray-900);
+  background: white;
+  transition: var(--transition-base);
+  box-sizing: border-box;
+}
+
+.form-field input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--color-green-600);
+  box-shadow: 0 0 0 3px var(--color-green-100);
+}
+
+.input--error {
+  border-color: var(--color-red-500) !important;
+}
+
+.error-message {
+  font-size: 0.78rem;
+  color: var(--color-red-500);
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+/* Actions */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: var(--transition-base);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-green-600);
+  outline-offset: 2px;
+}
+
+.btn--secondary {
+  background: white;
+  color: var(--color-green-950);
+  border-color: var(--color-green-200, var(--color-gray-200));
+}
+
+.btn--secondary:hover {
+  background: var(--color-green-50);
+}
+
+.btn--primary {
+  background: var(--color-green-950);
+  color: white;
+}
+
+.btn--primary:hover {
+  background: var(--color-green-600);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .identite-page {
+    padding: 40px 24px 60px;
+  }
+
+  .identite-title {
+    font-size: 1.9rem;
+  }
+
+  .form-actions .btn {
+    flex: 0 0 auto;
+    min-width: 160px;
+  }
+
+  .form-actions {
+    justify-content: flex-end;
+  }
+}

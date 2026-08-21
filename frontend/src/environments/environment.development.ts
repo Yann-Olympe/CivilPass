@@ -1,5 +1,5 @@
 export const environment = {
-    production:false,
-    serverUrl:'http://localhost:8080',
+    production: false,
+    apiUrl: 'http://localhost:8000/api',
     siteName:"CivilPass(dev)"
 };
