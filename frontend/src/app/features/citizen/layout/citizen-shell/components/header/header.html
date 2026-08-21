@@ -1,19 +1,39 @@
 <header class="header">
-  <a routerLink="/accueil" class="header__logo">
+  <a routerLink="/accueil" class="header__logo" (click)="closeMenu()">
     CivilPass
   </a>
-  @if(auth.isLoggedIn()){
-    <nav class="header__nav">
-      <a routerLink="/espace" class="header__link">Mon espace</a>
-      <a routerLink="/espace/demandes" class="header__link">Mes demandes</a>
-      <button type="button" class="header-menu" aria-label="Menu">☰</button>
-      </nav>
-    } @else {
 
-      <nav class="header__nav">
-        <a routerLink="/connexion" class="header__link">Connexion</a>
-        <button type="button" class="header__lang">FR / EN</button>
-        <button type="button" class="header-menu" aria-label="Menu">☰</button>
-        </nav>
+  <button
+    type="button"
+    class="header-menu"
+    aria-label="Menu"
+    [attr.aria-expanded]="mobileMenuOpen()"
+    (click)="toggleMenu()"
+  >
+    @if (mobileMenuOpen()) {
+      ✕
+    } @else {
+      ☰
     }
+  </button>
+
+  @if (auth.isLoggedIn()) {
+    <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
+      <a routerLink="/espace" class="header__link" (click)="closeMenu()">Mon espace</a>
+      <a routerLink="/espace/demandes" class="header__link" (click)="closeMenu()">Mes demandes</a>
+      <a routerLink="/espace" class="header__avatar" (click)="closeMenu()" aria-label="Profil connecté">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="6" r="3" stroke="white" stroke-width="1.5"/>
+          <path d="M3 15C3 11.5 5.5 9.5 9 9.5C12.5 9.5 15 11.5 15 15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </nav>
+  } @else {
+    <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
+      <a routerLink="/connexion" class="header__connexion-btn" (click)="closeMenu()">Connexion</a>
+      <button type="button" class="header__lang" (click)="toggleLang()">
+        {{ currentLang() }}
+      </button>
+    </nav>
+  }
 </header>
