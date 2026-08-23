@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
 import { Mairie } from '../shared/models/demande-acte.model';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { httpResource } from '@angular/common/http';
 
 
