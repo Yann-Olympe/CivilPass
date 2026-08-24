@@ -7,7 +7,7 @@ import { DemandeActePayload,DemandeActeResponse } from '../shared/models/demande
 @Injectable({ providedIn: 'root' })
 export class DemandeService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/demandes`;
+  private baseUrl = `${environment.apiUrl}/api/demandes`;
 
   creerDemande(payload: DemandeActePayload): Observable<DemandeActeResponse> {
     return this.http.post<DemandeActeResponse>(this.baseUrl, payload);

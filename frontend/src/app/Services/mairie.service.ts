@@ -9,7 +9,7 @@ import { httpResource } from '@angular/common/http';
 export class MairieService {
   // MOCK — à remplacer par un vrai appel HttpClient une fois GET /api/mairies confirmé
    private mairiesResource = httpResource<Mairie[]>(() => ({
-    url: `${environment.apiUrl}/mairies`,
+    url: `${environment.apiUrl}/api/mairies`,
     method: 'GET'
   }));
 
