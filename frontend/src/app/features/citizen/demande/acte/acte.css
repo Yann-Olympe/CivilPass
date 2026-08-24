@@ -82,18 +82,18 @@
 }
 
 .step--done .step__circle {
-  background: var(--color-green-950);
-  border-color: var(--color-green-950);
+  background: var(--color-green-600);
+  border-color: var(--color-green-600);
 }
 
 .step--active .step__circle {
-  background: var(--color-green-950);
-  border-color: var(--color-green-950);
+  background: var(--color-green-600);
+  border-color: var(--color-green-600);
   color: white;
 }
 
 .step--active .step__label {
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   font-weight: 600;
 }
 
@@ -105,22 +105,21 @@
 }
 
 .step__connector--done {
-  background: var(--color-green-950);
+  background: var(--color-green-600);
 }
 
 /* Content */
 .acte-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.55rem;
+  font-size: 1.9rem;
   font-weight: 700;
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   margin: 0 0 8px;
 }
 
 .acte-subtitle {
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   color: var(--color-gray-700);
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0 0 20px;
 }
 
@@ -161,7 +160,7 @@
 }
 
 .form-field label {
-  font-size: 0.88rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-gray-900);
 }
@@ -173,10 +172,10 @@
 .form-field input,
 .form-field select {
   width: 100%;
-  padding: 13px 14px;
+  padding: 14px 16px;
   border: 1.5px solid var(--color-gray-200);
   border-radius: var(--radius-sm);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--color-gray-900);
   background: white;
   transition: var(--transition-base);
@@ -235,17 +234,18 @@
 
 .btn {
   flex: 1;
-  padding: 14px 20px;
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
+  padding: 15px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   border: 1.5px solid transparent;
+  box-shadow: var(--shadow-sm);
   transition: var(--transition-base);
 }
 
-.btn:active {
-  transform: scale(0.98);
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .btn:focus-visible {
@@ -255,7 +255,7 @@
 
 .btn--secondary {
   background: white;
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   border-color: var(--color-green-200, var(--color-gray-200));
 }
 
@@ -264,12 +264,13 @@
 }
 
 .btn--primary {
-  background: var(--color-green-950);
+  background: var(--color-green-600);
   color: white;
 }
 
 .btn--primary:hover {
-  background: var(--color-green-600);
+  background: var(--color-green-500);
+  box-shadow: var(--shadow-md, var(--shadow-sm));
 }
 
 /* Desktop */
@@ -279,7 +280,7 @@
   }
 
   .acte-title {
-    font-size: 1.9rem;
+    font-size: 2.1rem;
   }
 
   .form-actions .btn {

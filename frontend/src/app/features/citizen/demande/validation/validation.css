@@ -80,18 +80,18 @@
 }
 
 .step--done .step__circle {
-  background: var(--color-green-950);
-  border-color: var(--color-green-950);
+  background: var(--color-green-600);
+  border-color: var(--color-green-600);
 }
 
 .step--active .step__circle {
-  background: var(--color-green-950);
-  border-color: var(--color-green-950);
+  background: var(--color-green-600);
+  border-color: var(--color-green-600);
   color: white;
 }
 
 .step--active .step__label {
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   font-weight: 600;
 }
 
@@ -103,22 +103,21 @@
 }
 
 .step__connector--done {
-  background: var(--color-green-950);
+  background: var(--color-green-600);
 }
 
 /* Content */
 .validation-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.55rem;
+  font-size: 1.9rem;
   font-weight: 700;
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   margin: 0 0 8px;
 }
 
 .validation-subtitle {
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   color: var(--color-gray-700);
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0 0 20px;
 }
 
@@ -143,7 +142,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--color-gray-900);
 }
@@ -165,7 +164,7 @@
 
 .edit-btn:hover {
   background: var(--color-gray-100, #f2f0ee);
-  color: var(--color-green-950);
+  color: var(--color-green-600);
 }
 
 .summary-row {
@@ -173,7 +172,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 0;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
 }
 
 .summary-row__label {
@@ -206,12 +205,13 @@
 
 .btn {
   width: 100%;
-  padding: 15px 20px;
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
+  padding: 15px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   border: 1.5px solid transparent;
+  box-shadow: var(--shadow-sm);
   transition: var(--transition-base);
 }
 
@@ -221,7 +221,7 @@
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .btn:focus-visible {
@@ -230,17 +230,18 @@
 }
 
 .btn--primary {
-  background: var(--color-green-950);
+  background: var(--color-green-600);
   color: white;
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: var(--color-green-600);
+  background: var(--color-green-500);
+  box-shadow: var(--shadow-md, var(--shadow-sm));
 }
 
 .btn--secondary {
   background: white;
-  color: var(--color-green-950);
+  color: var(--color-green-600);
   border-color: var(--color-green-200, var(--color-gray-200));
 }
 
@@ -255,7 +256,7 @@
   }
 
   .validation-title {
-    font-size: 1.9rem;
+    font-size: 2.1rem;
   }
 
   .form-actions {
