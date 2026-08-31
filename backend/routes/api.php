@@ -3,32 +3,55 @@
 use App\Http\Controllers\Api\AgentDashboardController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChecklistController;
+use App\Http\Controllers\Api\CitoyenAuthController;
 use App\Http\Controllers\Api\DemandeController;
 use App\Http\Controllers\Api\MairieController;
+use App\Http\Controllers\Api\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Routes publiques — côté usager / citoyen (pas d'authentification)
+| Routes publiques — consultables sans authentification
 |--------------------------------------------------------------------------
 */
 Route::get('/mairies', [MairieController::class, 'index']);
 Route::get('/checklist/{typeDemande}', [ChecklistController::class, 'show']);
-
-Route::post('/demandes', [DemandeController::class, 'store']);
 Route::get('/demandes/{qrToken}', [DemandeController::class, 'show']);
 Route::get('/demandes/{qrToken}/pdf', [DemandeController::class, 'pdf']);
 
 /*
 |--------------------------------------------------------------------------
-| Authentification agent (Sanctum)
+| Authentification citoyen
+|--------------------------------------------------------------------------
+*/
+Route::post('/citoyen/register', [CitoyenAuthController::class, 'register']);
+Route::post('/citoyen/login', [CitoyenAuthController::class, 'login']);
+
+/*
+|--------------------------------------------------------------------------
+| Espace citoyen (protégé) — cf. doc archi §4 : connexion obligatoire
+| avant de créer une demande.
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
+    Route::post('/logout', [CitoyenAuthController::class, 'logout']);
+    Route::get('/me', [CitoyenAuthController::class, 'me']);
+    Route::get('/demandes', [CitoyenAuthController::class, 'mesDemandes']);
+});
+
+// Création de demande : nécessite le citoyen connecté (guard Sanctum, modèle Usager)
+Route::middleware('auth:sanctum')->post('/demandes', [DemandeController::class, 'store']);
+
+/*
+|--------------------------------------------------------------------------
+| Authentification agent
 |--------------------------------------------------------------------------
 */
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 /*
 |--------------------------------------------------------------------------
-| Routes protégées — espace agent de mairie
+| Espace agent de mairie (protégé)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:sanctum')->prefix('agent')->group(function () {
@@ -41,4 +64,7 @@ Route::middleware('auth:sanctum')->prefix('agent')->group(function () {
     Route::post('/demandes/{demande}/recevoir', [AgentDashboardController::class, 'recevoir']);
     Route::post('/demandes/{demande}/remettre', [AgentDashboardController::class, 'remettre']);
     Route::post('/scan', [AgentDashboardController::class, 'scan']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'marquerLue']);
 });

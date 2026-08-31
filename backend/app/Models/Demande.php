@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Demande extends Model
@@ -17,6 +18,8 @@ class Demande extends Model
         'numero_acte',
         'annee_acte',
         'qr_token',
+        'souche_retrouvee',
+        'observation_origine',
         'usager_id',
         'mairie_origine_id',
         'mairie_retrait_id',
@@ -25,7 +28,15 @@ class Demande extends Model
 
     protected function casts(): array
     {
-        return ['date_creation' => 'datetime'];
+        return [
+            'date_creation' => 'datetime',
+            'souche_retrouvee' => 'boolean',
+        ];
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
     }
 
     public function usager(): BelongsTo

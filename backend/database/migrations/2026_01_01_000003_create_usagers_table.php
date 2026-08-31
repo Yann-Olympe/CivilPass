@@ -12,7 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('nom', 100);
             $table->string('prenom', 100);
-            $table->string('telephone', 20);
+            $table->string('telephone', 20)->unique(); // identifiant de connexion citoyen
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
