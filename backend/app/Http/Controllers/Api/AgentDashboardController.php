@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class AgentDashboardController extends Controller
 {
-    // GET /api/agent/demandes — liste filtrée selon la mairie et le rôle de l'agent connecté
     public function index(Request $request)
     {
         $agent = $request->user();
@@ -30,7 +29,6 @@ class AgentDashboardController extends Controller
         return response()->json($query->latest('date_creation')->get());
     }
 
-    // GET /api/agent/demandes/{id}
     public function show(Request $request, Demande $demande)
     {
         $this->autoriserAcces($request, $demande);
@@ -40,9 +38,6 @@ class AgentDashboardController extends Controller
         );
     }
 
-    // POST /api/agent/demandes/{id}/valider
-    // L'agent de la Mairie d'origine enregistre le résultat de la recherche de souche,
-    // valide, et déclenche le transfert vers la Mairie de retrait (avec notification).
     public function valider(Request $request, Demande $demande)
     {
         $agent = $request->user();
@@ -58,8 +53,6 @@ class AgentDashboardController extends Controller
             'observation_origine' => 'nullable|string|max:1000',
         ]);
 
-        // Souche introuvable : on arrête le flux sans transférer (règle à confirmer avec l'équipe,
-        // cf. point ouvert §13 du doc archi — pour l'instant on bloque le dossier en l'état).
         if (! $data['souche_retrouvee']) {
             $demande->update([
                 'souche_retrouvee' => false,
@@ -93,8 +86,6 @@ class AgentDashboardController extends Controller
         ]);
     }
 
-    // POST /api/agent/demandes/{id}/recevoir
-    // L'agent de la Mairie de retrait confirme la réception du dossier transféré.
     public function recevoir(Request $request, Demande $demande)
     {
         $agent = $request->user();
@@ -122,8 +113,6 @@ class AgentDashboardController extends Controller
         return response()->json($demande->fresh()->load('transfert'));
     }
 
-    // POST /api/agent/demandes/{id}/remettre
-    // L'agent de la Mairie de retrait remet l'acte au citoyen (clôture le parcours).
     public function remettre(Request $request, Demande $demande)
     {
         $agent = $request->user();
@@ -136,7 +125,6 @@ class AgentDashboardController extends Controller
         return response()->json($demande->fresh());
     }
 
-    // POST /api/agent/scan — scan du QR Code : retrouve la demande à partir du token encodé
     public function scan(Request $request)
     {
         $data = $request->validate(['qr_token' => 'required|string']);

@@ -34,11 +34,6 @@ class Demande extends Model
         ];
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
-
     public function usager(): BelongsTo
     {
         return $this->belongsTo(Usager::class);
@@ -62,5 +57,10 @@ class Demande extends Model
     public function transfert(): HasOne
     {
         return $this->hasOne(Transfert::class);
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
     }
 }

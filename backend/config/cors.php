@@ -18,7 +18,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://civil-pass-three.vercel.app'],
+    'allowed_origins' => [
+        'http://localhost:4200',  // Angular local
+        'http://127.0.0.1:4200',
+        'http://localhost:5173',  // Vite
+        'https://civil-pass-three.vercel.app',
+    ],
 
     'allowed_origins_patterns' => [
         '#^https://civil-pass-[a-z0-9]+-olympe404\.vercel\.app$#',      // previews par hash (ex: i2g8zv7xx)

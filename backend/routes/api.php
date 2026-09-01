@@ -18,19 +18,12 @@ Route::get('/mairies', [MairieController::class, 'index']);
 Route::get('/checklist/{typeDemande}', [ChecklistController::class, 'show']);
 Route::get('/demandes/{qrToken}', [DemandeController::class, 'show']);
 Route::get('/demandes/{qrToken}/pdf', [DemandeController::class, 'pdf']);
-
-/*
-|--------------------------------------------------------------------------
-| Authentification citoyen
-|--------------------------------------------------------------------------
-*/
 Route::post('/citoyen/register', [CitoyenAuthController::class, 'register']);
 Route::post('/citoyen/login', [CitoyenAuthController::class, 'login']);
 
 /*
 |--------------------------------------------------------------------------
-| Espace citoyen (protégé) — cf. doc archi §4 : connexion obligatoire
-| avant de créer une demande.
+| Espace citoyen (protégé) — connexion obligatoire avant de créer une demande
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
@@ -39,7 +32,7 @@ Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
     Route::get('/demandes', [CitoyenAuthController::class, 'mesDemandes']);
 });
 
-// Création de demande : nécessite le citoyen connecté (guard Sanctum, modèle Usager)
+// Création de demande : citoyen connecté requis
 Route::middleware('auth:sanctum')->post('/demandes', [DemandeController::class, 'store']);
 
 /*

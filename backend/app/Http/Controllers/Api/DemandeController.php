@@ -10,9 +10,7 @@ use Illuminate\Support\Str;
 
 class DemandeController extends Controller
 {
-    // POST /api/demandes — protégée par auth:sanctum (citoyen connecté requis, cf. doc archi §4)
-    // Couvre à la fois le pré-enrôlement (Parcours A) et la demande à distance (Parcours B),
-    // car dans ce MVP toute demande passe par le choix d'une Mairie d'origine et de retrait.
+    // POST /api/demandes — protégée par auth:sanctum (citoyen connecté requis)
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -24,7 +22,7 @@ class DemandeController extends Controller
             'filiation.mere_nom' => 'nullable|string|max:150',
         ]);
 
-        $usager = $request->user(); // le citoyen authentifié (token Sanctum)
+        $usager = $request->user();
 
         $demande = Demande::create([
             'type_demande' => 'naissance',
@@ -50,7 +48,6 @@ class DemandeController extends Controller
         );
     }
 
-    // GET /api/demandes/{qrToken} — récapitulatif consulté via le QR Code / le suivi
     public function show(string $qrToken)
     {
         $demande = Demande::where('qr_token', $qrToken)
@@ -60,9 +57,6 @@ class DemandeController extends Controller
         return response()->json($demande);
     }
 
-    // GET /api/demandes/{qrToken}/pdf — génère le récapitulatif PDF avec QR Code
-    // NB: nécessite le package `barryvdh/laravel-dompdf` (ou `niklasravnsborg/laravel-pdf`)
-    // + `simplesoftwareio/simple-qrcode` — à installer via composer côté équipe backend.
     public function pdf(string $qrToken)
     {
         $demande = Demande::where('qr_token', $qrToken)

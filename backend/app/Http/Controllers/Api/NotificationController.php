@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    // GET /api/agent/notifications — notifications de la Mairie de l'agent connecté
-    // ?lue=0 pour ne récupérer que les non lues (utilisé par le badge)
     public function index(Request $request)
     {
         $agent = $request->user();
@@ -25,7 +23,6 @@ class NotificationController extends Controller
         return response()->json($query->get());
     }
 
-    // PATCH /api/agent/notifications/{id}/lue — marque une notification comme lue
     public function marquerLue(Request $request, Notification $notification)
     {
         abort_unless($notification->mairie_id === $request->user()->mairie_id, 403);

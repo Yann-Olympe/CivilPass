@@ -10,7 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // POST /api/auth/login — connexion d'un agent de mairie
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -34,7 +33,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // POST /api/auth/logout — déconnexion (révoque le token courant)
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -42,7 +40,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Déconnecté.']);
     }
 
-    // GET /api/auth/me — profil de l'agent connecté
     public function me(Request $request)
     {
         return response()->json($request->user()->load('mairie'));

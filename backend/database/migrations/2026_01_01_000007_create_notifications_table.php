@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('mairie_id')->constrained('mairies')->cascadeOnDelete();
             $table->foreignId('demande_id')->constrained('demandes')->cascadeOnDelete();
-            $table->string('type', 50); // ex: 'nouvelle_demande_a_valider', 'dossier_transfere', 'dossier_recu'
+            $table->string('type', 50);
             $table->string('message', 255);
             $table->boolean('lue')->default(false);
             $table->timestamps();

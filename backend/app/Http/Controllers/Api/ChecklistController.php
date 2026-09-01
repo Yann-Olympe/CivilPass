@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class ChecklistController extends Controller
 {
-    // Config statique (MVP) : facile à transformer en table BDD plus tard
-    // si de nouveaux types de démarches (mariage, décès) sont ajoutés.
     private const CHECKLISTS = [
         'naissance' => [
             "Numéro de l'acte de naissance (si connu)",
@@ -19,7 +16,6 @@ class ChecklistController extends Controller
         ],
     ];
 
-    // GET /api/checklist/{type_demande}
     public function show(string $typeDemande)
     {
         $pieces = self::CHECKLISTS[$typeDemande] ?? null;

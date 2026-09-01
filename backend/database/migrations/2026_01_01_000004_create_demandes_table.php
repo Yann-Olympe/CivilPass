@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('numero_acte', 50)->nullable();
             $table->smallInteger('annee_acte')->nullable();
             $table->string('qr_token', 64)->unique();
-            // Résultat de la vérification de souche par l'agent de la Mairie d'origine
             $table->boolean('souche_retrouvee')->nullable();
             $table->text('observation_origine')->nullable();
             $table->foreignId('usager_id')->constrained('usagers')->cascadeOnDelete();

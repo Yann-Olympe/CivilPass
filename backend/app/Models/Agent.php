@@ -25,13 +25,11 @@ class Agent extends Authenticatable
         return $this->belongsTo(Mairie::class);
     }
 
-    // Un agent "origine" ou "les_deux" peut valider les demandes sortantes
     public function peutValiderOrigine(): bool
     {
         return in_array($this->role, ['origine', 'les_deux']);
     }
 
-    // Un agent "retrait" ou "les_deux" peut réceptionner les dossiers transférés
     public function peutReceptionnerRetrait(): bool
     {
         return in_array($this->role, ['retrait', 'les_deux']);

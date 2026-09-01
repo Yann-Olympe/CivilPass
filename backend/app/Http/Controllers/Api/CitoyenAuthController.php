@@ -10,41 +10,70 @@ use Illuminate\Validation\ValidationException;
 
 class CitoyenAuthController extends Controller
 {
-    // POST /api/citoyen/register
     public function register(Request $request)
     {
         $data = $request->validate([
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
-            'telephone' => 'required|string|max:20|unique:usagers,telephone',
-            'password' => 'required|string|min:6|confirmed', // attend password_confirmation
+            'telephone' => 'required|string|max:20|unique:usagers',
+            'email' => 'required|email|unique:usagers',
+            'password' => 'required|string|min:6|confirmed',
+            'date_naissance' => 'required|date',
+            'lieu_naissance' => 'required|string|max:150',
+            'sexe' => 'required|in:M,F',
+            'nationalite' => 'required|string|max:100',
+            'adresse' => 'required|string|max:255',
+            'ville' => 'required|string|max:100',
+            'region' => 'required|string|max:100',
+            'nui' => 'nullable|string|max:30|unique:usagers',
+            'cni_numero' => 'nullable|string|max:30',
         ]);
 
         $usager = Usager::create([
             'nom' => $data['nom'],
             'prenom' => $data['prenom'],
             'telephone' => $data['telephone'],
+            'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'date_naissance' => $data['date_naissance'],
+            'lieu_naissance' => $data['lieu_naissance'],
+            'sexe' => $data['sexe'],
+            'nationalite' => $data['nationalite'],
+            'adresse' => $data['adresse'],
+            'ville' => $data['ville'],
+            'region' => $data['region'],
+            'nui' => $data['nui'] ?? null,
+            'cni_numero' => $data['cni_numero'] ?? null,
         ]);
 
         $token = $usager->createToken('citoyen-token')->plainTextToken;
 
-        return response()->json(['usager' => $usager, 'token' => $token], 201);
+        return response()->json([
+            'message' => 'Compte créé avec succès',
+            'usager' => $usager,
+            'token' => $token,
+        ], 201);
     }
 
-    // POST /api/citoyen/login
     public function login(Request $request)
     {
         $data = $request->validate([
-            'telephone' => 'required|string',
+            'email' => 'required_without:telephone|email',
+            'telephone' => 'required_without:email|string',
             'password' => 'required|string',
+        ], [
+            'email.required_without' => 'Email ou téléphone requis',
+            'telephone.required_without' => 'Email ou téléphone requis',
         ]);
 
-        $usager = Usager::where('telephone', $data['telephone'])->first();
+        // Chercher par email OU téléphone
+        $usager = Usager::where('email', $data['email'] ?? null)
+            ->orWhere('telephone', $data['telephone'] ?? null)
+            ->first();
 
-        if (! $usager || ! Hash::check($data['password'], $usager->password)) {
+        if (! $usager || ! $usager->password || ! Hash::check($data['password'], $usager->password)) {
             throw ValidationException::withMessages([
-                'telephone' => ['Identifiants invalides.'],
+                'email' => ['Identifiants invalides.'],
             ]);
         }
 
@@ -53,7 +82,6 @@ class CitoyenAuthController extends Controller
         return response()->json(['usager' => $usager, 'token' => $token]);
     }
 
-    // POST /api/citoyen/logout
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -61,13 +89,11 @@ class CitoyenAuthController extends Controller
         return response()->json(['message' => 'Déconnecté.']);
     }
 
-    // GET /api/citoyen/me
     public function me(Request $request)
     {
         return response()->json($request->user());
     }
 
-    // GET /api/citoyen/demandes — historique / suivi du citoyen connecté
     public function mesDemandes(Request $request)
     {
         $demandes = $request->user()

@@ -1,14 +1,13 @@
 -- ============================================================
 -- CivilPass Cameroun — Schéma de base de données (MySQL 8+)
 -- ATL2026 — Orange Digital Center Douala
--- MVP : pré-enrôlement acte de naissance + service inter-Mairies simulé
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS civilpass CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE civilpass;
 
 -- ------------------------------------------------------------
--- 1. mairies — les deux Mairies simulées (origine / retrait)
+-- 1. mairies
 -- ------------------------------------------------------------
 CREATE TABLE mairies (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -19,7 +18,7 @@ CREATE TABLE mairies (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 2. agents — comptes des agents d'état civil (authentifiés)
+-- 2. agents
 -- ------------------------------------------------------------
 CREATE TABLE agents (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -34,20 +33,37 @@ CREATE TABLE agents (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 3. usagers — les citoyens, authentifiés par téléphone + mot de passe
+-- 3. usagers — citoyens : identité complète, coordonnées, NUI + CNI, auth
 -- ------------------------------------------------------------
 CREATE TABLE usagers (
-    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nom             VARCHAR(100) NOT NULL,
-    prenom          VARCHAR(100) NOT NULL,
-    telephone       VARCHAR(20) NOT NULL UNIQUE,
-    password        VARCHAR(255) NOT NULL,
-    created_at      TIMESTAMP NULL DEFAULT NULL,
-    updated_at      TIMESTAMP NULL DEFAULT NULL
+    id                  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- 1. Identité
+    prenom              VARCHAR(100) NOT NULL,
+    nom                 VARCHAR(100) NOT NULL,
+    date_naissance      DATE NOT NULL,
+    lieu_naissance      VARCHAR(150) NOT NULL,
+    sexe                ENUM('M', 'F') NOT NULL,
+    nationalite         VARCHAR(100) NOT NULL DEFAULT 'Camerounaise',
+    -- 2. Coordonnées
+    email               VARCHAR(150) NOT NULL UNIQUE,
+    telephone           VARCHAR(20) NOT NULL UNIQUE,
+    adresse             VARCHAR(255) NOT NULL,
+    ville               VARCHAR(100) NOT NULL,
+    region              VARCHAR(100) NOT NULL,
+    -- 3. Identification
+    nui                 VARCHAR(30) NOT NULL UNIQUE,
+    cni_numero          VARCHAR(30) NOT NULL,
+    cni_recto_path      VARCHAR(255) NOT NULL,
+    cni_verso_path      VARCHAR(255) NOT NULL,
+    -- Auth
+    google_id           VARCHAR(100) NULL UNIQUE,
+    password            VARCHAR(255) NULL, -- nullable : comptes Google sans mot de passe local
+    created_at          TIMESTAMP NULL DEFAULT NULL,
+    updated_at          TIMESTAMP NULL DEFAULT NULL
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 4. demandes — le coeur du système (pré-enrôlement / transfert)
+-- 4. demandes
 -- ------------------------------------------------------------
 CREATE TABLE demandes (
     id                  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -77,7 +93,7 @@ CREATE TABLE demandes (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 5. filiations — infos filiation liées à une demande de naissance
+-- 5. filiations
 -- ------------------------------------------------------------
 CREATE TABLE filiations (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -90,7 +106,7 @@ CREATE TABLE filiations (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 6. transferts — suivi du transfert inter-Mairies (Volet 2)
+-- 6. transferts
 -- ------------------------------------------------------------
 CREATE TABLE transferts (
     id                          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -104,7 +120,7 @@ CREATE TABLE transferts (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- 7. notifications — alertes dashboard mairie (ex: dossier transféré/reçu)
+-- 7. notifications
 -- ------------------------------------------------------------
 CREATE TABLE notifications (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -120,7 +136,7 @@ CREATE TABLE notifications (
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
--- Données de démo minimales (2 Mairies simulées)
+-- Données de démo (2 Mairies simulées)
 -- ------------------------------------------------------------
 INSERT INTO mairies (nom, ville, created_at, updated_at) VALUES
 ('Mairie de Douala 3e', 'Douala', NOW(), NOW()),
