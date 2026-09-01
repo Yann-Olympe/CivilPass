@@ -10,7 +10,7 @@ export class CitizenAuthService{
     private readonly _currentCitizen = signal<CitizenSession | null>(null);
 
     readonly currentCitizen = this._currentCitizen.asReadonly();
-    readonly isLoggedIn = signal(true);
+    readonly isLoggedIn = signal(false);
 
     
     login(session:CitizenSession) : void{
