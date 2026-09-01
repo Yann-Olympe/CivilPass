@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('usagers', function (Blueprint $table) {
             // 1. Identité
-            $table->date('date_naissance')->after('prenom');
+            $table->date('date_naissance') ->nullable()->after('prenom');
             $table->string('lieu_naissance', 150)->after('date_naissance');
             $table->enum('sexe', ['M', 'F'])->after('lieu_naissance');
             $table->string('nationalite', 100)->default('Camerounaise')->after('sexe');
