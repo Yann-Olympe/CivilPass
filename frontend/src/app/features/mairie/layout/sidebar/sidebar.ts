@@ -16,13 +16,13 @@ interface NavItem {
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
-  navItems: NavItem[] = [
-    { label: 'Tableau de bord', icon: 'grid', path: '/tableau-de-bord' },
-    { label: 'Demandes', icon: 'file', path: '/demandes' },
-    { label: 'En cours', icon: 'hourglass', path: '/en-cours' },
-    { label: 'Validées', icon: 'shield-check', path: '/validees' },
-    { label: 'Rejetées', icon: 'x', path: '/rejetees' },
-    { label: 'Transferts', icon: 'transfer', path: '/transferts' },
-    { label: 'Historique', icon: 'archive', path: '/historique' },
-  ];
+navItems: NavItem[] = [
+  { label: 'Tableau de bord', icon: 'grid', path: '/mairie/tableau-de-bord' },
+  { label: 'Demandes', icon: 'file', path: '/mairie/demandes' },
+  { label: 'En cours', icon: 'hourglass', path: '/mairie/en-cours' },
+  { label: 'Validées', icon: 'shield-check', path: '/mairie/validees' },
+  { label: 'Rejetées', icon: 'x', path: '/mairie/rejetees' },
+  { label: 'Transferts', icon: 'transfer', path: '/mairie/transferts' },
+  { label: 'Historique', icon: 'archive', path: '/mairie/historique' },
+];
 }

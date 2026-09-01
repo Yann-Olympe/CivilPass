@@ -17,7 +17,7 @@ export interface AgentDemandeApiDto {
 @Injectable({ providedIn: 'root' })
 export class AgentDemandeService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/agent`;
+  private baseUrl = `${environment.apiUrl}/api/agent`;
 
   getDemandes(): Observable<AgentDemandeApiDto[]> {
     return this.http.get<AgentDemandeApiDto[]>(`${this.baseUrl}/demandes`);
