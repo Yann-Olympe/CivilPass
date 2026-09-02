@@ -18,10 +18,9 @@
     <div class="login-card fade-in">
       <h2 class="login-title">Connexion</h2>
       <p class="login-subtitle">Accédez à votre tableau de bord agent.</p>
-
-      @if (errorMessage()) {
-        <div class="error-banner">{{ errorMessage() }}</div>
-      }
+        @if (errorMessage()) {
+          <div class="error-banner" role="alert" aria-live="assertive">{{ errorMessage() }}</div>
+        }
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-field">
