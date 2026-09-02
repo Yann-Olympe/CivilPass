@@ -1,0 +1,77 @@
+<div class="login-page">
+  <div class="login-brand-panel">
+    <div class="login-brand-content fade-in">
+      <div class="login-brand">
+        <img src="/logo-mark.svg" alt="" class="login-logo" />
+        <span class="login-brand-name">CIVILPASS</span>
+      </div>
+      <h1 class="login-brand-title">L'état civil,<br /><em>simplifié pour les mairies</em>.</h1>
+      <p class="login-brand-text">
+        Gérez les demandes d'actes, validez les dossiers et suivez les transferts
+        inter-mairies depuis un espace unique.
+      </p>
+    </div>
+    <div class="login-brand-decoration" aria-hidden="true"></div>
+  </div>
+
+  <div class="login-form-panel">
+    <div class="login-card fade-in">
+      <h2 class="login-title">Connexion</h2>
+      <p class="login-subtitle">Accédez à votre tableau de bord agent.</p>
+
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-field">
+          <label for="email">Email professionnel <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M2.5 5.5L10 11L17.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="2.5" y="4" width="15" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="agent@mairie.cm"
+              [class.input--error]="email.invalid && email.touched"
+            />
+          </div>
+          @if (email.invalid && email.touched) {
+            <span class="error-message">Veuillez saisir un email valide.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="password">Mot de passe <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <rect x="4" y="9" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6.5 9V6.5a3.5 3.5 0 017 0V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.input--error]="password.invalid && password.touched"
+            />
+          </div>
+          @if (password.invalid && password.touched) {
+            <span class="error-message">Le mot de passe est requis.</span>
+          }
+        </div>
+
+        <button type="submit" class="btn btn--primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="spinner"></span> Connexion...
+          } @else {
+            Se connecter
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

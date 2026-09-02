@@ -1,0 +1,243 @@
+:host {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(0.8rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ---- Panneau de marque (gauche) ---- */
+.login-brand-panel {
+  position: relative;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 4.5rem;
+  background: linear-gradient(160deg, var(--color-green-700) 0%, var(--color-green-950) 100%);
+  overflow: hidden;
+}
+
+.login-brand-content {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+}
+
+.login-brand-decoration {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 15% 85%, rgba(255,255,255,0.06) 0%, transparent 45%),
+                     radial-gradient(circle at 85% 15%, rgba(255,255,255,0.06) 0%, transparent 45%);
+}
+
+.login-brand-panel .login-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 3.6rem;
+}
+
+.login-brand-panel .login-logo {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
+.login-brand-panel .login-brand-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: white;
+}
+
+.login-brand-title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: white;
+  margin: 0 0 1.8rem;
+}
+
+.login-brand-title em {
+  font-style: normal;
+  color: var(--color-green-300);
+}
+
+.login-brand-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--color-green-100);
+  max-width: 36rem;
+}
+
+/* ---- Panneau du formulaire (droite) ---- */
+.login-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem 2rem;
+  background: var(--color-gray-100, #f7f6f4);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 42rem;
+}
+
+.login-title {
+  font-family: var(--font-family-base);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-green-950);
+  margin: 0 0 0.7rem;
+}
+
+.login-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-gray-600);
+  margin: 0 0 3rem;
+}
+
+.error-banner {
+  background: #FEF2F2;
+  color: var(--color-red-500);
+  border-radius: var(--radius-md);
+  padding: 1.3rem 1.6rem;
+  font-size: 1.05rem;
+  margin-bottom: 2.2rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.form-field label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.required {
+  color: var(--color-red-500);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1.5rem;
+  color: var(--color-gray-500);
+  pointer-events: none;
+  width: 2rem;
+  height: 2rem;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 1.5rem 1.6rem 1.5rem 4.8rem;
+  border: 0.15rem solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: 1.2rem;
+  color: var(--color-gray-900);
+  background: white;
+  transition: var(--transition-base);
+  box-sizing: border-box;
+}
+
+.form-field input::placeholder {
+  color: var(--color-gray-400, var(--color-gray-500));
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--color-green-600);
+  box-shadow: 0 0 0 0.35rem var(--color-green-100);
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: var(--color-green-600);
+}
+
+.input--error {
+  border-color: var(--color-red-500) !important;
+}
+
+.error-message {
+  font-size: 0.95rem;
+  color: var(--color-red-500);
+}
+
+.btn--primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+  padding: 1.6rem 2rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--color-green-600);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-green-500);
+  box-shadow: var(--shadow-md, var(--shadow-sm));
+  transform: translateY(-0.1rem);
+}
+
+.btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0.2rem solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@media (min-width: 1024px) {
+  .login-brand-panel {
+    display: flex;
+  }
+}
