@@ -9,7 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('demandes', function (Blueprint $table) {
-            $table->text('motif_statut')->nullable()->after('observation_origine');
+            if (! Schema::hasColumn('demandes', 'observation_origine')) {
+                $table->text('observation_origine')->nullable();
+            }
+
+            if (! Schema::hasColumn('demandes', 'motif_statut')) {
+                $table->text('motif_statut')->nullable();
+            }
         });
 
         Schema::table('demandes', function (Blueprint $table) {
@@ -18,7 +24,9 @@ return new class extends Migration
         });
 
         Schema::table('notifications', function (Blueprint $table) {
-            $table->foreignId('usager_id')->nullable()->constrained('usagers')->cascadeOnDelete()->after('mairie_id');
+            if (! Schema::hasColumn('notifications', 'usager_id')) {
+                $table->foreignId('usager_id')->nullable()->constrained('usagers')->cascadeOnDelete();
+            }
         });
     }
 
