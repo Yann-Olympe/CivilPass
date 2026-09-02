@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Agent;
 use App\Models\Demande;
+use App\Models\Notification;
+use App\Models\Usager;
 use Database\Seeders\CivilPassSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -13,10 +15,29 @@ class ApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    private Usager $usager;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed(CivilPassSeeder::class);
+        $this->usager = Usager::create([
+            'nom' => 'Test',
+            'prenom' => 'User',
+            'telephone' => '699000099',
+            'email' => 'test@example.com',
+            'lieu_naissance' => 'Douala',
+            'sexe' => 'M',
+            'adresse' => 'Rue 1',
+            'ville' => 'Douala',
+            'region' => 'Littoral',
+            'nui' => 'NUI-TEST-001',
+            'cni_numero' => 'CNI-TEST-001',
+            'cni_recto_path' => 'tests/recto.jpg',
+            'cni_verso_path' => 'tests/verso.jpg',
+            'password' => 'password123',
+        ]);
+        Sanctum::actingAs($this->usager);
     }
 
     public function test_mairies_returns_demo_data(): void
@@ -55,8 +76,14 @@ class ApiTest extends TestCase
         ]);
 
         $response->assertCreated()
-            ->assertJsonPath('statut', 'en_attente_validation_origine')
+            ->assertJsonPath('statut', 'nouvelle')
             ->assertJsonStructure(['qr_token', 'usager', 'filiation', 'mairie_origine', 'mairie_retrait']);
+
+        $this->assertDatabaseHas('notifications', [
+            'usager_id' => $this->usager->id,
+            'demande_id' => $response->json('id'),
+            'type' => 'statut_demande',
+        ]);
     }
 
     public function test_show_demande_by_qr_token(): void
@@ -107,18 +134,21 @@ class ApiTest extends TestCase
         $demande = $this->createDemande();
 
         Sanctum::actingAs(Agent::where('email', 'origine@civilpass.cm')->first());
-        $this->postJson("/api/agent/demandes/{$demande->id}/valider")
+        $this->postJson("/api/agent/demandes/{$demande->id}/valider", [
+            'souche_retrouvee' => true,
+        ])
             ->assertOk()
-            ->assertJsonPath('demande.statut', 'transferee');
+            ->assertJsonPath('demande.statut', 'en_cours');
 
         Sanctum::actingAs(Agent::where('email', 'retrait@civilpass.cm')->first());
         $this->postJson("/api/agent/demandes/{$demande->id}/recevoir")
             ->assertOk()
-            ->assertJsonPath('statut', 'disponible_retrait');
+            ->assertJsonPath('statut', 'validee');
 
         $this->postJson("/api/agent/demandes/{$demande->id}/remettre")
             ->assertOk()
-            ->assertJsonPath('statut', 'remise');
+            ->assertOk()
+            ->assertJsonPath('statut', 'validee');
     }
 
     public function test_agent_scan_finds_demande_by_qr_token(): void

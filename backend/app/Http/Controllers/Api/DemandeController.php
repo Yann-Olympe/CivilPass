@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Demande;
 use App\Models\Filiation;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -26,7 +27,8 @@ class DemandeController extends Controller
 
         $demande = Demande::create([
             'type_demande' => 'naissance',
-            'statut' => 'en_attente_validation_origine',
+            'statut' => 'nouvelle',
+            'motif_statut' => 'Votre demande a été enregistrée et attend son traitement.',
             'numero_acte' => $data['numero_acte'] ?? null,
             'annee_acte' => $data['annee_acte'] ?? null,
             'qr_token' => (string) Str::uuid(),
@@ -40,6 +42,14 @@ class DemandeController extends Controller
             'demande_id' => $demande->id,
             'pere_nom' => $data['filiation']['pere_nom'] ?? null,
             'mere_nom' => $data['filiation']['mere_nom'] ?? null,
+        ]);
+
+        Notification::create([
+            'mairie_id' => $demande->mairie_origine_id,
+            'usager_id' => $demande->usager_id,
+            'demande_id' => $demande->id,
+            'type' => 'statut_demande',
+            'message' => "Votre demande n°{$demande->id} est nouvelle : elle a été enregistrée et attend son traitement.",
         ]);
 
         return response()->json(

@@ -10,7 +10,7 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['mairie_id', 'demande_id', 'type', 'message', 'lue'];
+    protected $fillable = ['mairie_id', 'usager_id', 'demande_id', 'type', 'message', 'lue'];
 
     protected function casts(): array
     {
@@ -25,5 +25,10 @@ class Notification extends Model
     public function demande(): BelongsTo
     {
         return $this->belongsTo(Demande::class);
+    }
+
+    public function usager(): BelongsTo
+    {
+        return $this->belongsTo(Usager::class);
     }
 }

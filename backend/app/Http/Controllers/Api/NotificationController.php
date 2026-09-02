@@ -31,4 +31,22 @@ class NotificationController extends Controller
 
         return response()->json($notification);
     }
+
+    public function citoyenIndex(Request $request)
+    {
+        return response()->json(
+            Notification::where('usager_id', $request->user()->id)
+                ->with('demande')
+                ->latest()
+                ->get()
+        );
+    }
+
+    public function citoyenMarquerLue(Request $request, Notification $notification)
+    {
+        abort_unless($notification->usager_id === $request->user()->id, 403);
+        $notification->update(['lue' => true]);
+
+        return response()->json($notification);
+    }
 }

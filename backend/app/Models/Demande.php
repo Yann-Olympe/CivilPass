@@ -12,6 +12,8 @@ class Demande extends Model
 {
     use HasFactory;
 
+    public const STATUTS = ['nouvelle', 'en_cours', 'validee', 'urgente', 'rejetee'];
+
     protected $fillable = [
         'type_demande',
         'statut',
@@ -20,6 +22,7 @@ class Demande extends Model
         'qr_token',
         'souche_retrouvee',
         'observation_origine',
+        'motif_statut',
         'usager_id',
         'mairie_origine_id',
         'mairie_retrait_id',

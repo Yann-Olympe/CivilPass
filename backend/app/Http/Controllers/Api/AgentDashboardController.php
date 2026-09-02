@@ -45,28 +45,36 @@ class AgentDashboardController extends Controller
         abort_unless($agent->peutValiderOrigine() && $demande->mairie_origine_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie d'origine peut valider cette demande.");
 
-        abort_unless($demande->statut === 'en_attente_validation_origine', 409,
+        abort_unless(in_array($demande->statut, ['nouvelle', 'urgente']), 409,
             "Cette demande n'est plus en attente de validation.");
 
         $data = $request->validate([
             'souche_retrouvee' => 'required|boolean',
             'observation_origine' => 'nullable|string|max:1000',
+            'motif' => 'nullable|string|max:200',
         ]);
 
         if (! $data['souche_retrouvee']) {
             $demande->update([
+                'statut' => 'rejetee',
                 'souche_retrouvee' => false,
                 'observation_origine' => $data['observation_origine'] ?? null,
+                'motif_statut' => $data['motif'] ?? 'La souche n’a pas été retrouvée par la mairie d’origine.',
             ]);
+
+            $this->notifierUsager($demande, 'rejetee', $demande->motif_statut);
 
             return response()->json($demande->fresh(), 422);
         }
 
         $demande->update([
-            'statut' => 'transferee',
+            'statut' => 'en_cours',
             'souche_retrouvee' => true,
             'observation_origine' => $data['observation_origine'] ?? null,
+            'motif_statut' => $data['motif'] ?? 'La demande a été validée par la mairie d’origine et est en cours de traitement.',
         ]);
+
+        $this->notifierUsager($demande, 'en_cours', $demande->motif_statut);
 
         $transfert = Transfert::updateOrCreate(
             ['demande_id' => $demande->id],
@@ -93,10 +101,14 @@ class AgentDashboardController extends Controller
         abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie de retrait peut réceptionner ce dossier.");
 
-        abort_unless($demande->statut === 'transferee', 409,
+        abort_unless($demande->statut === 'en_cours', 409,
             "Ce dossier n'a pas encore été transféré par la Mairie d'origine.");
 
-        $demande->update(['statut' => 'disponible_retrait']);
+        $demande->update([
+            'statut' => 'validee',
+            'motif_statut' => 'La demande a été réceptionnée et validée par la mairie de retrait.',
+        ]);
+        $this->notifierUsager($demande, 'validee', $demande->motif_statut);
 
         $demande->transfert()->update([
             'statut' => 'recu',
@@ -118,9 +130,26 @@ class AgentDashboardController extends Controller
         $agent = $request->user();
 
         abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403);
-        abort_unless($demande->statut === 'disponible_retrait', 409, "Le dossier n'est pas encore disponible.");
+        abort_unless($demande->statut === 'validee', 409, "Le dossier n'est pas encore validé.");
 
-        $demande->update(['statut' => 'remise']);
+        $demande->update([
+            'motif_statut' => 'Le document est validé et peut être remis au citoyen.',
+        ]);
+
+        return response()->json($demande->fresh());
+    }
+
+    public function urgente(Request $request, Demande $demande)
+    {
+        $agent = $request->user();
+
+        abort_unless($agent->peutValiderOrigine() && $demande->mairie_origine_id === $agent->mairie_id, 403);
+        abort_unless(in_array($demande->statut, ['nouvelle', 'en_cours']), 409,
+            "Cette demande ne peut plus être marquée urgente.");
+
+        $data = $request->validate(['motif' => 'required|string|max:200']);
+        $demande->update(['statut' => 'urgente', 'motif_statut' => $data['motif']]);
+        $this->notifierUsager($demande, 'urgente', $data['motif']);
 
         return response()->json($demande->fresh());
     }
@@ -145,5 +174,16 @@ class AgentDashboardController extends Controller
             || $demande->mairie_retrait_id === $agent->mairie_id;
 
         abort_unless($concerne, 403, "Ce dossier ne concerne pas votre Mairie.");
+    }
+
+    private function notifierUsager(Demande $demande, string $statut, string $motif): void
+    {
+        Notification::create([
+            'mairie_id' => $demande->mairie_origine_id,
+            'usager_id' => $demande->usager_id,
+            'demande_id' => $demande->id,
+            'type' => 'statut_demande',
+            'message' => "Votre demande n°{$demande->id} est {$statut}. Motif : {$motif}",
+        ]);
     }
 }

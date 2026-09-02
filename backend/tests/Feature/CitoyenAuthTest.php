@@ -101,7 +101,8 @@ class CitoyenAuthTest extends TestCase
             'mairie_retrait_id' => 2,
             'numero_acte' => 'NA-001',
             'annee_acte' => 2024,
-            'statut' => 'en_attente_validation_origine',
+            'statut' => 'nouvelle',
+                    'statut' => 'nouvelle',
         ]);
 
         $demande2 = $usager->demandes()->create([
@@ -110,7 +111,8 @@ class CitoyenAuthTest extends TestCase
             'mairie_retrait_id' => 1,
             'numero_acte' => 'NA-002',
             'annee_acte' => 2024,
-            'statut' => 'disponible_retrait',
+            'statut' => 'validee',
+                    'statut' => 'validee',
         ]);
 
         Sanctum::actingAs($usager);

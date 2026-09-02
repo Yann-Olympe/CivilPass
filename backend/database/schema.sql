@@ -69,18 +69,18 @@ CREATE TABLE demandes (
     id                  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     type_demande        ENUM('naissance') NOT NULL DEFAULT 'naissance',
     statut              ENUM(
-                            'pre_enrolee',
-                            'en_attente_validation_origine',
-                            'validee_origine',
-                            'transferee',
-                            'disponible_retrait',
-                            'remise'
-                        ) NOT NULL DEFAULT 'pre_enrolee',
+                            'nouvelle',
+                            'en_cours',
+                            'validee',
+                            'urgente',
+                            'rejetee'
+                        ) NOT NULL DEFAULT 'nouvelle',
     numero_acte         VARCHAR(50) NULL,
     annee_acte          SMALLINT NULL,
     qr_token            VARCHAR(64) NOT NULL UNIQUE,
     souche_retrouvee    BOOLEAN NULL,
     observation_origine TEXT NULL,
+    motif_statut       TEXT NULL,
     usager_id           BIGINT UNSIGNED NOT NULL,
     mairie_origine_id   BIGINT UNSIGNED NOT NULL,
     mairie_retrait_id   BIGINT UNSIGNED NOT NULL,
@@ -125,6 +125,7 @@ CREATE TABLE transferts (
 CREATE TABLE notifications (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     mairie_id       BIGINT UNSIGNED NOT NULL,
+    usager_id       BIGINT UNSIGNED NULL,
     demande_id      BIGINT UNSIGNED NOT NULL,
     type            VARCHAR(50) NOT NULL,
     message         VARCHAR(255) NOT NULL,
@@ -132,7 +133,8 @@ CREATE TABLE notifications (
     created_at      TIMESTAMP NULL DEFAULT NULL,
     updated_at      TIMESTAMP NULL DEFAULT NULL,
     FOREIGN KEY (mairie_id) REFERENCES mairies(id) ON DELETE CASCADE,
-    FOREIGN KEY (demande_id) REFERENCES demandes(id) ON DELETE CASCADE
+    FOREIGN KEY (demande_id) REFERENCES demandes(id) ON DELETE CASCADE,
+    FOREIGN KEY (usager_id) REFERENCES usagers(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------

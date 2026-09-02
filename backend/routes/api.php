@@ -30,6 +30,8 @@ Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
     Route::post('/logout', [CitoyenAuthController::class, 'logout']);
     Route::get('/me', [CitoyenAuthController::class, 'me']);
     Route::get('/demandes', [CitoyenAuthController::class, 'mesDemandes']);
+    Route::get('/notifications', [NotificationController::class, 'citoyenIndex']);
+    Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'citoyenMarquerLue']);
 });
 
 // Création de demande : citoyen connecté requis
@@ -56,6 +58,7 @@ Route::middleware('auth:sanctum')->prefix('agent')->group(function () {
     Route::post('/demandes/{demande}/valider', [AgentDashboardController::class, 'valider']);
     Route::post('/demandes/{demande}/recevoir', [AgentDashboardController::class, 'recevoir']);
     Route::post('/demandes/{demande}/remettre', [AgentDashboardController::class, 'remettre']);
+    Route::post('/demandes/{demande}/urgente', [AgentDashboardController::class, 'urgente']);
     Route::post('/scan', [AgentDashboardController::class, 'scan']);
 
     Route::get('/notifications', [NotificationController::class, 'index']);
