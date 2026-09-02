@@ -31,8 +31,8 @@
     }
   </nav>
 
-  <button class="sidebar__logout" routerLink="/auth/login">
-    <app-icon name="logout" />
-    Déconnexion
-  </button>
+ <button class="sidebar__logout" (click)="onLogout()">
+  <app-icon name="logout" />
+  Déconnexion
+</button>
 </aside>
