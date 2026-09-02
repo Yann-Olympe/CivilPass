@@ -19,7 +19,7 @@ export class AgentAuthService {
   profile = this._profile.asReadonly();
 
   login(payload: AgentLoginPayload): Observable<AgentAuthResponse> {
-    return this.http.post<AgentAuthResponse>(`${this.baseUrl}/auth/login`, payload).pipe(
+    return this.http.post<AgentAuthResponse>(`${this.baseUrl}/api/auth/login`, payload).pipe(
       tap((res) => {
         localStorage.setItem(TOKEN_KEY, res.token);
         localStorage.setItem(PROFILE_KEY, JSON.stringify(res.agent));
@@ -30,13 +30,13 @@ export class AgentAuthService {
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/agent/logout`, {}).pipe(
+    return this.http.post<void>(`${this.baseUrl}/api/agent/logout`, {}).pipe(
       tap(() => this.clearSession())
     );
   }
 
   refreshMe(): Observable<AgentProfile> {
-    return this.http.get<AgentProfile>(`${this.baseUrl}/agent/me`).pipe(
+    return this.http.get<AgentProfile>(`${this.baseUrl}/api/agent/me`).pipe(
       tap((agent) => {
         localStorage.setItem(PROFILE_KEY, JSON.stringify(agent));
         this._profile.set(agent);
