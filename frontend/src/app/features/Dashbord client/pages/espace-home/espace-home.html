@@ -1,0 +1,70 @@
+<section class="hero">
+  <h1 class="hero__title">Bonjour, {{ profile().prenom }} ! Heureux de vous revoir.</h1>
+  <p class="hero__subtitle">Voici un aperçu de vos démarches administratives.</p>
+</section>
+
+@if (prochainePrete(); as demande) {
+  <section class="banner">
+    <div class="banner__icon">
+      <app-icon name="check-circle" />
+    </div>
+    <div class="banner__text">
+      <p class="banner__title">Votre {{ typeLabel[demande.type] | lowercase }} est prêt !</p>
+      <p class="banner__subtitle">Vous pouvez le retirer à la {{ demande.mairieRetrait }}.</p>
+    </div>
+    <button type="button" class="btn btn--primary banner__cta" (click)="voirDetail(demande.id)">
+      Voir les détails
+    </button>
+  </section>
+}
+
+<section class="stats-grid">
+  @for (stat of stats(); track stat.label; let i = $index) {
+    <app-client-stat-card [data]="stat" (activated)="ouvrirFiltre(i)" />
+  }
+</section>
+
+<section class="analytics" (click)="voirStatistiques()" role="button" tabindex="0" (keydown.enter)="voirStatistiques()">
+  <div class="analytics__preview">
+    <div class="analytics__bars">
+      <span style="height: 40%"></span>
+      <span style="height: 65%"></span>
+      <span style="height: 50%"></span>
+      <span style="height: 80%"></span>
+      <span style="height: 60%"></span>
+    </div>
+  </div>
+  <div class="analytics__text">
+    <p class="analytics__title">Visualisation Analytique</p>
+    <p class="analytics__subtitle">
+      Aperçu détaillé de l'évolution de vos demandes administratives au cours de l'année.
+    </p>
+    <span class="analytics__link">
+      Voir les statistiques
+      <app-icon name="chevron-right" />
+    </span>
+  </div>
+</section>
+
+<section class="quick-actions">
+  <h2 class="quick-actions__title">Actions Rapides</h2>
+  <div class="quick-actions__grid">
+    <button type="button" class="action-card action-card--primary" (click)="nouvelleDemande()">
+      <span class="action-card__icon"><app-icon name="plus" /></span>
+      <span class="action-card__title">Nouvelle demande</span>
+      <span class="action-card__subtitle">Lancer une nouvelle procédure</span>
+    </button>
+
+    <button type="button" class="action-card" (click)="voirMesDemandes()">
+      <span class="action-card__icon"><app-icon name="folder" /></span>
+      <span class="action-card__title">Voir mes demandes</span>
+      <span class="action-card__subtitle">Suivre l'état d'avancement</span>
+    </button>
+
+    <button type="button" class="action-card" (click)="voirMonProfil()">
+      <span class="action-card__icon"><app-icon name="user" /></span>
+      <span class="action-card__title">Mon profil</span>
+      <span class="action-card__subtitle">Gérer vos informations</span>
+    </button>
+  </div>
+</section>

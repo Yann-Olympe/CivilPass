@@ -24,8 +24,6 @@ export class Header {
 
   toggleLang(): void {
     this.currentLang.update(lang => (lang === 'FR' ? 'EN' : 'FR'));
-    // TODO : brancher un vrai service i18n (Angular i18n ou ngx-translate)
-    // pour effectivement changer la langue affichée dans l'app.
-    // Ce signal ne fait pour l'instant que changer le texte du bouton.
+    
   }
 }

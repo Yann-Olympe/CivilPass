@@ -1,0 +1,119 @@
+<h1 class="page-title">Mon profil</h1>
+
+@if (mode() === 'view') {
+  <section class="panel profile-panel">
+    <div class="profile-summary">
+      <span class="profile-summary__avatar">{{ initiales() }}</span>
+      <div class="profile-summary__text">
+        <p class="profile-summary__name">{{ profile().prenom }} {{ profile().nom }}</p>
+        <p class="profile-summary__contact">
+          <app-icon name="mail" /> {{ profile().email }}
+        </p>
+        <p class="profile-summary__contact">
+          <app-icon name="phone" /> {{ profile().telephone }}
+        </p>
+      </div>
+      <button type="button" class="btn btn--primary" (click)="commencerModification()">
+        <app-icon name="edit" />
+        Modifier
+      </button>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <p class="info-item__label"><app-icon name="map-pin" /> Adresse</p>
+        <p class="info-item__value">{{ profile().adresse }}</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item__label"><app-icon name="building" /> Ville</p>
+        <p class="info-item__value">{{ profile().ville }}</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item__label"><app-icon name="cake" /> Date de naissance</p>
+        <p class="info-item__value">{{ dateNaissanceAffichee() }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel danger-panel">
+    <div>
+      <p class="danger-panel__title">Déconnexion</p>
+      <p class="danger-panel__subtitle">Vous serez redirigé vers la page de connexion.</p>
+    </div>
+    <button type="button" class="btn btn--danger" (click)="deconnexion()">
+      <app-icon name="log-out" />
+      Se déconnecter
+    </button>
+  </section>
+} @else {
+  <section class="panel">
+    <div class="panel__header">
+      <h2 class="panel__title">Modifier mes informations</h2>
+    </div>
+
+    <form class="form form--grid" [formGroup]="form" (ngSubmit)="enregistrer()">
+      <label class="field">
+        <span class="field__label">Prénom</span>
+        <input type="text" class="field__input" formControlName="prenom" />
+        @if (form.controls.prenom.touched && form.controls.prenom.invalid) {
+          <span class="field__error">Le prénom est requis.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Nom</span>
+        <input type="text" class="field__input" formControlName="nom" />
+        @if (form.controls.nom.touched && form.controls.nom.invalid) {
+          <span class="field__error">Le nom est requis.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Adresse e-mail</span>
+        <input type="email" class="field__input" formControlName="email" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="field__error">Merci de saisir une adresse e-mail valide.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Téléphone</span>
+        <input type="tel" class="field__input" formControlName="telephone" />
+        @if (form.controls.telephone.touched && form.controls.telephone.invalid) {
+          <span class="field__error">Merci de saisir un numéro valide.</span>
+        }
+      </label>
+
+      <label class="field field--span-2">
+        <span class="field__label">Adresse</span>
+        <input type="text" class="field__input" formControlName="adresse" />
+        @if (form.controls.adresse.touched && form.controls.adresse.invalid) {
+          <span class="field__error">L'adresse est requise.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Ville</span>
+        <input type="text" class="field__input" formControlName="ville" />
+        @if (form.controls.ville.touched && form.controls.ville.invalid) {
+          <span class="field__error">La ville est requise.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Date de naissance</span>
+        <input type="date" class="field__input" formControlName="dateNaissance" />
+        @if (form.controls.dateNaissance.touched && form.controls.dateNaissance.invalid) {
+          <span class="field__error">La date de naissance est requise.</span>
+        }
+      </label>
+
+      <div class="modal__actions form--span-2">
+        <button type="button" class="btn btn--ghost" (click)="annulerModification()">Annuler</button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          @if (saving()) { Enregistrement... } @else { Enregistrer les modifications }
+        </button>
+      </div>
+    </form>
+  </section>
+}

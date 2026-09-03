@@ -1,0 +1,25 @@
+<div class="overlay" (click)="onOverlayClick($event)">
+  <div class="modal modal--sm" role="alertdialog" aria-modal="true">
+    <div class="modal__header">
+      <h2 class="modal__title">{{ title() }}</h2>
+      <button type="button" class="modal__close" (click)="cancelled.emit()" aria-label="Fermer">
+        <app-icon name="x" />
+      </button>
+    </div>
+
+    <p class="modal__subtitle">{{ message() }}</p>
+
+    <div class="modal__actions">
+      <button type="button" class="btn btn--ghost" (click)="cancelled.emit()">{{ cancelLabel() }}</button>
+      <button
+        type="button"
+        class="btn"
+        [class.btn--primary]="tone() === 'primary'"
+        [class.btn--danger]="tone() === 'danger'"
+        (click)="confirmed.emit()"
+      >
+        {{ confirmLabel() }}
+      </button>
+    </div>
+  </div>
+</div>

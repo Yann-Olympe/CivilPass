@@ -1,0 +1,61 @@
+<header class="topbar">
+  <a routerLink="/espace" class="topbar__logo">CivilPass</a>
+
+  <nav class="topbar__nav">
+    <a
+      routerLink="/espace"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLinkActive="topbar__link--active"
+      class="topbar__link"
+    >
+      Mon espace
+    </a>
+    <a
+      routerLink="/espace/demandes"
+      routerLinkActive="topbar__link--active"
+      class="topbar__link"
+    >
+      Mes demandes
+    </a>
+  </nav>
+
+  <div class="topbar__right">
+    <button type="button" class="topbar__icon-btn" (click)="toggleLang()" [attr.aria-label]="'Langue : ' + currentLang()">
+      <app-icon name="globe" />
+    </button>
+
+    <div class="topbar__avatar-wrap">
+      <button
+        type="button"
+        class="topbar__avatar"
+        (click)="toggleAvatarMenu()"
+        [attr.aria-expanded]="avatarMenuOpen()"
+        aria-label="Menu du profil"
+      >
+        {{ initiales() }}
+      </button>
+
+      @if (avatarMenuOpen()) {
+        <div class="topbar__avatar-menu">
+          <p class="topbar__avatar-menu-name">{{ profile().prenom }} {{ profile().nom }}</p>
+          <p class="topbar__avatar-menu-email">{{ profile().email }}</p>
+          <button type="button" class="topbar__avatar-menu-item" (click)="goToProfile()">
+            <app-icon name="user" /> Mon profil
+          </button>
+          <button type="button" class="topbar__avatar-menu-item topbar__avatar-menu-item--danger" (click)="logout()">
+            <app-icon name="log-out" /> Déconnexion
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="topbar__burger"
+    aria-label="Ouvrir le menu"
+    (click)="menuToggle.emit()"
+  >
+    <app-icon name="menu" />
+  </button>
+</header>

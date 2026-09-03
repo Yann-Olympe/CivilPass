@@ -1,0 +1,266 @@
+@import '../../shared/styles/panel.css';
+
+/* Le composant de page est rendu tel quel dans <main>, sans conteneur flex
+   parent : c'est donc lui-même qui doit espacer ses sections (hero, bannière,
+   stats, analytique, actions rapides). Sans ce :host, les sections n'ont
+   aucun espace entre elles. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+@media (max-width: 900px) {
+  :host {
+    gap: 2.4rem;
+  }
+}
+
+.hero__title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.hero__subtitle {
+  margin-top: 0.6rem;
+  font-size: 1.5rem;
+  color: var(--color-gray-500);
+}
+
+/* --- Bannière "prêt pour retrait" --- */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 2rem 2.4rem;
+  background: var(--color-green-100);
+  border-radius: var(--radius-lg);
+  animation: fade-in-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.banner__icon {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-green-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.banner__icon app-icon { width: 2.2rem; height: 2.2rem; }
+
+.banner__text {
+  flex: 1;
+  min-width: 20rem;
+}
+
+.banner__title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--color-green-800);
+}
+
+.banner__subtitle {
+  margin-top: 0.3rem;
+  font-size: 1.35rem;
+  color: var(--color-green-700);
+}
+
+.banner__cta {
+  flex-shrink: 0;
+}
+
+/* En dessous de 560px, l'icône + le texte (min-width 20rem) + le bouton ne
+   tiennent plus sur une seule ligne : le bouton déborde du cadre. On repasse
+   la bannière en colonne. */
+@media (max-width: 560px) {
+  .banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner__text {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .banner__cta {
+    width: 100%;
+  }
+}
+
+/* --- Grille de stats --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Carte "Visualisation Analytique" --- */
+.analytics {
+  display: flex;
+  align-items: stretch;
+  gap: 2.4rem;
+  background: var(--color-green-950);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2.4rem;
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
+}
+
+.analytics:hover,
+.analytics:focus-visible {
+  transform: translateY(-0.2rem);
+  box-shadow: var(--shadow-lg);
+  outline: none;
+}
+
+.analytics__preview {
+  flex: 0 0 20rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
+}
+
+.analytics__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  width: 100%;
+  height: 10rem;
+}
+
+.analytics__bars span {
+  flex: 1;
+  border-radius: 0.4rem 0.4rem 0 0;
+  background: linear-gradient(180deg, var(--color-green-300), var(--color-green-500));
+}
+
+.analytics__text {
+  flex: 1;
+  min-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.analytics__title {
+  font-size: 1.9rem;
+  font-weight: 800;
+}
+
+.analytics__subtitle {
+  font-size: 1.35rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 46rem;
+}
+
+.analytics__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-green-300);
+}
+
+@media (max-width: 700px) {
+  .analytics { flex-direction: column; }
+  .analytics__preview { flex: none; }
+}
+
+/* --- Actions rapides --- */
+.quick-actions__title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+  margin-bottom: 2rem;
+}
+
+.quick-actions__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .quick-actions__grid { grid-template-columns: 1fr; }
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  text-align: left;
+  padding: 2.2rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-150);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.action-card:hover,
+.action-card:focus-visible {
+  transform: translateY(-0.2rem);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+.action-card__icon {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-100);
+  color: var(--color-green-700);
+}
+
+.action-card__icon app-icon { width: 2rem; height: 2rem; }
+
+.action-card__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.action-card__subtitle {
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.action-card--primary {
+  background: var(--color-green-700);
+  border-color: var(--color-green-700);
+}
+
+.action-card--primary .action-card__icon {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--color-white);
+}
+
+.action-card--primary .action-card__title,
+.action-card--primary .action-card__subtitle {
+  color: var(--color-white);
+}
+
+.action-card--primary .action-card__subtitle {
+  opacity: 0.85;
+}

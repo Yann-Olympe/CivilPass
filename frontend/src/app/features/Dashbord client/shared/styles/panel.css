@@ -1,0 +1,187 @@
+/* Styles utilitaires partagés du module "Dashbord client".
+   Regroupés ici pour éviter de dupliquer les mêmes règles dans chaque page. */
+
+.panel {
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-150);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fade-in-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.panel__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 1rem 1.8rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base), border-color var(--transition-base),
+    color var(--transition-base), transform 0.12s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--color-green-700);
+  color: var(--color-white);
+}
+.btn--primary:hover { background: var(--color-green-800); }
+.btn--primary:disabled { background: var(--color-gray-300); cursor: not-allowed; }
+
+.btn--ghost {
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-250);
+  color: var(--color-gray-700);
+}
+.btn--ghost:hover { background: var(--color-gray-50); }
+
+.btn--danger {
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-red-500);
+  color: var(--color-red-600);
+}
+.btn--danger:hover { background: var(--color-red-50); }
+
+.btn app-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* --- Formulaires --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.field__label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.field__input {
+  font-size: 1.4rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 0.1rem solid var(--color-gray-250);
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-green-500);
+  box-shadow: 0 0 0 0.3rem var(--color-green-100);
+}
+
+.field__input--textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.field__error {
+  font-size: 1.2rem;
+  color: var(--color-red-600);
+}
+
+.field__hint {
+  font-size: 1.2rem;
+  color: var(--color-gray-500);
+}
+
+/* --- Modale générique --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-green-950-a40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 100;
+  animation: fade-in 0.18s ease both;
+}
+
+.modal {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2.8rem;
+  width: 100%;
+  max-width: 48rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: pop-in 0.2s ease both;
+}
+
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.modal__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.modal__subtitle {
+  font-size: 1.35rem;
+  color: var(--color-gray-500);
+  margin-bottom: 2rem;
+}
+
+.modal__close {
+  width: 3.2rem;
+  height: 3.2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-gray-500);
+  transition: background var(--transition-base);
+}
+.modal__close:hover { background: var(--color-gray-100); }
+.modal__close app-icon { width: 1.8rem; height: 1.8rem; }
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  margin-top: 0.4rem;
+}

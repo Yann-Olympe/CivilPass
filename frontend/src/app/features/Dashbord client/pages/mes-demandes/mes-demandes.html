@@ -1,0 +1,65 @@
+<section class="list-header">
+  <div>
+    <h1 class="list-header__title">Historique de vos demandes</h1>
+    <p class="list-header__subtitle">Retrouvez toutes vos démarches et leur statut en temps réel.</p>
+  </div>
+
+  <div class="list-header__actions">
+    <label class="search">
+      <app-icon name="search" />
+      <input
+        type="text"
+        placeholder="Rechercher une demande..."
+        [ngModel]="recherche()"
+        (ngModelChange)="onRechercheChange($event)"
+      />
+    </label>
+
+    <button type="button" class="btn btn--primary" (click)="nouvelleDemande()">
+      <app-icon name="plus" />
+      Nouvelle demande
+    </button>
+  </div>
+</section>
+
+<section class="tabs">
+  @for (tab of tabs; track tab.value) {
+    <button
+      type="button"
+      class="tabs__item"
+      [class.tabs__item--active]="filtre() === tab.value"
+      (click)="setFiltre(tab.value)"
+    >
+      {{ tab.label }}
+    </button>
+  }
+</section>
+
+<section class="demande-list">
+  @if (demandes().length === 0) {
+    <div class="empty-state">
+      <app-icon name="inbox" />
+      <p class="empty-state__title">Aucune demande ne correspond à votre recherche.</p>
+      <p class="empty-state__subtitle">Essayez un autre mot-clé ou changez de filtre.</p>
+    </div>
+  } @else {
+    @for (demande of demandes(); track demande.id) {
+      <article class="demande-card" (click)="ouvrir(demande.id)" role="button" tabindex="0" (keydown.enter)="ouvrir(demande.id)">
+        <span class="demande-card__icon">
+          <app-icon [name]="typeIcon[demande.type]" />
+        </span>
+
+        <div class="demande-card__body">
+          <p class="demande-card__title">{{ demande.titre }}</p>
+          <p class="demande-card__meta">ID : {{ demande.reference }} • {{ demande.dateCreation }}</p>
+        </div>
+
+        <app-client-status-badge [statut]="demande.statut" />
+
+        <span class="demande-card__chevron">
+          <app-icon name="chevron-right" />
+        </span>
+      </article>
+    }
+  }
+</section>

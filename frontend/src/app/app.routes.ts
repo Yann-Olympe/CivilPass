@@ -29,8 +29,8 @@ export const routes: Routes = [
     { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
 
     { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
-    /*{ path: 'inscription', loadComponent: () => import('./features/citizen/auth/inscription/inscription').then(m => m.Inscription) },
-    { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },*/
+    { path: 'inscription', loadComponent: () => import('./features/Auth/pages/register/register').then(m => m.Register) },
+  /*  { path: 'verification', loadComponent: () => import('./features/citizen/verification/verification').then(m => m.Verification) },*/
 
     // --- Routes protégées (regroupées sous un guard commun) ---
     {
@@ -49,6 +49,41 @@ export const routes: Routes = [
       // { path: 'demande', loadComponent: () => ... }
       // { path: 'suivi/:qrToken', loadComponent: () => ... }
 
+  // ===== Espace citoyen connecté ("Dashbord client") =====
+  {
+    path: 'espace',
+    canActivate: [citizenAuthGuard],
+    loadComponent: () =>
+      import('./features/Dashbord client/layout/client-shell/client-shell').then(m => m.ClientShell),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/espace-home/espace-home').then(m => m.EspaceHome),
+      },
+      {
+        path: 'demandes',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/mes-demandes/mes-demandes').then(m => m.MesDemandes),
+      },
+      {
+        path: 'demandes/:id',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/demande-detail/demande-detail').then(m => m.DemandeDetail),
+      },
+      {
+        path: 'profil',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/mon-profil/mon-profil').then(m => m.MonProfil),
+      },
+      {
+        path: 'statistiques',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/statistiques/statistiques').then(m => m.Statistiques),
+      },
+      { path: '**', redirectTo: '' },
+    ],
+  },
 
   // ===== Partie de ton collègue (mairie), préfixée =====
   {

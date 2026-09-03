@@ -1,0 +1,49 @@
+<aside class="sidebar" [class.sidebar--open]="open">
+  <div class="sidebar__top">
+    <div class="sidebar__mobile-header">
+      <span class="sidebar__mobile-title">Menu</span>
+      <button
+        type="button"
+        class="sidebar__close"
+        aria-label="Fermer le menu"
+        (click)="closeRequested.emit()"
+      >
+        <app-icon name="x" />
+      </button>
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (item of navItems; track item.path) {
+        <a
+          class="sidebar__link"
+          [routerLink]="item.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: item.exact }"
+          (click)="onLinkClick()"
+        >
+          <app-icon [name]="item.icon" />
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </div>
+
+  <div class="sidebar__bottom">
+    <button type="button" class="sidebar__link sidebar__logout" (click)="logout()">
+      <app-icon name="log-out" />
+      Déconnexion
+    </button>
+
+    <button type="button" class="sidebar__help" (click)="openSupport()">
+      <span class="sidebar__help-title">Besoin d'aide ?</span>
+      <span class="sidebar__help-cta">
+        <app-icon name="life-buoy" />
+        Contacter le support
+      </span>
+    </button>
+  </div>
+</aside>
+
+@if (supportOpen()) {
+  <app-support-modal (closed)="closeSupport()" />
+}

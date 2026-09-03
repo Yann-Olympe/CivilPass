@@ -1,0 +1,22 @@
+<div class="client-shell">
+  <app-client-topbar (menuToggle)="toggleSidebar()" />
+
+  <div class="client-shell__body">
+    <app-client-sidebar [open]="sidebarOpen()" (closeRequested)="closeSidebar()" />
+
+    @if (sidebarOpen()) {
+      <button
+        type="button"
+        class="client-shell__scrim"
+        aria-label="Fermer le menu"
+        (click)="closeSidebar()"
+      ></button>
+    }
+
+    <main class="client-shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+<app-client-toast-container />

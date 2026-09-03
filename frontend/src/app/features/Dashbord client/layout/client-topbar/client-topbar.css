@@ -1,0 +1,190 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.4rem 3.2rem;
+  background: var(--color-green-950);
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.topbar__logo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: -0.01em;
+}
+
+.topbar__burger {
+  display: none;
+  color: var(--color-white);
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background var(--transition-base);
+}
+
+.topbar__burger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 2.8rem;
+}
+
+.topbar__link {
+  position: relative;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0.6rem 0.2rem;
+  transition: color var(--transition-base);
+}
+
+.topbar__link:hover {
+  color: var(--color-white);
+}
+
+.topbar__link--active {
+  color: var(--color-white);
+}
+
+.topbar__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.4rem;
+  height: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-yellow-500);
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.topbar__icon-btn {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  transition: background var(--transition-base);
+}
+
+.topbar__icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar__avatar-wrap {
+  position: relative;
+}
+
+.topbar__avatar {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  background: var(--color-green-600);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  border: 0.15rem solid rgba(255, 255, 255, 0.25);
+  transition: background var(--transition-base);
+}
+
+.topbar__avatar:hover {
+  background: var(--color-green-500);
+}
+
+.topbar__avatar-menu {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  min-width: 22rem;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  animation: pop-in 0.15s ease both;
+  z-index: 30;
+}
+
+.topbar__avatar-menu-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem 0;
+}
+
+.topbar__avatar-menu-email {
+  font-size: 1.2rem;
+  color: var(--color-gray-500);
+  padding: 0 0.8rem 0.8rem;
+  border-bottom: 0.1rem solid var(--color-gray-150);
+  margin-bottom: 0.4rem;
+}
+
+.topbar__avatar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  transition: background var(--transition-base);
+  text-align: left;
+}
+
+.topbar__avatar-menu-item:hover {
+  background: var(--color-gray-100);
+}
+
+.topbar__avatar-menu-item--danger {
+  color: var(--color-red-600);
+}
+
+.topbar__avatar-menu-item app-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+/* --- Mobile : le topbar se réduit au logo + au bouton hamburger.
+   Le hamburger n'ouvre plus de menu local, il ouvre le sidebar (voir client-shell). --- */
+@media (max-width: 860px) {
+  .topbar {
+    padding: 1.4rem 1.8rem;
+  }
+
+  .topbar__nav,
+  .topbar__icon-btn,
+  .topbar__avatar-wrap {
+    display: none;
+  }
+
+  .topbar__right {
+    display: none;
+  }
+
+  .topbar__burger {
+    display: flex;
+    margin-left: auto;
+  }
+}

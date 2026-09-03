@@ -1,0 +1,227 @@
+@import '../../shared/styles/panel.css';
+
+/* Comme pour les autres pages : ce composant n'a pas de conteneur flex
+   parent, donc c'est lui qui doit espacer ses sections (header, tabs, liste). */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+@media (max-width: 700px) {
+  :host {
+    gap: 2rem;
+  }
+}
+
+.list-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.list-header__title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.list-header__subtitle {
+  margin-top: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--color-gray-500);
+}
+
+.list-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-white);
+  border: 0.1rem solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem 1.6rem;
+  width: 28rem;
+  color: var(--color-gray-500);
+}
+
+.search app-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+  flex-shrink: 0;
+}
+
+.search input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1.4rem;
+  background: transparent;
+  color: var(--color-gray-900);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  background: var(--color-gray-100);
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.tabs__item {
+  padding: 0.9rem 1.8rem;
+  border-radius: var(--radius-pill);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gray-600);
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.tabs__item:hover {
+  color: var(--color-gray-900);
+}
+
+.tabs__item--active {
+  background: var(--color-white);
+  color: var(--color-green-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.demande-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.demande-card {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.2rem;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  animation: fade-in-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.demande-card:hover,
+.demande-card:focus-visible {
+  transform: translateY(-0.15rem);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+.demande-card__icon {
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-gray-100);
+  color: var(--color-green-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demande-card__icon app-icon { width: 2.2rem; height: 2.2rem; }
+
+.demande-card__body {
+  flex: 1;
+  min-width: 16rem;
+}
+
+.demande-card__title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.demande-card__meta {
+  margin-top: 0.3rem;
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.demande-card__chevron {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+}
+
+/* En dessous de 560px, le badge de statut ("Prêt pour retrait", etc.) n'a
+   plus la place de rester sur la même ligne que le titre sans déborder :
+   on le fait passer sur sa propre ligne, aligné sous le texte. */
+@media (max-width: 560px) {
+  .demande-card {
+    flex-wrap: wrap;
+    row-gap: 1rem;
+  }
+
+  .demande-card__icon {
+    order: 1;
+  }
+
+  .demande-card__body {
+    order: 2;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .demande-card__chevron {
+    order: 3;
+  }
+
+  .demande-card app-client-status-badge {
+    order: 4;
+    flex: 1 1 100%;
+    margin-left: calc(5rem + 1.8rem);
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.8rem;
+  padding: 6rem 2rem;
+  color: var(--color-gray-500);
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  border: 0.1rem dashed var(--color-gray-250);
+}
+
+.empty-state app-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  color: var(--color-gray-400);
+  margin-bottom: 0.6rem;
+}
+
+.empty-state__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.empty-state__subtitle {
+  font-size: 1.3rem;
+}
+
+@media (max-width: 700px) {
+  .search { width: 100%; }
+  .list-header__actions { width: 100%; flex-direction: column; align-items: stretch; }
+}

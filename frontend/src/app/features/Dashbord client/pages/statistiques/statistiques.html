@@ -1,0 +1,52 @@
+<button type="button" class="back-link" (click)="retour()">
+  <app-icon name="arrow-left" />
+  Retour à mon espace
+</button>
+
+<section class="page-header">
+  <h1 class="page-header__title">Visualisation Analytique</h1>
+  <p class="page-header__subtitle">
+    Aperçu détaillé de l'évolution de vos demandes administratives au cours de l'année.
+  </p>
+</section>
+
+<section class="panel">
+  <div class="panel__header">
+    <h2 class="panel__title">Demandes par mois</h2>
+  </div>
+
+  <div class="bar-chart">
+    @for (mois of statsMensuelles(); track mois.label) {
+      <div class="bar-chart__col">
+        <div class="bar-chart__track">
+          <div class="bar-chart__bar" [style.height.%]="(mois.total / maxMensuel()) * 100">
+            <span class="bar-chart__value">{{ mois.total }}</span>
+          </div>
+        </div>
+        <span class="bar-chart__label">{{ mois.label }}</span>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header">
+    <h2 class="panel__title">Répartition par statut</h2>
+  </div>
+
+  <div class="distribution">
+    @for (item of repartition(); track item.statut) {
+      <div class="distribution__row">
+        <span class="distribution__label">{{ statutLabels[item.statut] }}</span>
+        <div class="distribution__track">
+          <div
+            class="distribution__bar"
+            [attr.data-tone]="toneFor(item.statut)"
+            [style.width.%]="(item.total / maxRepartition()) * 100"
+          ></div>
+        </div>
+        <span class="distribution__value">{{ item.total }}</span>
+      </div>
+    }
+  </div>
+</section>
