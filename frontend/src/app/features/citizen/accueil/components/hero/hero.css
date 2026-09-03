@@ -89,3 +89,54 @@ h1 em {
   &:hover{background:var(--color-green-850);}
   &:focus-visible{outline:0.2rem solid var(--color-green-400);outline-offset: 0.2rem;}
 }
+@media (min-width: 1024px) {
+  .hero {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    min-height: 60rem;
+  }
+
+  .hero-image {
+    width: 50%;
+    height: auto;
+    aspect-ratio: unset;
+    object-fit: cover;
+  }
+
+  .hero-content {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 6rem;
+  }
+
+  h1,
+  h1 em {
+    font-size: 4.2rem;
+  }
+
+  .hero-text {
+    font-size: 1.7rem;
+    max-width: 44rem;
+  }
+
+  .hero-actions {
+    flex-direction: row;
+    gap: 1.6rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-content {
+    padding: 4rem 8rem;
+  }
+}

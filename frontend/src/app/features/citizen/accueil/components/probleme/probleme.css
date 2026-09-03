@@ -71,3 +71,36 @@ h3 {
   line-height: 1.5;
   margin: 0;
 }
+@media (min-width: 768px) {
+  .probleme {
+    padding: 6rem 4rem;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    max-width: 60rem;
+  }
+
+  .probleme-list {
+    max-width: 90rem;
+    margin: 0 auto;
+  }
+
+  .probleme-row {
+    display: grid;
+    grid-template-columns: 28rem 1fr;
+    align-items: start;
+    gap: 2rem;
+    padding: 2.4rem 0;
+  }
+
+  .probleme-head {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .probleme {
+    padding: 6rem 8rem;
+  }
+}

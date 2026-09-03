@@ -37,3 +37,33 @@
     line-height: 1.5;
     margin: 0;
   }
+@media (min-width: 1024px) {
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+    padding: 4rem 6rem 3.2rem;
+    max-width: 112rem;
+    margin: 0 auto;
+  }
+
+  .footer__brand {
+    margin: 0;
+  }
+
+  .footer__links {
+    flex-direction: row;
+    gap: 2.8rem;
+    margin: 0;
+  }
+
+  .footer__copy {
+    flex-basis: 100%;
+    padding-top: 2rem;
+    margin-top: 0.4rem;
+    border-top: 0.1rem solid var(--color-gray-200);
+    text-align: center;
+  }
+}

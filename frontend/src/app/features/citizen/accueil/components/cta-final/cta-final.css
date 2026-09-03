@@ -32,3 +32,38 @@ h2 {
 }
 .btn-primary:hover { background: var(--color-green-50); }
 .btn-primary:focus-visible { outline: 0.2rem solid var(--color-green-300); outline-offset: 0.2rem; }
+@media (min-width: 1024px) {
+  .mhl {
+    padding: 7.2rem 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    max-width: 60rem;
+  }
+
+  .mhl-texte {
+    font-size: 1.6rem;
+    max-width: 56rem;
+  }
+
+  .sync-card {
+    max-width: 60rem;
+    padding: 2.4rem;
+  }
+
+  .sync-title {
+    font-size: 1.4rem;
+  }
+
+  .sync-item {
+    font-size: 1.4rem;
+  }
+
+  .btn-primary {
+    max-width: 32rem;
+  }
+}

@@ -38,3 +38,35 @@ h2 {
   flex-shrink: 0;
   color: var(--color-green-300);
 }
+@media (min-width: 1024px) {
+  .copie-acte {
+    padding: 7.2rem 6rem;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    max-width: 60rem;
+  }
+
+  .copie-acte p {
+    font-size: 1.6rem;
+    max-width: 56rem;
+  }
+
+  .copie-acte-features {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+  }
+
+  .copie-acte-features li {
+    font-size: 1.5rem;
+    padding: 1.4rem 2.2rem;
+    transition: background var(--transition-base), border-color var(--transition-base);
+
+    &:hover {
+      background: var(--color-green-700);
+      border-color: var(--color-green-400);
+    }
+  }
+}

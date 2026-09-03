@@ -15,3 +15,13 @@ h2 {
   color: var(--color-white);
   background: linear-gradient(180deg, transparent 0%, var(--color-green-950-a40) 60%, var(--color-green-950) 100%);
 }
+@media (min-width: 768px) {
+  .reseau-image {
+    aspect-ratio: 21 / 9;
+  }
+
+  h2 {
+    font-size: 3rem;
+    padding: 4rem;
+  }
+}
