@@ -1,0 +1,17 @@
+<div class="form-field">
+  <label for="region">Région <span class="required">*</span></label>
+  <select id="region" formControlName="region">
+    <option value="" disabled selected>Choisir votre région</option>
+    @for (r of regions; track r) {
+      <option [value]="r">{{ r }}</option>
+    }
+  </select>
+</div>
+
+<div class="form-field">
+  <label for="nationalite">Nationalité <span class="required">*</span></label>
+  <select id="nationalite" formControlName="nationalite">
+    <option value="Camerounaise">Camerounaise</option>
+    <option value="Autre">Autre</option>
+  </select>
+</div>

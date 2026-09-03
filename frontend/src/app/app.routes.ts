@@ -12,7 +12,19 @@ import { TransfertDetail } from './features/mairie/pages/transfert-detail/transf
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
 
-  // ===== Partie citoyen (inchangée) =====
+  // ===== Partie citoyen =====
+  {
+    path: 'inscription',
+    children: [
+      { path: 'identite', loadComponent: () => import('./features/Auth/pages/register-wizard/register-identite/register-identite').then(m => m.RegisterIdentite) },
+      { path: 'coordonnees', loadComponent: () => import('./features/Auth/pages/register-wizard/register-coordonnees/register-coordonnees').then(m => m.RegisterCoordonnees) },
+      { path: 'securite', loadComponent: () => import('./features/Auth/pages/register-wizard/register-securite/register-securite').then(m => m.RegisterSecurite) },
+      { path: 'piece-identite', loadComponent: () => import('./features/Auth/pages/register-wizard/register-piece-identite/register-piece-identite').then(m => m.RegisterPieceIdentite) },
+      { path: 'recapitulatif', loadComponent: () => import('./features/Auth/pages/register-wizard/register-recapitulatif/register-recapitulatif').then(m => m.RegisterRecapitulatif) },
+      { path: '', redirectTo: 'identite', pathMatch: 'full' },
+    ],
+  },
+
   {
     path: '',
     component: CitizenShell,
@@ -23,8 +35,6 @@ export const routes: Routes = [
       { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
       { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
       { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
-      { path: 'register', loadComponent: () => import('./features/Auth/pages/register/register').then(m => m.Register) },
-
       {
         path: '',
         children: [],

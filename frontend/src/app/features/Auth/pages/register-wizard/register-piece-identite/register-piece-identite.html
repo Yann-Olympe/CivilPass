@@ -1,0 +1,38 @@
+<div class="wizard-page fade-in">
+  <div class="stepper"><!-- étape 4 active, même structure --></div>
+
+  <h1 class="wizard-title">Pièce d'identité</h1>
+  <p class="wizard-subtitle">Scannez le recto et le verso de votre CNI.</p>
+
+  <div class="info-banner">
+    <p class="info-banner__text">
+      <strong>Cette étape est optionnelle pour l'instant.</strong> Le traitement des pièces d'identité sera activé prochainement.
+    </p>
+  </div>
+
+  <div class="cni-upload-grid">
+    <label class="cni-upload-card">
+      <input type="file" accept="image/*" hidden (change)="onFileChange($event, 'recto')" />
+      @if (rectoPreview()) {
+        <img [src]="rectoPreview()" alt="Recto CNI" class="cni-preview" />
+      } @else {
+        <span>+ Ajouter le recto</span>
+      }
+    </label>
+
+    <label class="cni-upload-card">
+      <input type="file" accept="image/*" hidden (change)="onFileChange($event, 'verso')" />
+      @if (versoPreview()) {
+        <img [src]="versoPreview()" alt="Verso CNI" class="cni-preview" />
+      } @else {
+        <span>+ Ajouter le verso</span>
+      }
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn btn--secondary" (click)="precedent()">Précédent</button>
+    <button type="button" class="btn btn--primary" (click)="suivant()">Suivant</button>
+  </div>
+  <button type="button" class="link-skip" (click)="passer()">Passer cette étape</button>
+</div>

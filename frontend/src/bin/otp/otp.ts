@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, computed, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Icon } from '../../../mairie/shared/icon/icon';
-import { AuthFlow } from '../../services/auth-flow';
+import { Icon } from '../../app/features/mairie/shared/icon/icon';
+import { AuthFlow } from '../../app/features/Auth/services/auth-flow';
 
 const DUREE_INITIALE = 272;
 

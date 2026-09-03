@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Icon } from '../../../mairie/shared/icon/icon';
-import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
+import { Icon } from '../../app/features/mairie/shared/icon/icon';
+import { CitizenAuthService } from '../../app/Services/citizen-auth.service';
 
 @Component({
   selector: 'app-register',

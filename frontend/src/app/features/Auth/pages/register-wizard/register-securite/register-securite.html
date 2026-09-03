@@ -1,0 +1,65 @@
+<div class="wizard-page fade-in">
+  <div class="stepper">
+    <div class="step step--done"><div class="step__circle">1</div><span class="step__label">Identité</span></div>
+    <div class="step__connector step__connector--done"></div>
+    <div class="step step--done"><div class="step__circle">2</div><span class="step__label">Coordonnées</span></div>
+    <div class="step__connector step__connector--done"></div>
+    <div class="step step--active"><div class="step__circle">3</div><span class="step__label">Sécurité</span></div>
+    <div class="step__connector"></div>
+    <div class="step"><div class="step__circle">4</div><span class="step__label">Pièce d'identité</span></div>
+    <div class="step__connector"></div>
+    <div class="step"><div class="step__circle">5</div><span class="step__label">Validation</span></div>
+  </div>
+
+  <h1 class="wizard-title">Sécurisez votre compte</h1>
+  <p class="wizard-subtitle">Choisissez un mot de passe pour protéger votre espace.</p>
+
+  <form [formGroup]="formulaire" (ngSubmit)="suivant()" class="wizard-form">
+    <div class="form-field">
+      <label for="password">Mot de passe <span class="required">*</span></label>
+      <div class="input-wrapper">
+        <input
+          id="password"
+          [type]="motDePasseVisible() ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Au moins 6 caractères"
+          [class.input--error]="invalide('password')"
+        />
+        <button type="button" class="input-toggle" (click)="basculerMotDePasse()" tabindex="-1">
+          {{ motDePasseVisible() ? '🙈' : '👁' }}
+        </button>
+      </div>
+      @if (erreur('password', 'required')) {
+        <span class="error-message">Le mot de passe est requis.</span>
+      } @else if (erreur('password', 'minlength')) {
+        <span class="error-message">Au moins 6 caractères.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="password_confirmation">Confirmer le mot de passe <span class="required">*</span></label>
+      <div class="input-wrapper">
+        <input
+          id="password_confirmation"
+          [type]="confirmationVisible() ? 'text' : 'password'"
+          formControlName="password_confirmation"
+          placeholder="Ressaisissez le mot de passe"
+          [class.input--error]="invalide('password_confirmation')"
+        />
+        <button type="button" class="input-toggle" (click)="basculerConfirmation()" tabindex="-1">
+          {{ confirmationVisible() ? '🙈' : '👁' }}
+        </button>
+      </div>
+      @if (erreur('password_confirmation', 'required')) {
+        <span class="error-message">La confirmation est requise.</span>
+      } @else if (formulaire.hasError('motsDePasseDifferents') && formulaire.get('password_confirmation')?.touched) {
+        <span class="error-message">Les mots de passe ne correspondent pas.</span>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="precedent()">Précédent</button>
+      <button type="submit" class="btn btn--primary">Suivant</button>
+    </div>
+  </form>
+</div>
