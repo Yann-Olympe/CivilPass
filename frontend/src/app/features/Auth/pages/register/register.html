@@ -1,36 +1,39 @@
 <form class="auth-card register-card" [class.is-shake]="secousse()" [formGroup]="formulaire" (ngSubmit)="soumettre()" novalidate>
   <h1 class="auth-card__title">Créer un compte</h1>
-  <p class="auth-card__subtitle">Rejoignez votre espace agent CivilPass.</p>
+  <p class="auth-card__subtitle">Rejoignez votre espace citoyen CivilPass.</p>
+
+  @if (erreurServeur()) {
+    <div class="auth-alert auth-alert--error">{{ erreurServeur() }}</div>
+  }
 
   <div class="auth-form">
-    <div class="auth-field">
-      <label for="nomComplet">Nom complet</label>
-      <div class="auth-field__control">
-        <input
-          id="nomComplet"
-          type="text"
-          formControlName="nomComplet"
-          placeholder="Entrez votre nom complet"
-          [class.is-invalid]="invalide('nomComplet')"
-        />
+
+    <div class="auth-fieldset-row">
+      <div class="auth-field">
+        <label for="nom">Nom</label>
+        <div class="auth-field__control">
+          <input id="nom" type="text" formControlName="nom" placeholder="Votre nom" [class.is-invalid]="invalide('nom')" />
+        </div>
+        @if (erreur('nom', 'required')) {
+          <span class="auth-field__error">Le nom est requis.</span>
+        }
       </div>
-      @if (erreur('nomComplet', 'required')) {
-        <span class="auth-field__error">Le nom complet est requis.</span>
-      } @else if (erreur('nomComplet', 'minlength')) {
-        <span class="auth-field__error">Le nom doit contenir au moins 3 caractères.</span>
-      }
+
+      <div class="auth-field">
+        <label for="prenom">Prénom</label>
+        <div class="auth-field__control">
+          <input id="prenom" type="text" formControlName="prenom" placeholder="Votre prénom" [class.is-invalid]="invalide('prenom')" />
+        </div>
+        @if (erreur('prenom', 'required')) {
+          <span class="auth-field__error">Le prénom est requis.</span>
+        }
+      </div>
     </div>
 
     <div class="auth-field">
       <label for="email">Adresse email</label>
       <div class="auth-field__control">
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Entrez votre email"
-          [class.is-invalid]="invalide('email')"
-        />
+        <input id="email" type="email" formControlName="email" placeholder="Entrez votre email" [class.is-invalid]="invalide('email')" />
       </div>
       @if (erreur('email', 'required')) {
         <span class="auth-field__error">L'adresse email est requise.</span>
@@ -40,24 +43,118 @@
     </div>
 
     <div class="auth-field">
+      <label for="telephone">Téléphone</label>
+      <div class="auth-field__control">
+        <input id="telephone" type="tel" formControlName="telephone" placeholder="6XX XXX XXX" [class.is-invalid]="invalide('telephone')" />
+      </div>
+      @if (erreur('telephone', 'required')) {
+        <span class="auth-field__error">Le téléphone est requis.</span>
+      }
+    </div>
+
+    <div class="auth-fieldset-row">
+      <div class="auth-field">
+        <label for="date_naissance">Date de naissance</label>
+        <div class="auth-field__control">
+          <input id="date_naissance" type="date" formControlName="date_naissance" [class.is-invalid]="invalide('date_naissance')" />
+        </div>
+        @if (erreur('date_naissance', 'required')) {
+          <span class="auth-field__error">Requis.</span>
+        }
+      </div>
+
+      <div class="auth-field">
+        <label for="sexe">Sexe</label>
+        <div class="auth-field__control">
+          <select id="sexe" formControlName="sexe" [class.is-invalid]="invalide('sexe')">
+            <option value="" disabled selected>Choisir</option>
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+          </select>
+        </div>
+        @if (erreur('sexe', 'required')) {
+          <span class="auth-field__error">Requis.</span>
+        }
+      </div>
+    </div>
+
+    <div class="auth-field">
+      <label for="lieu_naissance">Lieu de naissance</label>
+      <div class="auth-field__control">
+        <input id="lieu_naissance" type="text" formControlName="lieu_naissance" placeholder="Ville, hôpital..." [class.is-invalid]="invalide('lieu_naissance')" />
+      </div>
+      @if (erreur('lieu_naissance', 'required')) {
+        <span class="auth-field__error">Requis.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="adresse">Adresse</label>
+      <div class="auth-field__control">
+        <input id="adresse" type="text" formControlName="adresse" placeholder="Votre adresse" [class.is-invalid]="invalide('adresse')" />
+      </div>
+      @if (erreur('adresse', 'required')) {
+        <span class="auth-field__error">Requise.</span>
+      }
+    </div>
+
+    <div class="auth-fieldset-row">
+      <div class="auth-field">
+        <label for="ville">Ville</label>
+        <div class="auth-field__control">
+          <input id="ville" type="text" formControlName="ville" placeholder="Douala, Yaoundé..." [class.is-invalid]="invalide('ville')" />
+        </div>
+        @if (erreur('ville', 'required')) {
+          <span class="auth-field__error">Requise.</span>
+        }
+      </div>
+
+      <div class="auth-field">
+        <label for="region">Région</label>
+        <div class="auth-field__control">
+          <input id="region" type="text" formControlName="region" placeholder="Littoral, Centre..." [class.is-invalid]="invalide('region')" />
+        </div>
+        @if (erreur('region', 'required')) {
+          <span class="auth-field__error">Requise.</span>
+        }
+      </div>
+    </div>
+
+    <div class="auth-field">
       <label for="motDePasse">Mot de passe</label>
       <div class="auth-field__control">
         <input
           id="motDePasse"
           [type]="motDePasseVisible() ? 'text' : 'password'"
-          formControlName="motDePasse"
-          placeholder="Entrez votre mot de passe"
-          [class.is-invalid]="invalide('motDePasse')"
+          formControlName="password"
+          placeholder="Au moins 6 caractères"
+          [class.is-invalid]="invalide('password')"
           style="padding-right: 4.4rem;"
         />
         <button class="auth-field__toggle" type="button" (click)="basculerMotDePasse()" tabindex="-1">
           <app-icon [name]="motDePasseVisible() ? 'eye-off' : 'eye'" />
         </button>
       </div>
-      @if (erreur('motDePasse', 'required')) {
+      @if (erreur('password', 'required')) {
         <span class="auth-field__error">Le mot de passe est requis.</span>
-      } @else if (erreur('motDePasse', 'minlength')) {
-        <span class="auth-field__error">Le mot de passe doit contenir au moins 8 caractères.</span>
+      } @else if (erreur('password', 'minlength')) {
+        <span class="auth-field__error">Au moins 6 caractères.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="password_confirmation">Confirmer le mot de passe</label>
+      <div class="auth-field__control">
+        <input
+          id="password_confirmation"
+          type="password"
+          formControlName="password_confirmation"
+          placeholder="Ressaisissez le mot de passe"
+          [class.is-invalid]="invalide('password_confirmation')"
+        />
+      </div>
+      @if (formulaire.hasError('motsDePasseDifferents') && formulaire.get('password_confirmation')?.touched) {
+        <span class="auth-field__error">Les mots de passe ne correspondent pas.</span>
       }
     </div>
 
@@ -67,23 +164,10 @@
       }
       Créer mon compte
     </button>
-
-    <div class="auth-divider">ou</div>
-
-    <button class="auth-google" type="button" (click)="continuerAvecGoogle()" [disabled]="envoiEnCours()">
-      <app-icon name="google" />
-      S'inscrire avec Google
-    </button>
-  </div>
-
-  <div class="auth-progress-dots">
-    <span data-state="active"></span>
-    <span></span>
-    <span></span>
   </div>
 
   <p class="auth-switch">
     Vous avez déjà un compte ?
-    <a routerLink="/auth/login">Se connecter</a>
+    <a routerLink="/login">Se connecter</a>
   </p>
 </form>

@@ -306,3 +306,21 @@
   height: 1.8rem;
   flex-shrink: 0;
 }
+.auth-fieldset-row {
+  display: flex;
+  gap: 1.6rem;
+}
+
+.auth-fieldset-row .auth-field {
+  flex: 1;
+}
+
+.auth-field__control select {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  border: 0.1rem solid var(--color-green-100);
+  border-radius: var(--radius-sm);
+  font-size: 1.35rem;
+  background: var(--color-green-50);
+  color: var(--color-gray-900);
+}

@@ -136,6 +136,6 @@ export class Verification {
   valider() {
     this.store.valider(this.demandeId);
     this.toast.show(`Demande ${this.demandeId} validée avec succès.`, 'success');
-    this.router.navigate(['/transferts', this.demandeId]);
+    this.router.navigate(['/mairie/transferts', this.demandeId]);
   }
 }

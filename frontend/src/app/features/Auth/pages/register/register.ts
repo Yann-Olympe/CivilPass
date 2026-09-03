@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Icon } from '../../../mairie/shared/icon/icon';
-import { AuthFlow } from '../../services/auth-flow';
+import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,18 +12,35 @@ import { AuthFlow } from '../../services/auth-flow';
   styleUrl: './register.css'
 })
 export class Register {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private citizenAuth = inject(CitizenAuthService);
+
   motDePasseVisible = signal(false);
   envoiEnCours = signal(false);
   secousse = signal(false);
+  erreurServeur = signal<string | null>(null);
 
-  formulaire: FormGroup;
+  formulaire: FormGroup = this.fb.group({
+    nom: ['', [Validators.required, Validators.maxLength(100)]],
+    prenom: ['', [Validators.required, Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.email]],
+    telephone: ['', [Validators.required, Validators.maxLength(20)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    password_confirmation: ['', [Validators.required]],
+    date_naissance: ['', [Validators.required]],
+    lieu_naissance: ['', [Validators.required, Validators.maxLength(150)]],
+    sexe: ['', [Validators.required]],
+    nationalite: ['Camerounaise', [Validators.required, Validators.maxLength(100)]],
+    adresse: ['', [Validators.required, Validators.maxLength(255)]],
+    ville: ['', [Validators.required, Validators.maxLength(100)]],
+    region: ['', [Validators.required, Validators.maxLength(100)]],
+  }, { validators: this.motsDePasseIdentiques });
 
-  constructor(private fb: FormBuilder, private router: Router, private authFlow: AuthFlow) {
-    this.formulaire = this.fb.group({
-      nomComplet: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      motDePasse: ['', [Validators.required, Validators.minLength(8)]],
-    });
+  private motsDePasseIdentiques(group: FormGroup) {
+    const pass = group.get('password')?.value;
+    const confirm = group.get('password_confirmation')?.value;
+    return pass === confirm ? null : { motsDePasseDifferents: true };
   }
 
   basculerMotDePasse() {
@@ -38,22 +55,25 @@ export class Register {
     }
 
     this.envoiEnCours.set(true);
-    const { nomComplet, email } = this.formulaire.getRawValue();
+    this.erreurServeur.set(null);
 
-    setTimeout(() => {
-      this.envoiEnCours.set(false);
-      this.authFlow.demarrerInscription(nomComplet ?? '', email ?? '');
-      this.router.navigate(['/auth/otp']);
-    }, 900);
-  }
+    this.citizenAuth.register(this.formulaire.getRawValue()).subscribe({
+      next: () => {
+        this.envoiEnCours.set(false);
+        this.router.navigate(['/espace']);
+      },
+      error: (err) => {
+        this.envoiEnCours.set(false);
+        this.declencherSecousse();
 
-  continuerAvecGoogle() {
-    this.envoiEnCours.set(true);
-    setTimeout(() => {
-      this.envoiEnCours.set(false);
-      this.authFlow.demarrerInscription('Agent Google', 'agent.google@civilpass.cm');
-      this.router.navigate(['/auth/otp']);
-    }, 700);
+        if (err.status === 422 && err.error?.errors) {
+          const premiereErreur = Object.values(err.error.errors)[0] as string[];
+          this.erreurServeur.set(premiereErreur[0]);
+        } else {
+          this.erreurServeur.set('Une erreur est survenue. Réessayez.');
+        }
+      },
+    });
   }
 
   private declencherSecousse() {

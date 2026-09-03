@@ -35,6 +35,9 @@ const FILTRES_DISPONIBLES: { value: FiltreStatut; label: string }[] = [
   styleUrl: './demandes-list.css',
 })
 export class DemandesList {
+  constructor() {
+    console.log('DemandesList chargé - version test');
+  }
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(DemandesStore);
@@ -70,7 +73,9 @@ export class DemandesList {
   }
 
   ouvrir(id: string) {
-    this.router.navigate(['/demandes', id]);
+   console.log('ID reçu :', id, typeof id);
+   console.log('Navigation vers :', ['/mairie/demandes', id]);
+    this.router.navigate(['/mairie/demandes', id]);
   }
 
   estFinalisee(statut: StatutDemande) {

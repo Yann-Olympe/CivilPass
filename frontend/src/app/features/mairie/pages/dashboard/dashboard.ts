@@ -21,10 +21,10 @@ export class Dashboard {
   demandes = () => this.store.recentes().slice(0, 8);
 
   ouvrir(id: string) {
-    this.router.navigate(['/demandes', id]);
+    this.router.navigate(['/mairie/demandes', id]);
   }
 
   voirTout() {
-    this.router.navigate(['/demandes']);
+    this.router.navigate(['/mairie/demandes']);
   }
 }

@@ -23,6 +23,8 @@ export const routes: Routes = [
       { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
       { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
       { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
+      { path: 'register', loadComponent: () => import('./features/Auth/pages/register/register').then(m => m.Register) },
+
       {
         path: '',
         children: [],

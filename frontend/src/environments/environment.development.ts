@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: '',
+    apiUrl: 'https://civilpassdev.alwaysdata.net',
     siteName:"CivilPass(dev)"
 };
