@@ -51,10 +51,10 @@ CREATE TABLE usagers (
     ville               VARCHAR(100) NOT NULL,
     region              VARCHAR(100) NOT NULL,
     -- 3. Identification
-    nui                 VARCHAR(30) NOT NULL UNIQUE,
-    cni_numero          VARCHAR(30) NOT NULL,
-    cni_recto_path      VARCHAR(255) NOT NULL,
-    cni_verso_path      VARCHAR(255) NOT NULL,
+    nui                 VARCHAR(30) NULL UNIQUE,
+    cni_numero          VARCHAR(30) NULL,
+    cni_recto_path      VARCHAR(255) NULL,
+    cni_verso_path      VARCHAR(255) NULL,
     -- Auth
     google_id           VARCHAR(100) NULL UNIQUE,
     password            VARCHAR(255) NULL, -- nullable : comptes Google sans mot de passe local

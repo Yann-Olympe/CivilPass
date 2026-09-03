@@ -79,13 +79,13 @@ php artisan serve
 > Deux guards Sanctum coexistent : `Agent` et `Usager` sont chacun `Authenticatable` + `HasApiTokens`.
 > `auth:sanctum` résout automatiquement le bon modèle selon le token présenté.
 
-### Champs `usagers` (inscription obligatoire)
+### Champs `usagers` (inscription citoyen)
 
 | Groupe | Champs |
 |---|---|
 | Identité | `prenom`, `nom`, `date_naissance`, `lieu_naissance`, `sexe`, `nationalite` |
 | Coordonnées | `email`, `telephone`, `adresse`, `ville`, `region` |
-| Identification | `nui`, `cni_numero`, `cni_recto_path`, `cni_verso_path` |
+| Identification (optionnelle à l'inscription) | `nui`, `cni_numero`, `cni_recto_path`, `cni_verso_path` |
 
 ## 7. Contrat d'API — endpoints
 
