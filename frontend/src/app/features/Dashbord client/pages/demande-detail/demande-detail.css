@@ -1,0 +1,200 @@
+@import '../../shared/styles/panel.css';
+
+/* Le composant est rendu directement dans <main>, sans conteneur flex
+   parent : c'est donc lui qui doit espacer ses sections (et donner un
+   contexte flex à .back-link, qui utilise align-self). */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  align-self: flex-start;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gray-600);
+  transition: color var(--transition-base);
+}
+
+.back-link:hover { color: var(--color-green-700); }
+.back-link app-icon { width: 1.7rem; height: 1.7rem; }
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.detail-header__icon {
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: var(--radius-md);
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.detail-header__icon app-icon { width: 2.6rem; height: 2.6rem; }
+
+.detail-header__text {
+  flex: 1;
+  min-width: 20rem;
+}
+
+.detail-header__title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.detail-header__meta {
+  margin-top: 0.3rem;
+  font-size: 1.35rem;
+  color: var(--color-gray-500);
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.8rem 2rem;
+  border-radius: var(--radius-md);
+}
+
+.alert--danger {
+  background: var(--color-red-50);
+  color: var(--color-red-600);
+}
+
+.alert app-icon { width: 2.2rem; height: 2.2rem; flex-shrink: 0; margin-top: 0.2rem; }
+
+.alert__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.alert__text {
+  margin-top: 0.3rem;
+  font-size: 1.35rem;
+}
+
+/* --- Timeline --- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline__item {
+  display: flex;
+  gap: 1.6rem;
+  padding-bottom: 2.2rem;
+  position: relative;
+}
+
+.timeline__item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 1.15rem;
+  top: 2.4rem;
+  bottom: 0;
+  width: 0.2rem;
+  background: var(--color-gray-200);
+}
+
+.timeline__item--done:not(:last-child)::before {
+  background: var(--color-green-400);
+}
+
+.timeline__dot {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--color-gray-150);
+  color: var(--color-gray-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.timeline__item--done .timeline__dot {
+  background: var(--color-green-500);
+  color: var(--color-white);
+}
+
+.timeline__dot app-icon { width: 1.5rem; height: 1.5rem; }
+
+.timeline__label {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.timeline__item:not(.timeline__item--done) .timeline__label {
+  color: var(--color-gray-500);
+}
+
+.timeline__description {
+  margin-top: 0.3rem;
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}
+
+.timeline__date {
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-green-600);
+}
+
+/* --- Infos --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.8rem 2.4rem;
+}
+
+@media (max-width: 700px) {
+  .info-grid { grid-template-columns: 1fr; }
+}
+
+.info-item__label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-gray-500);
+}
+
+.info-item__value {
+  margin-top: 0.4rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+/* --- Actions --- */
+.actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.actions-bar__hint {
+  font-size: 1.35rem;
+  color: var(--color-gray-500);
+}
+
+.not-found {
+  font-size: 1.5rem;
+  color: var(--color-gray-600);
+}

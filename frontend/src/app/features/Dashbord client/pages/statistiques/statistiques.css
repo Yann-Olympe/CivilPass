@@ -1,0 +1,142 @@
+@import '../../shared/styles/panel.css';
+
+/* Le composant est rendu directement dans <main>, sans conteneur flex
+   parent : c'est donc lui qui doit espacer ses sections (et donner un
+   contexte flex à .back-link, qui utilise align-self). */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  align-self: flex-start;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gray-600);
+  transition: color var(--transition-base);
+}
+.back-link:hover { color: var(--color-green-700); }
+.back-link app-icon { width: 1.7rem; height: 1.7rem; }
+
+.page-header__title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+}
+
+.page-header__subtitle {
+  margin-top: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--color-gray-500);
+  max-width: 60rem;
+}
+
+/* --- Bar chart mensuel --- */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6rem;
+  height: 24rem;
+  padding-top: 1rem;
+}
+
+.bar-chart__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  height: 100%;
+}
+
+.bar-chart__track {
+  flex: 1;
+  width: 100%;
+  max-width: 4.4rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar-chart__bar {
+  width: 100%;
+  min-height: 0.6rem;
+  border-radius: 0.6rem 0.6rem 0 0;
+  background: linear-gradient(180deg, var(--color-green-400), var(--color-green-600));
+  display: flex;
+  justify-content: center;
+  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+
+.bar-chart__value {
+  position: absolute;
+  top: -2.2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-gray-600);
+}
+
+.bar-chart__label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: capitalize;
+}
+
+/* --- Répartition par statut --- */
+.distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.distribution__row {
+  display: grid;
+  grid-template-columns: 14rem 1fr 3rem;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.distribution__label {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.distribution__track {
+  height: 1.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-gray-100);
+  overflow: hidden;
+}
+
+.distribution__bar {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.distribution__bar[data-tone='green'] { background: var(--color-green-500); }
+.distribution__bar[data-tone='yellow'] { background: var(--color-yellow-500); }
+.distribution__bar[data-tone='gray'] { background: var(--color-gray-400); }
+.distribution__bar[data-tone='blue'] { background: var(--color-blue-500); }
+.distribution__bar[data-tone='red'] { background: var(--color-red-500); }
+
+.distribution__value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .distribution__row {
+    grid-template-columns: 10rem 1fr 2.4rem;
+    gap: 1rem;
+  }
+}

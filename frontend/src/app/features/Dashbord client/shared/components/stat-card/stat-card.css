@@ -1,0 +1,63 @@
+.stat-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  text-align: left;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.stat-card--clickable {
+  cursor: pointer;
+}
+
+.stat-card--clickable:hover,
+.stat-card--clickable:focus-visible {
+  transform: translateY(-0.2rem);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+.stat-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-card__label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+}
+
+.stat-card__icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-card__icon[data-tone='green'] { background: var(--color-green-100); color: var(--color-green-600); }
+.stat-card__icon[data-tone='yellow'] { background: var(--color-yellow-50); color: var(--color-yellow-600); }
+.stat-card__icon[data-tone='blue'] { background: var(--color-blue-50); color: var(--color-blue-600); }
+.stat-card__icon[data-tone='gray'] { background: var(--color-gray-150); color: var(--color-gray-600); }
+
+.stat-card__value {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: var(--color-gray-900);
+  line-height: 1;
+}
+
+.stat-card__footer {
+  font-size: 1.3rem;
+  color: var(--color-gray-500);
+}

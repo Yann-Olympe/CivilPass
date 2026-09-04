@@ -42,7 +42,43 @@ export const routes: Routes = [
     ],
   },
 
-  // ===== Partie mairie =====
+  // ===== Espace citoyen connecté ("Dashbord client") =====
+  {
+    path: 'espace',
+    canActivate: [citizenAuthGuard],
+    loadComponent: () =>
+      import('./features/Dashbord client/layout/client-shell/client-shell').then(m => m.ClientShell),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/espace-home/espace-home').then(m => m.EspaceHome),
+      },
+      {
+        path: 'demandes',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/mes-demandes/mes-demandes').then(m => m.MesDemandes),
+      },
+      {
+        path: 'demandes/:id',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/demande-detail/demande-detail').then(m => m.DemandeDetail),
+      },
+      {
+        path: 'profil',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/mon-profil/mon-profil').then(m => m.MonProfil),
+      },
+      {
+        path: 'statistiques',
+        loadComponent: () =>
+          import('./features/Dashbord client/pages/statistiques/statistiques').then(m => m.Statistiques),
+      },
+      { path: '**', redirectTo: '' },
+    ],
+  },
+
+  // ===== Partie de ton collègue (mairie), préfixée =====
   {
     path: 'mairie',
     children: [

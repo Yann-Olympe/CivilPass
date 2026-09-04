@@ -1,0 +1,17 @@
+<article
+  class="stat-card"
+  [class.stat-card--clickable]="clickable()"
+  [attr.role]="clickable() ? 'button' : null"
+  [attr.tabindex]="clickable() ? 0 : null"
+  (click)="onActivate()"
+  (keydown.enter)="onActivate()"
+>
+  <div class="stat-card__top">
+    <span class="stat-card__label">{{ data().label }}</span>
+    <span class="stat-card__icon" [attr.data-tone]="data().tone">
+      <app-icon [name]="data().icon" />
+    </span>
+  </div>
+  <p class="stat-card__value">{{ data().value }}</p>
+  <p class="stat-card__footer">{{ data().footer }}</p>
+</article>

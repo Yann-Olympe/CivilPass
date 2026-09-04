@@ -1,0 +1,123 @@
+@if (demande(); as demande) {
+  <button type="button" class="back-link" (click)="retour()">
+    <app-icon name="arrow-left" />
+    Retour à mes demandes
+  </button>
+
+  <section class="detail-header">
+    <span class="detail-header__icon">
+      <app-icon [name]="typeIcon[demande.type]" />
+    </span>
+    <div class="detail-header__text">
+      <h1 class="detail-header__title">{{ demande.titre }}</h1>
+      <p class="detail-header__meta">Réf. {{ demande.reference }} • Soumise le {{ demande.dateCreation }}</p>
+    </div>
+    <app-client-status-badge [statut]="demande.statut" />
+  </section>
+
+  @if (demande.statut === 'rejetee' && demande.motif) {
+    <section class="alert alert--danger">
+      <app-icon name="alert-triangle" />
+      <div>
+        <p class="alert__title">Votre demande a été rejetée</p>
+        <p class="alert__text">{{ demande.motif }}</p>
+      </div>
+    </section>
+  }
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2 class="panel__title">Suivi de la demande</h2>
+    </div>
+
+    <ol class="timeline">
+      @for (etape of demande.etapes; track etape.label; let i = $index) {
+        <li class="timeline__item" [class.timeline__item--done]="etape.atteinte">
+          <span class="timeline__dot">
+            @if (etape.atteinte) {
+              <app-icon name="check-circle" />
+            }
+          </span>
+          <div class="timeline__content">
+            <p class="timeline__label">{{ etape.label }}</p>
+            <p class="timeline__description">{{ etape.description }}</p>
+            @if (etape.date) {
+              <p class="timeline__date">{{ etape.date }}</p>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2 class="panel__title">Informations</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <p class="info-item__label">Type de document</p>
+        <p class="info-item__value">{{ demande.titre }}</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item__label">Mairie de retrait</p>
+        <p class="info-item__value">{{ demande.mairieRetrait }}</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item__label">Référence</p>
+        <p class="info-item__value">{{ demande.reference }}</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item__label">Date de soumission</p>
+        <p class="info-item__value">{{ demande.dateCreation }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="actions-bar">
+    @switch (demande.statut) {
+      @case ('pret') {
+        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()">
+          <app-icon name="download" />
+          Télécharger le récépissé
+        </button>
+        <button type="button" class="btn btn--primary" (click)="ouvrirConfirmationRetrait()">
+          <app-icon name="check-circle" />
+          Confirmer le retrait au guichet
+        </button>
+      }
+      @case ('rejetee') {
+        <button type="button" class="btn btn--primary" (click)="refaireDemande()">
+          Faire une nouvelle demande
+        </button>
+      }
+      @case ('validee') {
+        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()">
+          <app-icon name="download" />
+          Télécharger le récépissé
+        </button>
+      }
+      @default {
+        <p class="actions-bar__hint">
+          Votre dossier est en cours de traitement. Vous serez notifié dès qu'il sera prêt.
+        </p>
+      }
+    }
+  </section>
+
+  @if (confirmRetraitOpen()) {
+    <app-confirm-modal
+      title="Confirmer le retrait"
+      [message]="'Confirmez-vous avoir récupéré le document \'' + demande.titre + '\' à la ' + demande.mairieRetrait + ' ?'"
+      confirmLabel="Oui, j'ai récupéré le document"
+      cancelLabel="Pas encore"
+      (confirmed)="confirmerRetrait()"
+      (cancelled)="annulerConfirmationRetrait()"
+    />
+  }
+} @else {
+  <section class="panel">
+    <p class="not-found">Cette demande est introuvable ou a été supprimée.</p>
+    <button type="button" class="btn btn--primary" (click)="retour()">Retour à mes demandes</button>
+  </section>
+}

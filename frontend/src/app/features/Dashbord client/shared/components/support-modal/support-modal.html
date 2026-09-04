@@ -1,0 +1,49 @@
+<div class="overlay" (click)="onOverlayClick($event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Contacter le support">
+    <div class="modal__header">
+      <h2 class="modal__title">Besoin d'aide ?</h2>
+      <button type="button" class="modal__close" (click)="close()" aria-label="Fermer">
+        <app-icon name="x" />
+      </button>
+    </div>
+
+    <p class="modal__subtitle">
+      Décrivez votre problème, un membre de notre équipe vous répondra par e-mail sous 24h.
+    </p>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="field">
+        <span class="field__label">Sujet</span>
+        <input
+          type="text"
+          formControlName="sujet"
+          class="field__input"
+          placeholder="Ex. Ma demande n'avance pas"
+        />
+        @if (form.controls.sujet.touched && form.controls.sujet.invalid) {
+          <span class="field__error">Merci d'indiquer un sujet (3 caractères minimum).</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Message</span>
+        <textarea
+          formControlName="message"
+          class="field__input field__input--textarea"
+          rows="4"
+          placeholder="Décrivez votre situation en quelques mots..."
+        ></textarea>
+        @if (form.controls.message.touched && form.controls.message.invalid) {
+          <span class="field__error">Merci de détailler votre demande (10 caractères minimum).</span>
+        }
+      </label>
+
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" (click)="close()">Annuler</button>
+        <button type="submit" class="btn btn--primary" [disabled]="sending()">
+          @if (sending()) { Envoi en cours... } @else { Envoyer le message }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
