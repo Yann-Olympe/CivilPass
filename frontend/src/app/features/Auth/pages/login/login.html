@@ -22,26 +22,24 @@
     @if (erreurConnexion()) {
       <div class="auth-alert auth-alert--error">
         <app-icon name="alert-triangle" />
-        Adresse e-mail ou mot de passe incorrect.
+        {{ messageErreur() }}
       </div>
     }
 
     <div class="auth-form">
       <div class="auth-field">
-        <label for="email">Adresse email</label>
+        <label for="identifiant">Email ou téléphone</label>
         <div class="auth-field__control">
           <input
-            id="email"
-            type="email"
-            formControlName="email"
-            placeholder="Entrez votre email"
-            [class.is-invalid]="invalide('email')"
+            id="identifiant"
+            type="text"
+            formControlName="identifiant"
+            placeholder="vous@exemple.com ou 6XX XXX XXX"
+            [class.is-invalid]="invalide('identifiant')"
           />
         </div>
-        @if (erreur('email', 'required')) {
-          <span class="auth-field__error">L'adresse email est requise.</span>
-        } @else if (erreur('email', 'email')) {
-          <span class="auth-field__error">Entrez une adresse email valide.</span>
+        @if (erreur('identifiant', 'required')) {
+          <span class="auth-field__error">Cette information est requise.</span>
         }
       </div>
 
@@ -76,7 +74,7 @@
 
       <div class="auth-divider">ou</div>
 
-      <button class="auth-google" type="button" (click)="continuerAvecGoogle()" [disabled]="envoiEnCours()">
+      <button class="auth-google" type="button" disabled title="Bientôt disponible">
         <app-icon name="google" />
         Se connecter avec Google
       </button>
@@ -84,7 +82,7 @@
 
     <p class="auth-switch">
       Pas encore de compte ?
-      <a routerLink="/register">Créer un compte</a>
+      <a routerLink="/inscription">Créer un compte</a>
     </p>
   </form>
 </div>

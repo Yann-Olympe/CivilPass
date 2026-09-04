@@ -1,51 +1,76 @@
-<div class="wizard-page fade-in">
-  <div class="stepper">
-    <div class="step step--active"><div class="step__circle">1</div><span class="step__label">Identité</span></div>
-    <div class="step__connector"></div>
-    <div class="step"><div class="step__circle">2</div><span class="step__label">Coordonnées</span></div>
-    <div class="step__connector"></div>
-    <div class="step"><div class="step__circle">3</div><span class="step__label">Sécurité</span></div>
-    <div class="step__connector"></div>
-    <div class="step"><div class="step__circle">4</div><span class="step__label">Pièce d'identité</span></div>
-    <div class="step__connector"></div>
-    <div class="step"><div class="step__circle">5</div><span class="step__label">Validation</span></div>
-  </div>
+<div class="wizard-page">
+  <form class="auth-card fade-in" [class.is-shake]="secousse()" [formGroup]="formulaire" (ngSubmit)="suivant()" novalidate>
+    <h1 class="auth-card__title">Créer votre compte</h1>
+    <p class="auth-card__subtitle">Commençons par votre identité.</p>
 
-  <h1 class="wizard-title">Créer votre compte</h1>
-  <p class="wizard-subtitle">Commençons par votre identité.</p>
+    <div class="auth-row">
+      <div class="auth-field">
+        <label for="nom">Nom <span class="required">*</span></label>
+        <div class="auth-field__control">
+          <input id="nom" type="text" formControlName="nom" placeholder="Votre nom" [class.is-invalid]="invalide('nom')" />
+        </div>
+        @if (erreur('nom', 'required')) {
+          <span class="auth-field__error">Le nom est requis.</span>
+        }
+      </div>
 
-  <form [formGroup]="formulaire" (ngSubmit)="suivant()" class="wizard-form">
-    <div class="form-field">
-      <label for="nom">Nom <span class="required">*</span></label>
-      <input id="nom" type="text" formControlName="nom" />
+      <div class="auth-field">
+        <label for="prenom">Prénom <span class="required">*</span></label>
+        <div class="auth-field__control">
+          <input id="prenom" type="text" formControlName="prenom" placeholder="Votre prénom" [class.is-invalid]="invalide('prenom')" />
+        </div>
+        @if (erreur('prenom', 'required')) {
+          <span class="auth-field__error">Le prénom est requis.</span>
+        }
+      </div>
     </div>
 
-    <div class="form-field">
-      <label for="prenom">Prénom <span class="required">*</span></label>
-      <input id="prenom" type="text" formControlName="prenom" />
-    </div>
-
-    <div class="form-field">
+    <div class="auth-field">
       <label for="sexe">Sexe <span class="required">*</span></label>
-      <select id="sexe" formControlName="sexe">
-        <option value="" disabled selected>Choisir</option>
-        <option value="M">Masculin</option>
-        <option value="F">Féminin</option>
-      </select>
+      <div class="auth-field__control">
+        <select id="sexe" formControlName="sexe" [class.is-invalid]="invalide('sexe')">
+          <option value="" disabled selected>Choisir</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+        </select>
+      </div>
+      @if (erreur('sexe', 'required')) {
+        <span class="auth-field__error">Requis.</span>
+      }
     </div>
 
-    <div class="form-field">
+    <div class="auth-field">
       <label for="date_naissance">Date de naissance <span class="required">*</span></label>
-      <input id="date_naissance" type="date" formControlName="date_naissance" />
+      <div class="auth-field__control">
+        <input id="date_naissance" type="date" formControlName="date_naissance" [class.is-invalid]="invalide('date_naissance')" />
+      </div>
+      @if (erreur('date_naissance', 'required')) {
+        <span class="auth-field__error">Requis.</span>
+      }
     </div>
 
-    <div class="form-field">
+    <div class="auth-field">
       <label for="lieu_naissance">Lieu de naissance <span class="required">*</span></label>
-      <input id="lieu_naissance" type="text" formControlName="lieu_naissance" placeholder="Ville, hôpital..." />
+      <div class="auth-field__control">
+        <input id="lieu_naissance" type="text" formControlName="lieu_naissance" placeholder="Ville, hôpital..." [class.is-invalid]="invalide('lieu_naissance')" />
+      </div>
+      @if (erreur('lieu_naissance', 'required')) {
+        <span class="auth-field__error">Requis.</span>
+      }
     </div>
 
-    <div class="form-actions">
-      <button type="submit" class="btn btn--primary">Suivant</button>
+    <div class="auth-actions">
+      <button class="auth-submit" type="submit">Suivant</button>
     </div>
+
+    <div class="auth-progress-dots">
+      <span data-state="active"></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <p class="auth-switch">
+      Vous avez déjà un compte ?
+      <a routerLink="/login">Se connecter</a>
+    </p>
   </form>
 </div>

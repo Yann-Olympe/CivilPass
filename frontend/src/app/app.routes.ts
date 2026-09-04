@@ -24,6 +24,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'identite', pathMatch: 'full' },
     ],
   },
+        { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
 
   {
     path: '',
@@ -34,7 +35,6 @@ export const routes: Routes = [
       { path: 'demande/acte', loadComponent: () => import('./features/citizen/demande/acte/acte').then(m => m.Acte) },
       { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
       { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
-      { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
       {
         path: '',
         children: [],

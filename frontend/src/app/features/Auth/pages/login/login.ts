@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Icon } from '../../../mairie/shared/icon/icon';
+import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,20 +12,22 @@ import { Icon } from '../../../mairie/shared/icon/icon';
   styleUrl: './login.css'
 })
 export class Login implements OnInit {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private citizenAuth = inject(CitizenAuthService);
+
   motDePasseVisible = signal(false);
   envoiEnCours = signal(false);
   secousse = signal(false);
   erreurConnexion = signal(false);
+  messageErreur = signal('Identifiant ou mot de passe incorrect.');
   inscriptionReussie = signal(false);
 
-  formulaire: FormGroup;
-
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
-    this.formulaire = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      motDePasse: ['', [Validators.required, Validators.minLength(6)]],
-    });
-  }
+  formulaire: FormGroup = this.fb.group({
+    identifiant: ['', [Validators.required]],
+    motDePasse: ['', [Validators.required, Validators.minLength(6)]],
+  });
 
   ngOnInit() {
     this.inscriptionReussie.set(this.route.snapshot.queryParamMap.get('inscrit') === '1');
@@ -44,18 +47,28 @@ export class Login implements OnInit {
     this.envoiEnCours.set(true);
     this.erreurConnexion.set(false);
 
-    setTimeout(() => {
-      this.envoiEnCours.set(false);
-      this.router.navigate(['/tableau-de-bord']);
-    }, 900);
-  }
+    const { identifiant, motDePasse } = this.formulaire.getRawValue();
 
-  continuerAvecGoogle() {
-    this.envoiEnCours.set(true);
-    setTimeout(() => {
-      this.envoiEnCours.set(false);
-      this.router.navigate(['/demande/identite']);
-    }, 700);
+    this.citizenAuth.login(identifiant, motDePasse).subscribe({
+      next: () => {
+        this.envoiEnCours.set(false);
+        this.router.navigate(['/espace']);
+      },
+      error: (err) => {
+        this.envoiEnCours.set(false);
+        this.declencherSecousse();
+        this.erreurConnexion.set(true);
+
+        if (err.status === 422 && err.error?.errors) {
+          const premiere = Object.values(err.error.errors)[0] as string[];
+          this.messageErreur.set(premiere[0]);
+        } else if (err.status === 401) {
+          this.messageErreur.set('Identifiant ou mot de passe incorrect.');
+        } else {
+          this.messageErreur.set('Une erreur est survenue. Réessayez.');
+        }
+      },
+    });
   }
 
   private declencherSecousse() {

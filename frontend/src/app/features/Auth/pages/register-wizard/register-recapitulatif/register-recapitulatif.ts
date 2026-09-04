@@ -6,7 +6,7 @@ import { CitizenAuthService } from '../../../../../Services/citizen-auth.service
 @Component({
   selector: 'app-register-recapitulatif',
   standalone: true,
-  templateUrl: '',
+  templateUrl: './register-recapitulatif.html',
   styleUrl: '../register-wizard.css',
 })
 export class RegisterRecapitulatif {
@@ -15,7 +15,7 @@ export class RegisterRecapitulatif {
   private router = inject(Router);
 
   isSubmitting = signal(false);
-  errorMessage = signal<string | null>(null); 
+  errorMessage = signal<string | null>(null);
 
   identite = this.state.getIdentite();
   coordonnees = this.state.getCoordonnees();

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterStateService } from '../../../../../Services/register-state.service';
@@ -17,6 +17,7 @@ export class RegisterCoordonnees {
   private router = inject(Router);
 
   regions = REGIONS_CAMEROUN;
+  secousse = signal(false);
 
   formulaire = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,6 +31,11 @@ export class RegisterCoordonnees {
   ngOnInit() {
     if (!this.state.getIdentite()) {
       this.router.navigate(['/inscription/identite']);
+      return;
+    }
+    const dejaSaisi = this.state.getCoordonnees();
+    if (dejaSaisi) {
+      this.formulaire.patchValue(dejaSaisi);
     }
   }
 
@@ -40,9 +46,25 @@ export class RegisterCoordonnees {
   suivant() {
     if (this.formulaire.invalid) {
       this.formulaire.markAllAsTouched();
+      this.declencherSecousse();
       return;
     }
     this.state.setCoordonnees(this.formulaire.getRawValue() as any);
     this.router.navigate(['/inscription/securite']);
+  }
+
+  private declencherSecousse() {
+    this.secousse.set(true);
+    setTimeout(() => this.secousse.set(false), 420);
+  }
+
+  erreur(champ: string, code: string) {
+    const control = this.formulaire.get(champ);
+    return !!control && control.touched && control.hasError(code);
+  }
+
+  invalide(champ: string) {
+    const control = this.formulaire.get(champ);
+    return !!control && control.touched && control.invalid;
   }
 }

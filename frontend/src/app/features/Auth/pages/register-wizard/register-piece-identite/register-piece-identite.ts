@@ -15,6 +15,12 @@ export class RegisterPieceIdentite {
   rectoPreview = signal<string | null>(null);
   versoPreview = signal<string | null>(null);
 
+  ngOnInit() {
+    if (!this.state.getSecurite()) {
+      this.router.navigate(['/inscription/securite']);
+    }
+  }
+
   onFileChange(event: Event, cote: 'recto' | 'verso') {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -38,10 +44,6 @@ export class RegisterPieceIdentite {
       cniRectoPreview: this.rectoPreview(),
       cniVersoPreview: this.versoPreview(),
     });
-    this.router.navigate(['/inscription/recapitulatif']);
-  }
-
-  passer() {
     this.router.navigate(['/inscription/recapitulatif']);
   }
 }

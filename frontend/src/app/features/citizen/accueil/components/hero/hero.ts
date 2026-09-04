@@ -11,7 +11,7 @@ export class Hero {
   private router = inject(Router); 
 
   onRequest(){
-    this.router.navigate(['/login']);
+    this.router.navigate(['/inscription']);
   }
   onVerification(){
     this.router.navigate(['/accueil']);

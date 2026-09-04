@@ -1,0 +1,56 @@
+<div class="wizard-page">
+  <div class="auth-card fade-in">
+    <h1 class="auth-card__title">Vérifiez vos informations</h1>
+    <p class="auth-card__subtitle">Dernière étape avant de créer votre compte.</p>
+
+    @if (errorMessage()) {
+      <div class="auth-alert auth-alert--error">{{ errorMessage() }}</div>
+    }
+
+    <div class="summary-block">
+      <h2 class="summary-block__title">Identité</h2>
+      <div class="summary-row">
+        <span class="summary-row__label">Nom complet</span>
+        <span class="summary-row__value">{{ identite?.prenom }} {{ identite?.nom }}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Date de naissance</span>
+        <span class="summary-row__value">{{ identite?.date_naissance }}</span>
+      </div>
+    </div>
+
+    <div class="summary-block">
+      <h2 class="summary-block__title">Coordonnées</h2>
+      <div class="summary-row">
+        <span class="summary-row__label">Email</span>
+        <span class="summary-row__value">{{ coordonnees?.email }}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Téléphone</span>
+        <span class="summary-row__value">{{ coordonnees?.telephone }}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row__label">Ville</span>
+        <span class="summary-row__value">{{ coordonnees?.ville }}, {{ coordonnees?.region }}</span>
+      </div>
+    </div>
+
+    <div class="auth-actions">
+      <button type="button" class="auth-back" (click)="precedent()" [disabled]="isSubmitting()">Précédent</button>
+      <button type="button" class="auth-submit" (click)="confirmer()" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          <span class="auth-spinner"></span>
+        }
+        Créer mon compte
+      </button>
+    </div>
+
+    <div class="auth-progress-dots">
+      <span data-state="done"></span>
+      <span data-state="done"></span>
+      <span data-state="done"></span>
+      <span data-state="done"></span>
+      <span data-state="active"></span>
+    </div>
+  </div>
+</div>

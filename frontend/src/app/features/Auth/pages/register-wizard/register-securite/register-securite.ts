@@ -17,6 +17,7 @@ export class RegisterSecurite {
 
   motDePasseVisible = signal(false);
   confirmationVisible = signal(false);
+  secousse = signal(false);
 
   formulaire: FormGroup = this.fb.group({
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -50,10 +51,16 @@ export class RegisterSecurite {
   suivant() {
     if (this.formulaire.invalid) {
       this.formulaire.markAllAsTouched();
+      this.declencherSecousse();
       return;
     }
     this.state.setSecurite(this.formulaire.getRawValue() as any);
     this.router.navigate(['/inscription/piece-identite']);
+  }
+
+  private declencherSecousse() {
+    this.secousse.set(true);
+    setTimeout(() => this.secousse.set(false), 420);
   }
 
   erreur(champ: string, code: string) {

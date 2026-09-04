@@ -1,17 +1,86 @@
-<div class="form-field">
-  <label for="region">Région <span class="required">*</span></label>
-  <select id="region" formControlName="region">
-    <option value="" disabled selected>Choisir votre région</option>
-    @for (r of regions; track r) {
-      <option [value]="r">{{ r }}</option>
-    }
-  </select>
-</div>
+<div class="wizard-page">
+  <form class="auth-card fade-in" [class.is-shake]="secousse()" [formGroup]="formulaire" (ngSubmit)="suivant()" novalidate>
+    <h1 class="auth-card__title">Vos coordonnées</h1>
+    <p class="auth-card__subtitle">Comment peut-on vous joindre ?</p>
 
-<div class="form-field">
-  <label for="nationalite">Nationalité <span class="required">*</span></label>
-  <select id="nationalite" formControlName="nationalite">
-    <option value="Camerounaise">Camerounaise</option>
-    <option value="Autre">Autre</option>
-  </select>
+    <div class="auth-field">
+      <label for="email">Adresse email <span class="required">*</span></label>
+      <div class="auth-field__control">
+        <input id="email" type="email" formControlName="email" placeholder="vous@exemple.com" [class.is-invalid]="invalide('email')" />
+      </div>
+      @if (erreur('email', 'required')) {
+        <span class="auth-field__error">L'email est requis.</span>
+      } @else if (erreur('email', 'email')) {
+        <span class="auth-field__error">Entrez un email valide.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="telephone">Téléphone <span class="required">*</span></label>
+      <div class="auth-field__control">
+        <input id="telephone" type="tel" formControlName="telephone" placeholder="6XX XXX XXX" [class.is-invalid]="invalide('telephone')" />
+      </div>
+      @if (erreur('telephone', 'required')) {
+        <span class="auth-field__error">Le téléphone est requis.</span>
+      }
+    </div>
+
+    <div class="auth-field">
+      <label for="adresse">Adresse <span class="required">*</span></label>
+      <div class="auth-field__control">
+        <input id="adresse" type="text" formControlName="adresse" placeholder="Votre adresse" [class.is-invalid]="invalide('adresse')" />
+      </div>
+      @if (erreur('adresse', 'required')) {
+        <span class="auth-field__error">Requise.</span>
+      }
+    </div>
+
+    <div class="auth-row">
+      <div class="auth-field">
+        <label for="ville">Ville <span class="required">*</span></label>
+        <div class="auth-field__control">
+          <input id="ville" type="text" formControlName="ville" placeholder="Douala, Yaoundé..." [class.is-invalid]="invalide('ville')" />
+        </div>
+        @if (erreur('ville', 'required')) {
+          <span class="auth-field__error">Requise.</span>
+        }
+      </div>
+
+      <div class="auth-field">
+        <label for="region">Région <span class="required">*</span></label>
+        <div class="auth-field__control">
+          <select id="region" formControlName="region" [class.is-invalid]="invalide('region')">
+            <option value="" disabled selected>Choisir</option>
+            @for (r of regions; track r) {
+              <option [value]="r">{{ r }}</option>
+            }
+          </select>
+        </div>
+        @if (erreur('region', 'required')) {
+          <span class="auth-field__error">Requise.</span>
+        }
+      </div>
+    </div>
+
+    <div class="auth-field">
+      <label for="nationalite">Nationalité <span class="required">*</span></label>
+      <div class="auth-field__control">
+        <select id="nationalite" formControlName="nationalite">
+          <option value="Camerounaise">Camerounaise</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="auth-actions">
+      <button type="button" class="auth-back" (click)="precedent()">Précédent</button>
+      <button type="submit" class="auth-submit">Suivant</button>
+    </div>
+
+    <div class="auth-progress-dots">
+      <span data-state="done"></span>
+      <span data-state="active"></span>
+      <span></span><span></span><span></span>
+    </div>
+  </form>
 </div>
