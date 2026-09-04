@@ -65,7 +65,7 @@
 }
 
 .login-brand-title {
-  font-size: 3rem;
+  font-size: 3.6rem;
   font-weight: 700;
   line-height: 1.2;
   color: white;
@@ -75,13 +75,17 @@
 .login-brand-title em {
   font-style: normal;
   color: var(--color-green-300);
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: block;
+  margin-top: 0.8rem;
 }
 
 .login-brand-text {
-  font-size: 1.25rem;
-  line-height: 1.6;
+  font-size: 1.4rem;
+  line-height: 1.65;
   color: var(--color-green-100);
-  max-width: 36rem;
+  max-width: 38rem;
 }
 
 /* ---- Panneau du formulaire (droite) ---- */
