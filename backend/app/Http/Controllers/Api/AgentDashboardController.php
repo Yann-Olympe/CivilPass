@@ -7,6 +7,7 @@ use App\Models\Demande;
 use App\Models\Notification;
 use App\Models\Transfert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AgentDashboardController extends Controller
 {
@@ -18,7 +19,8 @@ class AgentDashboardController extends Controller
         if ($agent->role === 'origine') {
             $query->where('mairie_origine_id', $agent->mairie_id);
         } elseif ($agent->role === 'retrait') {
-            $query->where('mairie_retrait_id', $agent->mairie_id);
+            $query->where('mairie_retrait_id', $agent->mairie_id)
+                ->whereIn('statut', ['en_cours', 'validee', 'remise']);
         } else {
             $query->where(function ($q) use ($agent) {
                 $q->where('mairie_origine_id', $agent->mairie_id)
@@ -54,44 +56,46 @@ class AgentDashboardController extends Controller
             'motif' => 'nullable|string|max:200',
         ]);
 
-        if (! $data['souche_retrouvee']) {
+        return DB::transaction(function () use ($data, $demande) {
+            if (! $data['souche_retrouvee']) {
+                $demande->update([
+                    'statut' => 'rejetee',
+                    'souche_retrouvee' => false,
+                    'observation_origine' => $data['observation_origine'] ?? null,
+                    'motif_statut' => $data['motif'] ?? 'La souche n’a pas été retrouvée par la mairie d’origine.',
+                ]);
+
+                $this->notifierUsager($demande, 'rejetee', $demande->motif_statut);
+
+                return response()->json($demande->fresh(), 422);
+            }
+
             $demande->update([
-                'statut' => 'rejetee',
-                'souche_retrouvee' => false,
+                'statut' => 'en_cours',
+                'souche_retrouvee' => true,
                 'observation_origine' => $data['observation_origine'] ?? null,
-                'motif_statut' => $data['motif'] ?? 'La souche n’a pas été retrouvée par la mairie d’origine.',
+                'motif_statut' => $data['motif'] ?? 'La demande a été validée par la mairie d’origine et est en cours de traitement.',
             ]);
 
-            $this->notifierUsager($demande, 'rejetee', $demande->motif_statut);
+            $this->notifierUsager($demande, 'en_cours', $demande->motif_statut);
 
-            return response()->json($demande->fresh(), 422);
-        }
+            $transfert = Transfert::updateOrCreate(
+                ['demande_id' => $demande->id],
+                ['statut' => 'valide', 'date_validation_origine' => now()]
+            );
 
-        $demande->update([
-            'statut' => 'en_cours',
-            'souche_retrouvee' => true,
-            'observation_origine' => $data['observation_origine'] ?? null,
-            'motif_statut' => $data['motif'] ?? 'La demande a été validée par la mairie d’origine et est en cours de traitement.',
-        ]);
+            Notification::create([
+                'mairie_id' => $demande->mairie_retrait_id,
+                'demande_id' => $demande->id,
+                'type' => 'dossier_transfere',
+                'message' => "Nouveau dossier transféré par {$demande->mairieOrigine->nom} — n°{$demande->id}",
+            ]);
 
-        $this->notifierUsager($demande, 'en_cours', $demande->motif_statut);
-
-        $transfert = Transfert::updateOrCreate(
-            ['demande_id' => $demande->id],
-            ['statut' => 'valide', 'date_validation_origine' => now()]
-        );
-
-        Notification::create([
-            'mairie_id' => $demande->mairie_retrait_id,
-            'demande_id' => $demande->id,
-            'type' => 'dossier_transfere',
-            'message' => "Nouveau dossier transféré par {$demande->mairieOrigine->nom} — n°{$demande->id}",
-        ]);
-
-        return response()->json([
-            'demande' => $demande->fresh(),
-            'transfert' => $transfert,
-        ]);
+            return response()->json([
+                'demande' => $demande->fresh(),
+                'transfert' => $transfert,
+            ]);
+        });
     }
 
     public function recevoir(Request $request, Demande $demande)
@@ -104,25 +108,27 @@ class AgentDashboardController extends Controller
         abort_unless($demande->statut === 'en_cours', 409,
             "Ce dossier n'a pas encore été transféré par la Mairie d'origine.");
 
-        $demande->update([
-            'statut' => 'validee',
-            'motif_statut' => 'La demande a été réceptionnée et validée par la mairie de retrait.',
-        ]);
-        $this->notifierUsager($demande, 'validee', $demande->motif_statut);
+        return DB::transaction(function () use ($demande) {
+            $demande->update([
+                'statut' => 'validee',
+                'motif_statut' => 'La demande a été réceptionnée et validée par la mairie de retrait.',
+            ]);
+            $this->notifierUsager($demande, 'validee', $demande->motif_statut);
 
-        $demande->transfert()->update([
-            'statut' => 'recu',
-            'date_reception_retrait' => now(),
-        ]);
+            $demande->transfert()->update([
+                'statut' => 'recu',
+                'date_reception_retrait' => now(),
+            ]);
 
-        Notification::create([
-            'mairie_id' => $demande->mairie_origine_id,
-            'demande_id' => $demande->id,
-            'type' => 'dossier_recu',
-            'message' => "Le dossier n°{$demande->id} a été reçu par {$demande->mairieRetrait->nom}",
-        ]);
+            Notification::create([
+                'mairie_id' => $demande->mairie_origine_id,
+                'demande_id' => $demande->id,
+                'type' => 'dossier_recu',
+                'message' => "Le dossier n°{$demande->id} a été reçu par {$demande->mairieRetrait->nom}",
+            ]);
 
-        return response()->json($demande->fresh()->load('transfert'));
+            return response()->json($demande->fresh()->load('transfert'));
+        });
     }
 
     public function remettre(Request $request, Demande $demande)
@@ -132,11 +138,17 @@ class AgentDashboardController extends Controller
         abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403);
         abort_unless($demande->statut === 'validee', 409, "Le dossier n'est pas encore validé.");
 
-        $demande->update([
-            'motif_statut' => 'Le document est validé et peut être remis au citoyen.',
-        ]);
+        return DB::transaction(function () use ($demande) {
+            $demande->update([
+                'statut' => 'remise',
+                'date_remise' => now(),
+                'motif_statut' => 'Le document a été remis au citoyen au guichet de la mairie de retrait.',
+            ]);
 
-        return response()->json($demande->fresh());
+            $this->notifierUsager($demande, 'remise', $demande->motif_statut);
+
+            return response()->json($demande->fresh());
+        });
     }
 
     public function urgente(Request $request, Demande $demande)

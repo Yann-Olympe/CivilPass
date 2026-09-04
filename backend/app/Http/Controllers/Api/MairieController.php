@@ -12,3 +12,4 @@ class MairieController extends Controller
         return response()->json(Mairie::select('id', 'nom', 'ville')->get());
     }
 }
+

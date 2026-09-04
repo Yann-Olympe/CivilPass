@@ -152,13 +152,13 @@ document au citoyen à la mairie de retrait.
 | Méthode | Route | Description |
 |---|---|---|
 | GET | `/api/agent/demandes` | Dossiers filtrés selon la Mairie et le rôle de l'agent |
-| GET | `/api/agent/demandes/{id}` | Détail d'un dossier |
-| POST | `/api/agent/demandes/{id}/valider` | `{ souche_retrouvee, observation_origine }` → transfert |
-| POST | `/api/agent/demandes/{id}/recevoir` | Confirme la réception (notifie la Mairie d'origine) |
-| POST | `/api/agent/demandes/{id}/remettre` | Remet l'acte au citoyen |
-| POST | `/api/agent/scan` | `{ qr_token }` → récupère le dossier scanné |
-| GET | `/api/agent/notifications` | Notifications de la Mairie (`?lue=0` pour le badge) |
-| PATCH | `/api/agent/notifications/{id}/lue` | Marque une notification comme lue |
+| POST | `/api/agent/demandes/{id}/valider` | Valide la souche à la mairie d'origine et crée le transfert |
+| POST | `/api/agent/demandes/{id}/recevoir` | Réceptionne le dossier à la mairie de retrait |
+| POST | `/api/agent/demandes/{id}/remettre` | Marque le document comme remis au citoyen |
+
+Cycle des statuts : `nouvelle` → `en_cours` → `validee` → `remise`.
+Une souche introuvable produit le statut `rejetee`. Le statut `validee` signifie
+que le document est prêt au retrait; `remise` signifie que le citoyen l'a retiré.
 
 ## 8. Points à trancher en équipe
 

@@ -86,6 +86,45 @@ class ApiTest extends TestCase
         ]);
     }
 
+    public function test_demande_created_by_citizen_is_received_by_origin_mairie(): void
+    {
+        $response = $this->postJson('/api/demandes', [
+            'mairie_origine_id' => 1,
+            'mairie_retrait_id' => 2,
+            'numero_acte' => 'NA-2026-001',
+            'annee_acte' => 2026,
+        ]);
+
+        $response->assertCreated();
+        $demandeId = $response->json('id');
+
+        Sanctum::actingAs(Agent::where('email', 'origine@civilpass.cm')->first());
+
+        $this->getJson('/api/agent/demandes')
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $demandeId,
+                'statut' => 'nouvelle',
+                'mairie_origine_id' => 1,
+                'mairie_retrait_id' => 2,
+            ]);
+
+        $this->postJson("/api/agent/demandes/{$demandeId}/valider", [
+            'souche_retrouvee' => true,
+        ])
+            ->assertOk()
+            ->assertJsonPath('demande.statut', 'en_cours');
+
+        Sanctum::actingAs(Agent::where('email', 'retrait@civilpass.cm')->first());
+
+        $this->getJson('/api/agent/demandes')
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $demandeId,
+                'statut' => 'en_cours',
+            ]);
+    }
+
     public function test_show_demande_by_qr_token(): void
     {
         $demande = $this->createDemande();
@@ -180,8 +219,17 @@ class ApiTest extends TestCase
 
         $this->postJson("/api/agent/demandes/{$demande->id}/remettre")
             ->assertOk()
-            ->assertOk()
-            ->assertJsonPath('statut', 'validee');
+            ->assertJsonPath('statut', 'remise')
+            ->assertJsonPath('date_remise', fn ($date) => $date !== null);
+
+        $this->assertDatabaseHas('notifications', [
+            'usager_id' => $this->usager->id,
+            'demande_id' => $demande->id,
+            'type' => 'statut_demande',
+        ]);
+
+        $this->postJson("/api/agent/demandes/{$demande->id}/remettre")
+            ->assertStatus(409);
     }
 
     public function test_agent_scan_finds_demande_by_qr_token(): void
