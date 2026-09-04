@@ -104,8 +104,22 @@ php artisan serve
 |---|---|---|
 | POST | `/api/citoyen/login` | `{ telephone, password }` → token |
 | GET | `/api/citoyen/me` | Profil du citoyen connecté *(protégé)* |
+| PATCH | `/api/citoyen/profil` | Modifie partiellement le profil du citoyen *(protégé)* |
+| GET | `/api/citoyen/dashboard` | Compteurs, alerte de retrait et statistiques mensuelles *(protégé)* |
 | POST | `/api/citoyen/logout` | Révoque le token *(protégé)* |
+| GET | `/api/citoyen/notifications` | Notifications du citoyen *(protégé, `?lue=0` pour les non-lues)* |
+| PATCH | `/api/citoyen/notifications/{id}/lue` | Marque une notification comme lue *(protégé)* |
 | GET | `/api/citoyen/demandes` | Historique / suivi des demandes *(protégé)* |
+| GET | `/api/citoyen/demandes/{id}` | Détail d’une demande du citoyen connecté *(protégé)* |
+| GET | `/api/citoyen/demandes/{id}/pdf` | Télécharge le récépissé PDF de sa demande *(protégé)* |
+
+La liste accepte `?filtre=toutes|actives|pretes` et `?recherche=...` pour alimenter
+les onglets et la recherche de l’écran « Mes demandes ».
+
+Le PDF est un récépissé de suivi, pas l’acte officiel. Il récapitule la demande,
+indique la mairie de retrait et contient le QR code associé au dossier. La mairie
+peut scanner ce QR code via `/api/agent/scan`, puis réceptionner et remettre le
+document au citoyen à la mairie de retrait.
 
 
 

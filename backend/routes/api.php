@@ -29,7 +29,11 @@ Route::post('/citoyen/login', [CitoyenAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
     Route::post('/logout', [CitoyenAuthController::class, 'logout']);
     Route::get('/me', [CitoyenAuthController::class, 'me']);
+    Route::patch('/profil', [CitoyenAuthController::class, 'updateProfile']);
+    Route::get('/dashboard', [CitoyenAuthController::class, 'dashboard']);
     Route::get('/demandes', [CitoyenAuthController::class, 'mesDemandes']);
+    Route::get('/demandes/{demande}', [CitoyenAuthController::class, 'detailDemande']);
+    Route::get('/demandes/{demande}/pdf', [DemandeController::class, 'pdfCitoyen']);
     Route::get('/notifications', [NotificationController::class, 'citoyenIndex']);
     Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'citoyenMarquerLue']);
 });

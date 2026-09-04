@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ChecklistController;
 use App\Models\Demande;
 use App\Models\Filiation;
 use App\Models\Notification;
@@ -64,7 +65,7 @@ class DemandeController extends Controller
             ->with(['usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert'])
             ->firstOrFail();
 
-        return response()->json($demande);
+        return response()->json($this->avecChecklist($demande));
     }
 
     public function pdf(string $qrToken)
@@ -73,10 +74,32 @@ class DemandeController extends Controller
             ->with(['usager', 'filiation', 'mairieOrigine', 'mairieRetrait'])
             ->firstOrFail();
 
+        return $this->genererPdf($demande);
+    }
+
+    public function pdfCitoyen(Request $request, Demande $demande)
+    {
+        abort_unless($demande->usager_id === $request->user()->id, 404);
+
+        $demande->load(['usager', 'filiation', 'mairieOrigine', 'mairieRetrait']);
+
+        return $this->genererPdf($demande);
+    }
+
+    private function genererPdf(Demande $demande)
+    {
         $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(200)->generate($demande->qr_token);
 
         $pdf = \PDF::loadView('pdf.recapitulatif', compact('demande', 'qrSvg'));
 
         return $pdf->download("recapitulatif-{$demande->id}.pdf");
+    }
+
+    private function avecChecklist(Demande $demande): array
+    {
+        $donnees = $demande->toArray();
+        $donnees['checklist'] = ChecklistController::forType($demande->type_demande);
+
+        return $donnees;
     }
 }

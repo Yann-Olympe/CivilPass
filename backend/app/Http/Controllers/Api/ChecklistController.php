@@ -16,14 +16,24 @@ class ChecklistController extends Controller
         ],
     ];
 
-    public function show(string $typeDemande)
+    public static function forType(string $typeDemande): ?array
     {
         $pieces = self::CHECKLISTS[$typeDemande] ?? null;
 
-        if (! $pieces) {
+        return $pieces ? [
+            'type_demande' => $typeDemande,
+            'pieces_requises' => $pieces,
+        ] : null;
+    }
+
+    public function show(string $typeDemande)
+    {
+        $checklist = self::forType($typeDemande);
+
+        if (! $checklist) {
             return response()->json(['message' => 'Type de démarche inconnu.'], 404);
         }
 
-        return response()->json(['type_demande' => $typeDemande, 'pieces_requises' => $pieces]);
+        return response()->json($checklist);
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ChecklistController;
+use App\Models\Demande;
 use App\Models\Usager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CitoyenAuthController extends Controller
@@ -94,14 +97,114 @@ class CitoyenAuthController extends Controller
         return response()->json($request->user());
     }
 
+    public function updateProfile(Request $request)
+    {
+        $usager = $request->user();
+
+        $data = $request->validate([
+            'nom' => 'sometimes|required|string|max:100',
+            'prenom' => 'sometimes|required|string|max:100',
+            'telephone' => ['sometimes', 'required', 'string', 'max:20', Rule::unique('usagers')->ignore($usager->id)],
+            'email' => ['sometimes', 'required', 'email', Rule::unique('usagers')->ignore($usager->id)],
+            'date_naissance' => 'sometimes|required|date',
+            'lieu_naissance' => 'sometimes|required|string|max:150',
+            'sexe' => 'sometimes|required|in:M,F',
+            'nationalite' => 'sometimes|required|string|max:100',
+            'adresse' => 'sometimes|required|string|max:255',
+            'ville' => 'sometimes|required|string|max:100',
+            'region' => 'sometimes|required|string|max:100',
+            'nui' => ['sometimes', 'nullable', 'string', 'max:30', Rule::unique('usagers')->ignore($usager->id)],
+            'cni_numero' => 'sometimes|nullable|string|max:30',
+        ]);
+
+        $usager->update($data);
+
+        return response()->json([
+            'message' => 'Profil mis à jour avec succès.',
+            'usager' => $usager->fresh(),
+        ]);
+    }
+
     public function mesDemandes(Request $request)
     {
-        $demandes = $request->user()
-            ->demandes()
-            ->with(['filiation', 'mairieOrigine', 'mairieRetrait', 'transfert'])
-            ->latest('date_creation')
-            ->get();
+        $query = $request->user()->demandes()
+            ->with(['filiation', 'mairieOrigine', 'mairieRetrait', 'transfert']);
+
+        $filtre = $request->query('filtre', 'toutes');
+        abort_unless(in_array($filtre, ['toutes', 'actives', 'pretes'], true), 422,
+            'Le filtre doit être toutes, actives ou pretes.');
+
+        if ($filtre === 'actives') {
+            $query->whereIn('statut', ['nouvelle', 'en_cours', 'urgente']);
+        } elseif ($filtre === 'pretes') {
+            $query->where('statut', 'validee');
+        }
+
+        if ($recherche = $request->query('recherche')) {
+            $query->where(function ($demandeQuery) use ($recherche) {
+                $demandeQuery->where('id', $recherche)
+                    ->orWhere('type_demande', 'like', "%{$recherche}%")
+                    ->orWhereHas('mairieOrigine', fn ($mairieQuery) => $mairieQuery
+                        ->where('nom', 'like', "%{$recherche}%")
+                        ->orWhere('ville', 'like', "%{$recherche}%"))
+                    ->orWhereHas('mairieRetrait', fn ($mairieQuery) => $mairieQuery
+                        ->where('nom', 'like', "%{$recherche}%")
+                        ->orWhere('ville', 'like', "%{$recherche}%"));
+            });
+        }
+
+        $demandes = $query->latest('date_creation')->get();
 
         return response()->json($demandes);
+    }
+
+    public function detailDemande(Request $request, Demande $demande)
+    {
+        abort_unless($demande->usager_id === $request->user()->id, 404);
+
+        $demande->load(['filiation', 'mairieOrigine', 'mairieRetrait', 'transfert']);
+        $donnees = $demande->toArray();
+        $donnees['checklist'] = ChecklistController::forType($demande->type_demande);
+
+        return response()->json($donnees);
+    }
+
+    public function dashboard(Request $request)
+    {
+        $usager = $request->user();
+        $demandes = $usager->demandes();
+        $annee = (int) $request->integer('annee', now()->year);
+
+        $pretARetirer = (clone $demandes)->where('statut', 'validee')->count();
+
+        $mensuelles = (clone $demandes)
+            ->whereYear('date_creation', $annee)
+            ->get(['date_creation'])
+            ->countBy(fn (Demande $demande) => $demande->date_creation->month);
+
+        $alerte = (clone $demandes)
+            ->where('statut', 'validee')
+            ->with('mairieRetrait')
+            ->latest('date_creation')
+            ->first();
+
+        return response()->json([
+            'compteurs' => [
+                'en_cours' => (clone $demandes)->whereIn('statut', ['nouvelle', 'en_cours', 'urgente'])->count(),
+                'pret_a_retirer' => $pretARetirer,
+                'historique' => (clone $demandes)->count(),
+            ],
+            'alerte' => $alerte ? [
+                'demande_id' => $alerte->id,
+                'message' => 'Votre acte est prêt à être retiré.',
+                'mairie_retrait' => $alerte->mairieRetrait,
+            ] : null,
+            'statistiques' => [
+                'annee' => $annee,
+                'demandes_par_mois' => collect(range(1, 12))->mapWithKeys(
+                    fn (int $mois) => [$mois => (int) ($mensuelles[$mois] ?? 0)]
+                ),
+            ],
+        ]);
     }
 }

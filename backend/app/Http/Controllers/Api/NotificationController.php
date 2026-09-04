@@ -34,12 +34,15 @@ class NotificationController extends Controller
 
     public function citoyenIndex(Request $request)
     {
-        return response()->json(
-            Notification::where('usager_id', $request->user()->id)
-                ->with('demande')
-                ->latest()
-                ->get()
-        );
+        $query = Notification::where('usager_id', $request->user()->id)
+            ->with('demande')
+            ->latest();
+
+        if ($request->has('lue')) {
+            $query->where('lue', $request->boolean('lue'));
+        }
+
+        return response()->json($query->get());
     }
 
     public function citoyenMarquerLue(Request $request, Notification $notification)
@@ -47,6 +50,6 @@ class NotificationController extends Controller
         abort_unless($notification->usager_id === $request->user()->id, 403);
         $notification->update(['lue' => true]);
 
-        return response()->json($notification);
+        return response()->json($notification->load('demande'));
     }
 }

@@ -92,7 +92,9 @@ class ApiTest extends TestCase
 
         $this->getJson("/api/demandes/{$demande->qr_token}")
             ->assertOk()
-            ->assertJsonPath('id', $demande->id);
+            ->assertJsonPath('id', $demande->id)
+            ->assertJsonPath('checklist.type_demande', 'naissance')
+            ->assertJsonCount(5, 'checklist.pieces_requises');
     }
 
     public function test_pdf_download_returns_pdf(): void
@@ -103,6 +105,37 @@ class ApiTest extends TestCase
 
         $response->assertOk();
         $this->assertStringContainsString('application/pdf', $response->headers->get('Content-Type'));
+    }
+
+    public function test_citoyen_can_download_own_receipt_pdf(): void
+    {
+        $demande = $this->createDemande();
+
+        $response = $this->get("/api/citoyen/demandes/{$demande->id}/pdf");
+
+        $response->assertOk();
+        $this->assertStringContainsString('application/pdf', $response->headers->get('Content-Type'));
+    }
+
+    public function test_citoyen_cannot_download_another_citizens_receipt(): void
+    {
+        $demande = $this->createDemande();
+        $autreUsager = Usager::create([
+            'nom' => 'Autre',
+            'prenom' => 'Citoyen',
+            'telephone' => '699000098',
+            'email' => 'autre@example.com',
+            'lieu_naissance' => 'Douala',
+            'sexe' => 'M',
+            'adresse' => 'Rue 2',
+            'ville' => 'Douala',
+            'region' => 'Littoral',
+            'password' => 'password123',
+        ]);
+        Sanctum::actingAs($autreUsager);
+
+        $this->get("/api/citoyen/demandes/{$demande->id}/pdf")
+            ->assertNotFound();
     }
 
     public function test_agent_login_returns_token(): void
