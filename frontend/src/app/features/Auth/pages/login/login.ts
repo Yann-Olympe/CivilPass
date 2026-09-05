@@ -52,7 +52,8 @@ export class Login implements OnInit {
     this.citizenAuth.login(identifiant, motDePasse).subscribe({
       next: () => {
         this.envoiEnCours.set(false);
-        this.router.navigate(['/espace']);
+        const redirect = this.route.snapshot.queryParamMap.get('redirect');
+        this.router.navigate([redirect ?? '/espace']);
       },
       error: (err) => {
         this.envoiEnCours.set(false);

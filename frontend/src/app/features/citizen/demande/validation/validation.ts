@@ -4,25 +4,15 @@ import { DemandeActeStateService } from '../../../../Services/demande-acte-state
 import { DemandeService } from '../../../../Services/demande.service';
 import { MairieService } from '../../../../Services/mairie.service';
 
-interface LigneInfo {
-  label: string;
-  valeur: string;
-}
-
-interface BlocValidation {
-  icone: 'demandeur' | 'acte' | 'mairie-origine' | 'mairie-retrait';
-  titre: string;
-  lignes: LigneInfo[];
-}
-
 @Component({
   selector: 'app-validation',
+  standalone: true,
   imports: [],
   templateUrl: './validation.html',
-  styleUrl: './validation.css',
+  styleUrl: '../demande-wizard.css',
 })
 export class Validation {
-    private router = inject(Router);
+  private router = inject(Router);
   private stateService = inject(DemandeActeStateService);
   private demandeService = inject(DemandeService);
   private mairieService = inject(MairieService);
@@ -31,8 +21,7 @@ export class Validation {
   errorMessage = signal<string | null>(null);
 
   data = this.stateService.getState();
-
-  mairies = this.mairieService.mairies; // signal, depuis httpResource (ou mock selon ta version actuelle)
+  mairies = this.mairieService.mairies;
 
   mairieOrigineNom = computed(() =>
     this.mairies()?.find(m => m.id === this.data.mairies?.mairieOrigineId)?.nom ?? '—'
@@ -42,7 +31,7 @@ export class Validation {
     this.mairies()?.find(m => m.id === this.data.mairies?.mairieRetraitId)?.nom ?? '—'
   );
 
-  onModifier(section: 'identite' | 'acte' | 'mairie'): void {
+  onModifier(section: 'acte' | 'mairie'): void {
     this.router.navigate([`demande/${section}`]);
   }
 
@@ -66,7 +55,7 @@ export class Validation {
       error: () => {
         this.isSubmitting.set(false);
         this.errorMessage.set("L'envoi de votre demande a échoué. Veuillez réessayer.");
-      }
+      },
     });
   }
 }

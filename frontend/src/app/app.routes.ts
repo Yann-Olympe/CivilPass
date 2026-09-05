@@ -26,21 +26,22 @@ export const routes: Routes = [
   },
         { path: 'login', loadComponent: () => import('./features/Auth/pages/login/login').then(m => m.Login) },
 
-  {
-    path: '',
-    component: CitizenShell,
-    children: [
-      { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
-      { path: 'demande/identite', loadComponent: () => import('./features/citizen/demande/identite/identite').then(m => m.Identite) },
-      { path: 'demande/acte', loadComponent: () => import('./features/citizen/demande/acte/acte').then(m => m.Acte) },
-      { path: 'demande/mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
-      { path: 'demande/validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
-      {
-        path: '',
-        children: [],
-      },
-    ],
-  },
+{
+  path: '',
+  component: CitizenShell,
+  children: [
+    { path: 'accueil', loadComponent: () => import('./features/citizen/accueil/accueil').then(m => m.Accueil) },
+    {
+      path: 'demande',
+      canActivate: [citizenAuthGuard],
+      children: [
+        { path: 'acte', loadComponent: () => import('./features/citizen/demande/acte/acte').then(m => m.Acte) },
+        { path: 'mairie', loadComponent: () => import('./features/citizen/demande/mairie/mairie').then(m => m.Mairie) },
+        { path: 'validation', loadComponent: () => import('./features/citizen/demande/validation/validation').then(m => m.Validation) },
+      ],
+    },
+  ],
+},
 
   // ===== Espace citoyen connecté ("Dashbord client") =====
   {

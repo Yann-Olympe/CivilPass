@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CitizenAuthService } from '../../../../../../Services/auth.service';
+import { CitizenAuthService } from '../../../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +12,6 @@ export class Header {
   auth = inject(CitizenAuthService);
 
   mobileMenuOpen = signal(false);
-  currentLang = signal<'FR' | 'EN'>('FR');
 
   toggleMenu(): void {
     this.mobileMenuOpen.update(open => !open);
@@ -20,10 +19,5 @@ export class Header {
 
   closeMenu(): void {
     this.mobileMenuOpen.set(false);
-  }
-
-  toggleLang(): void {
-    this.currentLang.update(lang => (lang === 'FR' ? 'EN' : 'FR'));
-    
   }
 }

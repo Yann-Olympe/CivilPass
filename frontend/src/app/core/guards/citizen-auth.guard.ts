@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { CitizenAuthService } from '../../Services/citizen-auth.service';
 
-export const citizenAuthGuard: CanActivateFn = () => {
+export const citizenAuthGuard: CanActivateFn = (route, state) => {
   const auth = inject(CitizenAuthService);
   const router = inject(Router);
 
@@ -10,6 +10,6 @@ export const citizenAuthGuard: CanActivateFn = () => {
     return true;
   }
 
-  router.navigate(['/login']);
+  router.navigate(['/login'], { queryParams: { redirect: state.url } });
   return false;
 };
