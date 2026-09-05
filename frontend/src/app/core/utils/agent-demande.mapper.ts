@@ -1,5 +1,5 @@
-import { Demande, StatutDemande } from '../models/demande.model';
-import { AgentDemandeApiDto } from '../../../../Services/agentDemande.service';
+import { Demande, StatutDemande } from '../../features/mairie/shared/models/demande.model';
+import { AgentDemandeApiDto } from '../../Services/agentDemande.service';
 
 export function mapAgentDemandeDto(dto: AgentDemandeApiDto): Demande {
   return {

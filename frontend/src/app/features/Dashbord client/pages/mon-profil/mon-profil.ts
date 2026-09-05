@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Icon } from '../../shared/icon/icon';
 import { ClientUserService } from '../../shared/services/client-user.service';
 import { ClientToastService } from '../../shared/services/client-toast.service';
-import { CitizenAuthService } from '../../../../Services/auth.service';
+import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-mon-profil',
@@ -63,8 +63,10 @@ export class MonProfil {
     });
   }
 
-  deconnexion(): void {
-    this.auth.logout();
-    this.router.navigate(['/login']);
-  }
+deconnexion(): void {
+  this.auth.logout().subscribe({
+    next: () => this.router.navigate(['/login']),
+    error: () => this.router.navigate(['/login']), // on déconnecte localement même si le réseau échoue
+  });
+}
 }

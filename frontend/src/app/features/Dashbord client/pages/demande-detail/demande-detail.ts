@@ -1,7 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
+import { map, of, switchMap } from 'rxjs';
 import { Icon } from '../../shared/icon/icon';
 import { ClientStatusBadge } from '../../shared/components/status-badge/status-badge';
 import { ConfirmModal } from '../../shared/components/confirm-modal/confirm-modal';
@@ -22,11 +22,15 @@ export class DemandeDetail {
   private service = inject(ClientDemandesService);
   private toast = inject(ClientToastService);
 
-  private id = toSignal(this.route.paramMap.pipe(map((p) => p.get('id') ?? '')), { initialValue: '' });
+  demande = toSignal(
+    this.route.paramMap.pipe(
+      map((p) => p.get('id') ?? ''),
+      switchMap((id) => (id ? this.service.getDemande(id) : of(undefined)))
+    ),
+    { initialValue: undefined }
+  );
 
-  demande = computed(() => this.service.getById(this.id()));
   typeIcon = CLIENT_TYPE_ICON;
-
   confirmRetraitOpen = signal(false);
 
   retour(): void {

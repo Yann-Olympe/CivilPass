@@ -30,6 +30,7 @@ export class Statistiques {
       a_preparer: 'gray',
       validee: 'blue',
       rejetee: 'red',
+      correction_demandee: 'orange',
     };
     return map[statut];
   }

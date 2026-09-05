@@ -1,7 +1,7 @@
 import { Injectable, computed, signal, inject } from '@angular/core';
 import { Demande, StatCard, StatutDemande } from '../models/demande.model';
 import { AgentDemandeService } from '../../../../Services/agentDemande.service';
-import { mapAgentDemandeDto } from '../utils/agent-demande.mapper';
+import { mapAgentDemandeDto } from '../../../../core/utils/agent-demande.mapper';
 
 const PENDING_STATUTS: StatutDemande[] = ['nouvelle', 'en_cours', 'urgente'];
 

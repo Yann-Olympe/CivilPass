@@ -1,6 +1,10 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 import { ClientDemande, ClientDemandeStatut } from '../models/client-demande.model';
-import { CLIENT_DEMANDES_MOCK } from '../data/demandes-client.mock';
+import { ApiDemande } from '../../../../Services/api-demande.model';
+import { mapperDemandeApiVersClient } from '../../../../core/utils/client-demande.mapper';
 
 export type ClientDemandeFiltre = 'all' | 'actives' | 'pret';
 
@@ -17,19 +21,19 @@ export interface StatistiqueMois {
   total: number;
 }
 
-/**
- * Simule un service backend pour les demandes de l'espace citoyen.
- * TODO(API) : remplacer les données/temps de latence simulés par de vrais appels
- * HttpClient vers /api/citoyen/demandes une fois l'API disponible (cf. DemandeService).
- */
 @Injectable({ providedIn: 'root' })
 export class ClientDemandesService {
-  private readonly _demandes = signal<ClientDemande[]>(CLIENT_DEMANDES_MOCK);
+  private http = inject(HttpClient);
+  private readonly baseUrl = `${environment.apiUrl}/api/citoyen/demandes`;
+
+  private readonly _demandes = signal<ClientDemande[]>([]);
   private readonly _loading = signal(false);
+  private readonly _erreur = signal<string | null>(null);
   private readonly _recherche = signal('');
   private readonly _filtre = signal<ClientDemandeFiltre>('all');
 
   readonly loading = this._loading.asReadonly();
+  readonly erreur = this._erreur.asReadonly();
   readonly recherche = this._recherche.asReadonly();
   readonly filtre = this._filtre.asReadonly();
 
@@ -46,7 +50,6 @@ export class ClientDemandesService {
     };
   });
 
-  /** Liste affichée dans "Mes demandes" : recherche texte + filtre de statut combinés. */
   readonly demandesFiltrees = computed(() => {
     const texte = this._recherche().trim().toLowerCase();
     const filtre = this._filtre();
@@ -67,7 +70,6 @@ export class ClientDemandesService {
     });
   });
 
-  /** Répartition des demandes par mois, utilisée par la page Statistiques. */
   readonly statistiquesMensuelles = computed<StatistiqueMois[]>(() => {
     const parMois = new Map<string, number>();
 
@@ -82,19 +84,44 @@ export class ClientDemandesService {
       .reverse();
   });
 
-  readonly repartitionParStatut = computed(() => {
-    const all = this._demandes();
-    const statuts: ClientDemandeStatut[] = ['pret', 'en_cours', 'a_preparer', 'validee', 'rejetee'];
-    return statuts.map((statut) => ({
-      statut,
-      total: all.filter((d) => d.statut === statut).length,
-    }));
-  });
+readonly repartitionParStatut = computed(() => {
+  const all = this._demandes();
+  const statuts: ClientDemandeStatut[] = [
+    'pret',
+    'en_cours',
+    'a_preparer',
+    'correction_demandee',
+    'validee',
+    'rejetee',
+  ];
+  return statuts.map((statut) => ({
+    statut,
+    total: all.filter((d) => d.statut === statut).length,
+  }));
+});
 
   constructor() {
-    // Simule un premier chargement réseau au démarrage du module.
+    this.charger();
+  }
+
+  charger(): void {
     this._loading.set(true);
-    setTimeout(() => this._loading.set(false), 350);
+    this._erreur.set(null);
+
+    this.http
+      .get<ApiDemande[]>(this.baseUrl)
+      .pipe(
+        tap((demandesApi) => {
+          this._demandes.set(demandesApi.map(mapperDemandeApiVersClient));
+          this._loading.set(false);
+        }),
+        catchError(() => {
+          this._erreur.set('Impossible de récupérer vos demandes pour le moment.');
+          this._loading.set(false);
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   setRecherche(texte: string): void {
@@ -105,30 +132,37 @@ export class ClientDemandesService {
     this._filtre.set(filtre);
   }
 
+  /** Lecture synchrone depuis le cache déjà chargé (liste "Mes demandes"). */
   getById(id: string): ClientDemande | undefined {
     return this._demandes().find((d) => d.id === id);
   }
 
-  /** La prochaine demande prête pour retrait (utilisée pour la bannière du tableau de bord). */
+  /**
+   * Récupère une demande par id, avec fallback réseau si elle n'est pas encore
+   * en cache (ex: arrivée directe sur /espace/demandes/:id, rechargement de page).
+   * Utilise GET /citoyen/demandes/{demande}.
+   */
+  getDemande(id: string) {
+    const enCache = this.getById(id);
+    if (enCache) {
+      return of(enCache);
+    }
+
+    return this.http.get<ApiDemande>(`${this.baseUrl}/${id}`).pipe(
+      map(mapperDemandeApiVersClient),
+      tap((demande) => this._demandes.update((liste) => [...liste, demande]))
+    );
+  }
+
   prochainePrete(): ClientDemande | undefined {
     return this.demandes().find((d) => d.statut === 'pret');
   }
 
-  /** Simule la confirmation de retrait d'un acte au guichet. */
   confirmerRetrait(id: string): void {
-    this._demandes.update((list) =>
-      list.map((d) => {
-        if (d.id !== id) return d;
-        return {
-          ...d,
-          statut: 'validee',
-          etapes: d.etapes.map((e, i, arr) =>
-            i === arr.length - 1
-              ? { ...e, label: 'Retirée', description: 'Document retiré au guichet.', atteinte: true }
-              : e
-          ),
-        };
-      })
-    );
+    // TODO(API) : aucun endpoint de confirmation de retrait côté citoyen dans le
+    // contrat actuel — seul /agent/demandes/{id}/remettre existe, côté agent.
+    // À clarifier avec le backend : le retrait est-il uniquement déclenché par
+    // la mairie, ou faut-il un endpoint citoyen dédié ?
+    console.warn('confirmerRetrait : endpoint backend manquant, action non exécutée.');
   }
 }

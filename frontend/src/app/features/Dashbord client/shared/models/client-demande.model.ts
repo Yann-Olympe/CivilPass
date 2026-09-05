@@ -1,6 +1,3 @@
-// Modèle de données pour une demande côté "Espace Citoyen" (Dashbord client).
-// Volontairement indépendant du modèle "mairie" pour garder ce module autonome.
-
 export type ClientDemandeType = 'naissance' | 'mariage' | 'deces';
 
 export type ClientDemandeStatut =
@@ -8,7 +5,8 @@ export type ClientDemandeStatut =
   | 'a_preparer'
   | 'pret'
   | 'validee'
-  | 'rejetee';
+  | 'rejetee'
+  | 'correction_demandee';
 
 export interface ClientDemandeEtape {
   label: string;
@@ -36,6 +34,7 @@ export const CLIENT_STATUT_LABELS: Record<ClientDemandeStatut, string> = {
   pret: 'Prêt pour retrait',
   validee: 'Retirée',
   rejetee: 'Rejetée',
+  correction_demandee: 'Correction requise',
 };
 
 export const CLIENT_TYPE_ICON: Record<ClientDemandeType, string> = {

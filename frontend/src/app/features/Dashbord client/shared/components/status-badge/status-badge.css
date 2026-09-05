@@ -44,3 +44,8 @@
   color: var(--color-red-600);
 }
 .badge[data-tone='red'] .dot { background: var(--color-red-500); }
+.badge[data-tone='orange'] {
+  background: var(--color-yellow-50);
+  color: var(--color-red-600);
+}
+.badge[data-tone='orange'] .dot { background: var(--color-yellow-500); }

@@ -19,6 +19,7 @@ export class ClientStatusBadge {
       a_preparer: 'gray',
       validee: 'blue',
       rejetee: 'red',
+      correction_demandee: 'orange',
     };
     return map[this.statut()] ?? 'gray';
   });
