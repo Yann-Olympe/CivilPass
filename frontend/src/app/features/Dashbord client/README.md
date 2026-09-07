@@ -11,7 +11,7 @@ Une seule modification a été faite hors de ce dossier : l'ajout du bloc de rou
 citoyen public). Rien d'autre n'a été touché.
 
 Le header public (`features/citizen/layout/citizen-shell/components/header`)
-pointe déjà vers `/espace` et `/espace/demandes` quand l'utilisateur est
+pointe déjà vers `/espace` et `/demande/acte` quand l'utilisateur est
 connecté (`CitizenAuthService.isLoggedIn()`) — c'est donc directement
 opérationnel.
 
@@ -20,8 +20,8 @@ opérationnel.
 | Route                    | Composant         | Description                                   |
 |---------------------------|-------------------|------------------------------------------------|
 | `/espace`                  | `EspaceHome`      | Tableau de bord (« Mon espace »)               |
-| `/espace/demandes`         | `MesDemandes`     | Historique des demandes (recherche + filtres)  |
-| `/espace/demandes/:id`     | `DemandeDetail`   | Détail + suivi + actions d'une demande         |
+| `/demande/acte`         | `MesDemandes`     | Historique des demandes (recherche + filtres)  |
+| `/demande/acte/:id`     | `DemandeDetail`   | Détail + suivi + actions d'une demande         |
 | `/espace/profil`           | `MonProfil`       | Consultation / modification du profil          |
 | `/espace/statistiques`     | `Statistiques`    | Visualisation analytique (graphiques)          |
 

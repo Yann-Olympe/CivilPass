@@ -80,6 +80,6 @@ export class DemandeDetail {
   }
 
   refaireDemande(): void {
-    this.router.navigate(['/demande/identite']);
+    this.router.navigate(['/demande/acte']);
   }
 }
