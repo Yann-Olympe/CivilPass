@@ -88,8 +88,11 @@ export class DemandesStore {
     return this.fileAttente()[0];
   }
 
-  valider(id: string) {
-    this.agentDemandeService.valider(id).subscribe({
+  valider(id: string, motif?: string) {
+    this.agentDemandeService.valider(id, {
+      souche_retrouvee: true,
+      motif,
+    }).subscribe({
       next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
       error: (err) => console.error(err),
     });
@@ -109,15 +112,14 @@ export class DemandesStore {
     });
   }
 
-  /**
-   * ⚠️ TEMPORAIRE — aucun endpoint backend n'existe encore pour rejeter une demande.
-   * Met à jour uniquement l'état local (ne persiste pas après rechargement de page).
-   * À remplacer par un vrai appel HTTP dès que le backend expose
-   * POST /api/agent/demandes/{id}/rejeter
-   */
   rejeter(id: string, motif: string) {
-    console.warn('rejeter() : action locale uniquement, endpoint backend non disponible');
-    this.update(id, { statut: 'rejetee', motifRejet: motif });
+    this.agentDemandeService.valider(id, {
+      souche_retrouvee: false,
+      motif,
+    }).subscribe({
+      next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
+      error: (err) => console.error(err),
+    });
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Icon } from '../../shared/icon/icon';
 import { StatusBadge } from '../../shared/components/status-badge/status-badge';
@@ -34,7 +34,7 @@ const FILTRES_DISPONIBLES: { value: FiltreStatut; label: string }[] = [
   templateUrl: './demandes-list.html',
   styleUrl: './demandes-list.css',
 })
-export class DemandesList {
+export class DemandesList implements OnInit {
   constructor() {
     console.log('DemandesList chargé - version test');
   }
@@ -67,6 +67,10 @@ export class DemandesList {
         d.mairieRetrait.toLowerCase().includes(q)
       );
   });
+
+  ngOnInit(): void {
+    this.store.refresh();
+  }
 
   choisirFiltre(f: FiltreStatut) {
     this.filtreActif.set(f);

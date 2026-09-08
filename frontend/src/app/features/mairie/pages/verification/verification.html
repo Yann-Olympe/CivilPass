@@ -188,6 +188,18 @@
   <footer class="verif-footer">
     <p>Assurez-vous de vérifier toutes les divergences avant validation.</p>
     <div class="verif-footer__actions">
+      @if (isMairieRetrait() && demande()?.statut === 'en_cours') {
+        <button class="btn btn--primary" (click)="recevoir()">
+          <app-icon name="download" />
+          Réceptionner le dossier
+        </button>
+      }
+      @if (isMairieRetrait() && demande()?.statut === 'validee') {
+        <button class="btn btn--primary" (click)="remettre()">
+          <app-icon name="check" />
+          Marquer comme remis
+        </button>
+      }
       <button class="btn btn--danger" (click)="ouvrirPanneau('reject')">
         <app-icon name="x" />
         Rejeter

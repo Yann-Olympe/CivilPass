@@ -67,7 +67,9 @@ class AgentDashboardController extends Controller
 
                 $this->notifierUsager($demande, 'rejetee', $demande->motif_statut);
 
-                return response()->json($demande->fresh(), 422);
+                return response()->json($demande->fresh()->load([
+                    'usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+                ]));
             }
 
             $demande->update([
@@ -91,10 +93,9 @@ class AgentDashboardController extends Controller
                 'message' => "Nouveau dossier transféré par {$demande->mairieOrigine->nom} — n°{$demande->id}",
             ]);
 
-            return response()->json([
-                'demande' => $demande->fresh(),
-                'transfert' => $transfert,
-            ]);
+            return response()->json($demande->fresh()->load([
+                'usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+            ]));
         });
     }
 
@@ -127,7 +128,9 @@ class AgentDashboardController extends Controller
                 'message' => "Le dossier n°{$demande->id} a été reçu par {$demande->mairieRetrait->nom}",
             ]);
 
-            return response()->json($demande->fresh()->load('transfert'));
+            return response()->json($demande->fresh()->load([
+                'usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+            ]));
         });
     }
 
@@ -147,7 +150,9 @@ class AgentDashboardController extends Controller
 
             $this->notifierUsager($demande, 'remise', $demande->motif_statut);
 
-            return response()->json($demande->fresh());
+            return response()->json($demande->fresh()->load([
+                'usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+            ]));
         });
     }
 

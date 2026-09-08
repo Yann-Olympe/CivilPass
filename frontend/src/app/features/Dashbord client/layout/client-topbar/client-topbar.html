@@ -24,6 +24,42 @@
       <app-icon name="globe" />
     </button>
 
+    <div class="topbar__notifications">
+      <button
+        type="button"
+        class="topbar__icon-btn"
+        (click)="toggleNotifications()"
+        [attr.aria-label]="'Notifications non lues : ' + notificationsNonLues().length"
+        [attr.aria-expanded]="notificationsOpen()"
+      >
+        <app-icon name="bell" />
+        @if (notificationsNonLues().length) {
+          <span class="topbar__notification-count">{{ notificationsNonLues().length }}</span>
+        }
+      </button>
+
+      @if (notificationsOpen()) {
+        <div class="topbar__notifications-menu">
+          <p class="topbar__notifications-title">Notifications</p>
+          @if (!notifications().length) {
+            <p class="topbar__notifications-empty">Aucune notification.</p>
+          } @else {
+            @for (notification of notifications(); track notification.id) {
+              <button
+                type="button"
+                class="topbar__notification"
+                [class.topbar__notification--unread]="!notification.lue"
+                (click)="lireNotification(notification)"
+              >
+                <span>{{ notification.message }}</span>
+                <small>{{ notification.created_at | date: 'dd/MM/yyyy HH:mm' }}</small>
+              </button>
+            }
+          }
+        </div>
+      }
+    </div>
+
     <div class="topbar__avatar-wrap">
       <button
         type="button"

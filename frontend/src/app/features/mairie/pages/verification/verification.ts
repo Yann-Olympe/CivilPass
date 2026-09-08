@@ -4,6 +4,7 @@ import { Icon } from '../../shared/icon/icon';
 import { DemandesStore } from '../../shared/data/demandes.store';
 import { ToastService } from '../../shared/components/toast/toast.service';
 import { ChampRegistre, Demande, DetailDemande } from '../../shared/models/demande.model';
+import { AgentAuthService } from '../../../../Services/agent-auth.service';
 
 type PanelAction = null | 'reject' | 'correction';
 
@@ -46,11 +47,14 @@ export class Verification {
   private router = inject(Router);
   private store = inject(DemandesStore);
   private toast = inject(ToastService);
+  private agentAuth = inject(AgentAuthService);
 
   demandeId = '';
   demande = signal<Demande | undefined>(undefined);
   panelAction = signal<PanelAction>(null);
   motif = signal('');
+
+  isMairieRetrait = () => ['retrait', 'les_deux'].includes(this.agentAuth.profile()?.role ?? '');
 
   detail = computed<DetailDemande>(() => {
     const d = this.demande();
@@ -137,5 +141,17 @@ export class Verification {
     this.store.valider(this.demandeId);
     this.toast.show(`Demande ${this.demandeId} validée avec succès.`, 'success');
     this.router.navigate(['/mairie/transferts', this.demandeId]);
+  }
+
+  recevoir() {
+    this.store.recevoir(this.demandeId);
+    this.toast.show(`Demande ${this.demandeId} réceptionnée.`, 'success');
+    this.router.navigate(['/mairie/demandes', this.demandeId]);
+  }
+
+  remettre() {
+    this.store.remettre(this.demandeId);
+    this.toast.show(`Demande ${this.demandeId} remise au citoyen.`, 'success');
+    this.router.navigate(['/mairie/demandes', this.demandeId]);
   }
 }

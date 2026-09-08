@@ -14,6 +14,9 @@ export interface AgentDemandeApiDto {
   mairie_origine_id: number;
   mairie_retrait_id: number;
   date_creation: string;
+  updated_at?: string;
+  motif_statut?: string | null;
+  observation_origine?: string | null;
   usager: {
     id: number;
     nom: string;
@@ -38,8 +41,12 @@ export class AgentDemandeService {
     return this.http.get<AgentDemandeApiDto[]>(`${this.baseUrl}/demandes`);
   }
 
-  valider(id: string): Observable<AgentDemandeApiDto> {
-    return this.http.post<AgentDemandeApiDto>(`${this.baseUrl}/demandes/${id}/valider`, {});
+  valider(id: string, payload: {
+    souche_retrouvee: boolean;
+    observation_origine?: string;
+    motif?: string;
+  }): Observable<AgentDemandeApiDto> {
+    return this.http.post<AgentDemandeApiDto>(`${this.baseUrl}/demandes/${id}/valider`, payload);
   }
 
   recevoir(id: string): Observable<AgentDemandeApiDto> {

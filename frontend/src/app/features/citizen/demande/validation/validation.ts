@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DemandeActeStateService } from '../../../../Services/demande-acte-state.service';
 import { DemandeService } from '../../../../Services/demande.service';
 import { MairieService } from '../../../../Services/mairie.service';
+import { ClientDemandesService } from '../../../Dashbord client/shared/services/client-demandes.service';
 
 @Component({
   selector: 'app-validation',
@@ -16,6 +17,7 @@ export class Validation {
   private stateService = inject(DemandeActeStateService);
   private demandeService = inject(DemandeService);
   private mairieService = inject(MairieService);
+  private clientDemandesService = inject(ClientDemandesService);
 
   isSubmitting = signal(false);
   errorMessage = signal<string | null>(null);
@@ -49,12 +51,17 @@ export class Validation {
     this.demandeService.creerDemande(payload).subscribe({
       next: (response) => {
         this.isSubmitting.set(false);
+        this.clientDemandesService.charger();
         this.stateService.reset();
-        this.router.navigate(['/suivi', response.qr_token]);
+        this.router.navigate(['/espace/demandes', response.id]);
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set("L'envoi de votre demande a échoué. Veuillez réessayer.");
+        this.errorMessage.set(
+          err.status === 401
+            ? 'Votre session a expiré. Connectez-vous à nouveau avant de soumettre la demande.'
+            : "L'envoi de votre demande a échoué. Veuillez réessayer."
+        );
       },
     });
   }
