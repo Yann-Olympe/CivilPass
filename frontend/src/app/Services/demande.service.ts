@@ -14,6 +14,6 @@ export class DemandeService {
   }
 
   getDemandeByToken(qrToken: string): Observable<DemandeActeResponse> {
-    return this.http.get<DemandeActeResponse>(`${this.baseUrl}/suivi/${qrToken}`);
+    return this.http.get<DemandeActeResponse>(`${this.baseUrl}/${qrToken}`);
   }
 }
