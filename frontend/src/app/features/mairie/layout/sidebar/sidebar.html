@@ -4,13 +4,13 @@
     <span class="sidebar__brand-name">CIVILPASS</span>
   </div>
 
-  <div class="sidebar__profile">
-    <div class="sidebar__avatar">A</div>
-    <div>
-      <p class="sidebar__profile-name">Mairie de Yaoundé I</p>
-      <p class="sidebar__profile-role">Agent de Service Public</p>
-    </div>
+<div class="sidebar__profile">
+  <div class="sidebar__avatar">{{ initiale() }}</div>
+  <div>
+    <p class="sidebar__profile-name">{{ nomMairie() }}</p>
+    <p class="sidebar__profile-role">{{ nomAgent() }}</p>
   </div>
+</div>
 
   <button class="sidebar__cta" routerLink="/demandes/nouvelle">
     <app-icon name="plus" />

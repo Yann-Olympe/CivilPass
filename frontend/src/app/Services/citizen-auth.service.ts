@@ -36,7 +36,7 @@ export class CitizenAuthService {
   }
 
   me(): Observable<Usager> {
-    return this.http.get<Usager>(`${this.baseUrl}/me`).pipe(
+    return this.http.get<Usager>(`${this.baseUrl}/profile`).pipe(
       tap((usager) => {
         this._usager.set(usager);
         localStorage.setItem(STORAGE_USAGER, JSON.stringify(usager));

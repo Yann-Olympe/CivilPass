@@ -3,6 +3,12 @@ export interface AgentLoginPayload {
   password: string;
 }
 
+export interface AgentMairie {
+  id: number;
+  nom: string;
+  ville: string;
+}
+
 export interface AgentProfile {
   id: number;
   nom: string;
@@ -10,7 +16,7 @@ export interface AgentProfile {
   email: string;
   role: string;
   mairie_id: number;
-  mairie_nom?: string;
+  mairie?: AgentMairie;
 }
 
 export interface AgentAuthResponse {

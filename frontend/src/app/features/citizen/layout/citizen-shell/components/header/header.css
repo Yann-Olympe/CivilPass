@@ -1,4 +1,5 @@
 .header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,6 +17,7 @@
   font-size: 1.8rem;
   color: var(--color-green-800);
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .header-menu {
@@ -30,38 +32,64 @@
   padding: 0.4rem;
 }
 
-/* Nav — contient ancres + actions, structure commune aux deux états */
 .header__nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  margin-left: 3.2rem;
+  margin-left: 2rem;
 }
 
 .header__anchors {
   display: flex;
   align-items: center;
   gap: 2.4rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .header__actions {
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  margin-left: auto;
 }
 
 .header__link {
+  position: relative;
   font-size: 1.3rem;
   color: var(--color-green-700);
   text-decoration: none;
   transition: color var(--transition-base);
   white-space: nowrap;
+  padding-bottom: 0.4rem;
+}
+
+.header__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0.2rem;
+  background: var(--color-green-500);
+  border-radius: var(--radius-pill);
+  transition: width var(--transition-base);
 }
 
 .header__link:hover,
 .header__link:focus-visible {
   color: var(--color-green-500);
+}
+
+.header__link--active {
+  color: var(--color-green-600);
+  font-weight: 700;
+}
+
+.header__link--active::after {
+  width: 100%;
 }
 
 .header__connexion-btn {
@@ -114,7 +142,6 @@
   background: var(--color-green-500);
 }
 
-/* Mobile — sous 768px */
 @media (max-width: 768px) {
   .header-menu {
     display: block;
@@ -147,6 +174,8 @@
   }
 
   .header__anchors {
+    position: static;
+    transform: none;
     flex-direction: column;
     align-items: flex-start;
     gap: 1.2rem;
@@ -158,6 +187,7 @@
     align-items: stretch;
     width: 100%;
     gap: 0.8rem;
+    margin-left: 0;
   }
 
   .header__connexion-btn,
@@ -168,5 +198,15 @@
 
   .header__avatar {
     align-self: flex-start;
+  }
+
+  .header__link--active::after {
+    display: none;
+  }
+
+  .header__link--active {
+    background: var(--color-green-50);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
   }
 }

@@ -2,7 +2,6 @@
   <a routerLink="/accueil" class="header__logo" (click)="closeMenu()">
     CivilPass
   </a>
-
   <button
     type="button"
     class="header-menu"
@@ -16,15 +15,33 @@
       ☰
     }
   </button>
-
   <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
     <div class="header__anchors">
-      <a href="#probleme" class="header__link" (click)="closeMenu()">Le problème</a>
-      <a href="#comment-ca-marche" class="header__link" (click)="closeMenu()">Comment ça marche</a>
-      <a href="#reseau" class="header__link" (click)="closeMenu()">Réseau</a>
-      <a href="#hors-ligne" class="header__link" (click)="closeMenu()">Sécurité</a>
+      
+       <a href="#probleme"
+        class="header__link"
+        [class.header__link--active]="activeSection() === 'probleme'"
+        (click)="closeMenu()"
+      >Le problème</a>
+      
+      <a href="#comment-ca-marche"
+        class="header__link"
+        [class.header__link--active]="activeSection() === 'comment-ca-marche'"
+        (click)="closeMenu()"
+      >Comment ça marche</a>
+      
+      <a href="#reseau"
+        class="header__link"
+        [class.header__link--active]="activeSection() === 'reseau'"
+        (click)="closeMenu()"
+      >Réseau</a>
+      
+      <a href="#hors-ligne"
+        class="header__link"
+        [class.header__link--active]="activeSection() === 'hors-ligne'"
+        (click)="closeMenu()"
+      >Sécurité</a>
     </div>
-
     <div class="header__actions">
       @if (auth.estConnecte()) {
         <a routerLink="/espace/demandes" class="header__link" (click)="closeMenu()">Mes demandes</a>
@@ -37,7 +54,6 @@
       } @else {
         <a routerLink="/login" class="header__connexion-btn" (click)="closeMenu()">Connexion</a>
       }
-
       <button type="button" class="header__lang" disabled title="Bientôt disponible">
         FR
       </button>
