@@ -33,6 +33,7 @@ export interface Demande {
   citoyen: string;
   anneeActe: number;
   mairieRetrait: string;
+  mairieRetraitId?: number;
   date: string;
   /** Horodatage utilisé pour trier par ancienneté (plus petit = plus ancien). */
   soumisLe: number;

@@ -54,7 +54,11 @@ export class Verification {
   panelAction = signal<PanelAction>(null);
   motif = signal('');
 
-  isMairieRetrait = () => ['retrait', 'les_deux'].includes(this.agentAuth.profile()?.role ?? '');
+  isMairieRetrait = () => {
+    const agentMairieId = this.agentAuth.profile()?.mairie_id;
+    const mairieRetraitId = this.demande()?.mairieRetraitId;
+    return agentMairieId !== undefined && agentMairieId === mairieRetraitId;
+  };
 
   detail = computed<DetailDemande>(() => {
     const d = this.demande();

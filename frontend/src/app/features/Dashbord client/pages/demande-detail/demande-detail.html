@@ -77,9 +77,9 @@
   <section class="actions-bar">
     @switch (demande.statut) {
       @case ('pret') {
-        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()">
+        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()" [disabled]="telechargementEnCours()">
           <app-icon name="download" />
-          Télécharger le récépissé
+          {{ telechargementEnCours() ? 'Téléchargement…' : 'Télécharger le récépissé PDF' }}
         </button>
         <button type="button" class="btn btn--primary" (click)="ouvrirConfirmationRetrait()">
           <app-icon name="check-circle" />
@@ -92,9 +92,9 @@
         </button>
       }
       @case ('validee') {
-        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()">
+        <button type="button" class="btn btn--ghost" (click)="telechargerRecepisse()" [disabled]="telechargementEnCours()">
           <app-icon name="download" />
-          Télécharger le récépissé
+          {{ telechargementEnCours() ? 'Téléchargement…' : 'Télécharger le récépissé PDF' }}
         </button>
       }
       @default {

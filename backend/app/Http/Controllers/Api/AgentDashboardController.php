@@ -16,17 +16,10 @@ class AgentDashboardController extends Controller
         $agent = $request->user();
         $query = Demande::with(['usager', 'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert']);
 
-        if ($agent->role === 'origine') {
-            $query->where('mairie_origine_id', $agent->mairie_id);
-        } elseif ($agent->role === 'retrait') {
-            $query->where('mairie_retrait_id', $agent->mairie_id)
-                ->whereIn('statut', ['en_cours', 'validee', 'remise']);
-        } else {
-            $query->where(function ($q) use ($agent) {
-                $q->where('mairie_origine_id', $agent->mairie_id)
-                  ->orWhere('mairie_retrait_id', $agent->mairie_id);
-            });
-        }
+        $query->where(function ($q) use ($agent) {
+            $q->where('mairie_origine_id', $agent->mairie_id)
+              ->orWhere('mairie_retrait_id', $agent->mairie_id);
+        });
 
         return response()->json($query->latest('date_creation')->get());
     }
@@ -44,7 +37,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutValiderOrigine() && $demande->mairie_origine_id === $agent->mairie_id, 403,
+        abort_unless($demande->mairie_origine_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie d'origine peut valider cette demande.");
 
         abort_unless(in_array($demande->statut, ['nouvelle', 'urgente']), 409,
@@ -103,7 +96,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403,
+        abort_unless($demande->mairie_retrait_id === $agent->mairie_id, 403,
             "Seul un agent de la Mairie de retrait peut réceptionner ce dossier.");
 
         abort_unless($demande->statut === 'en_cours', 409,
@@ -138,7 +131,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutReceptionnerRetrait() && $demande->mairie_retrait_id === $agent->mairie_id, 403);
+        abort_unless($demande->mairie_retrait_id === $agent->mairie_id, 403);
         abort_unless($demande->statut === 'validee', 409, "Le dossier n'est pas encore validé.");
 
         return DB::transaction(function () use ($demande) {
@@ -160,7 +153,7 @@ class AgentDashboardController extends Controller
     {
         $agent = $request->user();
 
-        abort_unless($agent->peutValiderOrigine() && $demande->mairie_origine_id === $agent->mairie_id, 403);
+        abort_unless($demande->mairie_origine_id === $agent->mairie_id, 403);
         abort_unless(in_array($demande->statut, ['nouvelle', 'en_cours']), 409,
             "Cette demande ne peut plus être marquée urgente.");
 
