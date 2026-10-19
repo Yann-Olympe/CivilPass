@@ -154,6 +154,10 @@ readonly repartitionParStatut = computed(() => {
     );
   }
 
+  telechargerRecepisse(id: string) {
+    return this.http.get(`${this.baseUrl}/${id}/pdf`, { responseType: 'blob' });
+  }
+
   prochainePrete(): ClientDemande | undefined {
     return this.demandes().find((d) => d.statut === 'pret');
   }

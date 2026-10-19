@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, of, switchMap } from 'rxjs';
+import { finalize, map, of, switchMap } from 'rxjs';
 import { Icon } from '../../shared/icon/icon';
 import { ClientStatusBadge } from '../../shared/components/status-badge/status-badge';
 import { ConfirmModal } from '../../shared/components/confirm-modal/confirm-modal';
@@ -32,6 +32,7 @@ export class DemandeDetail {
 
   typeIcon = CLIENT_TYPE_ICON;
   confirmRetraitOpen = signal(false);
+  telechargementEnCours = signal(false);
 
   retour(): void {
     this.router.navigate(['/espace/demandes']);
@@ -56,27 +57,24 @@ export class DemandeDetail {
 
   telechargerRecepisse(): void {
     const demande = this.demande();
-    if (!demande) return;
+    if (!demande || this.telechargementEnCours()) return;
 
-    const contenu = [
-      'CivilPass — Récépissé de demande',
-      '--------------------------------',
-      `Référence : ${demande.reference}`,
-      `Type de document : ${demande.titre}`,
-      `Mairie de retrait : ${demande.mairieRetrait}`,
-      `Date de la demande : ${demande.dateCreation}`,
-      `Statut actuel : ${demande.statut}`,
-    ].join('\n');
-
-    const blob = new Blob([contenu], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `recepisse-${demande.reference}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    this.toast.show('Récépissé téléchargé.', 'info');
+    this.telechargementEnCours.set(true);
+    this.service
+      .telechargerRecepisse(demande.id)
+      .pipe(finalize(() => this.telechargementEnCours.set(false)))
+      .subscribe({
+        next: (blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `recepisse-${demande.reference}.pdf`;
+          a.click();
+          window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+          this.toast.show('Récépissé PDF téléchargé.', 'success');
+        },
+        error: () => this.toast.show('Impossible de télécharger le récépissé. Réessayez.', 'danger'),
+      });
   }
 
   refaireDemande(): void {
