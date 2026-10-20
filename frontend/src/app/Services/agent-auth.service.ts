@@ -6,13 +6,14 @@ import { AgentLoginPayload, AgentAuthResponse, AgentProfile } from '../core/mode
 
 const TOKEN_KEY = 'agent_token';
 const PROFILE_KEY = 'agent_profile';
+const storage = () => typeof localStorage === 'undefined' ? null : localStorage;
 
 @Injectable({ providedIn: 'root' })
 export class AgentAuthService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
 
-  private _loggedIn = signal<boolean>(!!localStorage.getItem(TOKEN_KEY));
+  private _loggedIn = signal<boolean>(!!storage()?.getItem(TOKEN_KEY));
   private _profile = signal<AgentProfile | null>(this.readStoredProfile());
 
   loggedIn = this._loggedIn.asReadonly();
@@ -21,8 +22,8 @@ export class AgentAuthService {
   login(payload: AgentLoginPayload): Observable<AgentAuthResponse> {
     return this.http.post<AgentAuthResponse>(`${this.baseUrl}/api/auth/login`, payload).pipe(
       tap((res) => {
-        localStorage.setItem(TOKEN_KEY, res.token);
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(res.agent));
+        storage()?.setItem(TOKEN_KEY, res.token);
+        storage()?.setItem(PROFILE_KEY, JSON.stringify(res.agent));
         this._loggedIn.set(true);
         this._profile.set(res.agent);
       })
@@ -38,7 +39,7 @@ export class AgentAuthService {
   refreshMe(): Observable<AgentProfile> {
     return this.http.get<AgentProfile>(`${this.baseUrl}/api/agent/me`).pipe(
       tap((agent) => {
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(agent));
+        storage()?.setItem(PROFILE_KEY, JSON.stringify(agent));
         this._profile.set(agent);
       })
     );
@@ -49,18 +50,24 @@ export class AgentAuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return storage()?.getItem(TOKEN_KEY) ?? null;
   }
 
   private clearSession() {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(PROFILE_KEY);
+    storage()?.removeItem(TOKEN_KEY);
+    storage()?.removeItem(PROFILE_KEY);
     this._loggedIn.set(false);
     this._profile.set(null);
   }
 
   private readStoredProfile(): AgentProfile | null {
-    const raw = localStorage.getItem(PROFILE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const raw = storage()?.getItem(PROFILE_KEY);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as AgentProfile;
+    } catch {
+      storage()?.removeItem(PROFILE_KEY);
+      return null;
+    }
   }
 }

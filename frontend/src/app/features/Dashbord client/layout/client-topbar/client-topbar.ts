@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Output, inject, sign
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Icon } from '../../shared/icon/icon';
-import { CitizenAuthService } from '../../../../Services/auth.service';
+import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
 import { ClientUserService } from '../../shared/services/client-user.service';
 import { ClientNotificationsService } from '../../shared/services/client-notifications.service';
 
@@ -20,6 +20,7 @@ export class ClientTopbar {
   private router = inject(Router);
   private host = inject(ElementRef<HTMLElement>);
 
+  deconnexionEnCours = this.auth.deconnexionEnCours;
   profile = this.userService.profile;
   initiales = this.userService.initiales;
   notifications = this.notificationsService.notifications;
@@ -59,8 +60,12 @@ export class ClientTopbar {
 
   logout(): void {
     this.avatarMenuOpen.set(false);
-    this.auth.logout();
-    this.router.navigate(['/login']);
+    if (this.deconnexionEnCours()) return;
+
+    this.auth.logout().subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login']),
+    });
   }
 
   @HostListener('document:click', ['$event'])

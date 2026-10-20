@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, inject, signal } from '@angular
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Icon } from '../../shared/icon/icon';
 import { SupportModal } from '../../shared/components/support-modal/support-modal';
-import { CitizenAuthService } from '../../../../Services/auth.service';
+import { CitizenAuthService } from '../../../../Services/citizen-auth.service';
 
 interface ClientNavItem {
   label: string;
@@ -21,6 +21,7 @@ interface ClientNavItem {
 export class ClientSidebar {
   private auth = inject(CitizenAuthService);
   private router = inject(Router);
+  deconnexionEnCours = this.auth.deconnexionEnCours;
 
   // Piloté par le shell : true = tiroir ouvert (mobile uniquement, ignoré en desktop).
   @Input() open = false;
@@ -49,7 +50,11 @@ export class ClientSidebar {
 
   logout(): void {
     this.closeRequested.emit();
-    this.auth.logout();
-    this.router.navigate(['/login']);
+    if (this.deconnexionEnCours()) return;
+
+    this.auth.logout().subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login']),
+    });
   }
 }

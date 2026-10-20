@@ -1,75 +1,134 @@
 <div class="list-head">
   <div>
-    <h1 class="list-title">Dossiers transférés vers votre Mairie</h1>
+    <h1 class="list-title">Transferts liés à votre mairie</h1>
     <p class="list-subtitle">Vue d'ensemble des actes d'état civil en attente de traitement.</p>
   </div>
 
   <div class="list-actions">
     <label class="list-search">
       <app-icon name="search" />
-      <input type="text" placeholder="Rechercher un numéro..." />
+      <input
+        type="text"
+        placeholder="Rechercher une demande ou une mairie..."
+        [value]="recherche()"
+        (input)="changerRecherche($any($event.target).value)"
+      />
     </label>
-    <button class="btn btn--ghost">
+    <label class="list-filter">
       <app-icon name="filter" />
-      Filtrer
+      <select [value]="filtre()" (change)="changerFiltre($any($event.target).value)">
+        <option value="tous">Tous les statuts</option>
+        <option value="en_attente">En attente</option>
+        <option value="valide">En attente de réception</option>
+        <option value="recu">Réceptionnés</option>
+      </select>
+    </label>
+    <button
+      class="btn btn--ghost"
+      type="button"
+      (click)="reinitialiserFiltres()"
+      [disabled]="!recherche() && filtre() === 'tous'"
+    >
+      Réinitialiser
     </button>
   </div>
 </div>
 
-<section class="stats-grid">
-  @for (stat of stats; track stat.label) {
-    <app-stat-card [data]="stat" />
-  }
-</section>
+@if (!chargement() && !erreur()) {
+  <section class="stats-grid">
+    @for (stat of stats(); track stat.label) {
+      <app-stat-card [data]="stat" />
+    }
+  </section>
+}
 
 <section class="panel">
   <div class="panel__header">
-    <h2 class="panel__title">Dossiers Récents</h2>
-    <a class="panel__link" href="javascript:void(0)">
-      Voir tout
-      <app-icon name="chevron-right" />
-    </a>
+    <h2 class="panel__title">Transferts enregistrés</h2>
+    <button class="btn btn--ghost" type="button" (click)="chargerTransferts()" [disabled]="chargement()">
+      Actualiser
+    </button>
   </div>
 
-  <div class="table-scroll">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>N° demande</th>
-          <th>Citoyen</th>
-          <th>Mairie d'origine</th>
-          <th>Date de réception</th>
-          <th>Statut</th>
-          <th class="table__action-col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (dossier of dossiers; track dossier.id; let i = $index) {
-          <tr class="table-row-in" [style.animation-delay.ms]="i * 35">
-            <td class="table__id">{{ dossier.id }}</td>
-            <td>
-              <span class="citoyen">
-                <span class="citoyen__avatar">{{ dossier.avatarInitiales }}</span>
-                {{ dossier.citoyen }}
-              </span>
-            </td>
-            <td>{{ dossier.mairieOrigine }}</td>
-            <td>{{ dossier.dateReception }}</td>
-            <td><app-status-badge [statut]="dossier.statut" /></td>
-            <td class="table__action-col">
-              <button class="btn btn--primary" (click)="ouvrir(dossier.id)">Ouvrir le dossier</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  <div class="pagination">
-    <span>Affichage 1-3 sur {{ total }} dossiers</span>
-    <div class="pagination__nav">
-      <button><app-icon name="chevron-left" /></button>
-      <button><app-icon name="chevron-right" /></button>
+  @if (chargement()) {
+    <p class="transfer-state" role="status">Chargement des transferts enregistrés…</p>
+  } @else if (erreur()) {
+    <div class="transfer-state transfer-state--error" role="alert">
+      <p>{{ erreur() }}</p>
+      <button class="btn btn--primary" type="button" (click)="chargerTransferts()">Réessayer</button>
     </div>
-  </div>
+  } @else if (dossiers().length === 0) {
+    <div class="transfer-state">
+      <p>Aucun transfert ne correspond à ces critères.</p>
+      @if (recherche() || filtre() !== 'tous') {
+        <button class="btn btn--ghost" type="button" (click)="reinitialiserFiltres()">
+          Réinitialiser les filtres
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="table-scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>N° demande</th>
+            <th>Citoyen</th>
+            <th>Mairie d'origine</th>
+            <th>Mairie de retrait</th>
+            <th>Validation origine</th>
+            <th>Réception retrait</th>
+            <th>Statut du transfert</th>
+            <th>Statut de la demande</th>
+            <th class="table__action-col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (dossier of dossiers(); track dossier.id; let i = $index) {
+            <tr class="table-row-in" [style.animation-delay.ms]="i * 35">
+              <td class="table__id">{{ dossier.reference }}</td>
+              <td>
+                <span class="citoyen">
+                  <span class="citoyen__avatar">{{ dossier.avatarInitiales }}</span>
+                  {{ dossier.citoyen }}
+                </span>
+              </td>
+              <td>{{ dossier.mairieOrigine }}</td>
+              <td>{{ dossier.mairieRetrait }}</td>
+              <td>{{ dossier.dateValidation }}</td>
+              <td>{{ dossier.dateReception }}</td>
+              <td><app-status-badge [statut]="dossier.statut" /></td>
+              <td><app-status-badge [statut]="dossier.demandeStatut" /></td>
+              <td class="table__action-col">
+                <button class="btn btn--primary" type="button" (click)="ouvrir(dossier.id)">Ouvrir le dossier</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <span>
+        {{ debutAffichage() }}–{{ finAffichage() }} sur {{ dossiersFiltres().length }} transfert(s)
+      </span>
+      <div class="pagination__nav" aria-label="Pagination des transferts">
+        <button
+          type="button"
+          aria-label="Page précédente"
+          (click)="pagePrecedente()"
+          [disabled]="pageActuelle() === 1"
+        >
+          <app-icon name="chevron-left" />
+        </button>
+        <span class="pagination__current">Page {{ pageActuelle() }} / {{ nombrePages() }}</span>
+        <button
+          type="button"
+          aria-label="Page suivante"
+          (click)="pageSuivante()"
+          [disabled]="pageActuelle() >= nombrePages()"
+        >
+          <app-icon name="chevron-right" />
+        </button>
+      </div>
+    </div>
+  }
 </section>

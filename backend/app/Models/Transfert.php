@@ -15,6 +15,8 @@ class Transfert extends Model
         'statut',
         'date_validation_origine',
         'date_reception_retrait',
+        'valide_par_agent_id',
+        'recu_par_agent_id',
     ];
 
     protected function casts(): array
@@ -28,5 +30,15 @@ class Transfert extends Model
     public function demande(): BelongsTo
     {
         return $this->belongsTo(Demande::class);
+    }
+
+    public function agentValidateur(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class, 'valide_par_agent_id');
+    }
+
+    public function agentReceptionnaire(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class, 'recu_par_agent_id');
     }
 }

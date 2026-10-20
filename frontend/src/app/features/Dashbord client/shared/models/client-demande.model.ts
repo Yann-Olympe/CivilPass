@@ -22,15 +22,20 @@ export interface ClientDemande {
   titre: string;
   dateCreation: string;
   dateCreationTs: number;
+  mairieOrigine?: string;
   mairieRetrait: string;
   statut: ClientDemandeStatut;
   motif?: string;
+  numeroActe?: string;
+  anneeActe?: number;
+  pereNom?: string;
+  mereNom?: string;
   etapes: ClientDemandeEtape[];
 }
 
 export const CLIENT_STATUT_LABELS: Record<ClientDemandeStatut, string> = {
-  en_cours: 'En cours',
-  a_preparer: 'À préparer',
+  en_cours: 'Validation mairie de retrait en attente',
+  a_preparer: 'Validation mairie d’origine en attente',
   pret: 'Prêt pour retrait',
   validee: 'Retirée',
   rejetee: 'Rejetée',

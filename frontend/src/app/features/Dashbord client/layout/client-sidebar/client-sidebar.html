@@ -29,9 +29,9 @@
   </div>
 
   <div class="sidebar__bottom">
-    <button type="button" class="sidebar__link sidebar__logout" (click)="logout()">
+    <button type="button" class="sidebar__link sidebar__logout" (click)="logout()" [disabled]="deconnexionEnCours()">
       <app-icon name="log-out" />
-      Déconnexion
+      {{ deconnexionEnCours() ? 'Déconnexion...' : 'Déconnexion' }}
     </button>
 
     <button type="button" class="sidebar__help" (click)="openSupport()">

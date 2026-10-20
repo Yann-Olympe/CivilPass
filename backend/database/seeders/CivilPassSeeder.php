@@ -35,5 +35,7 @@ class CivilPassSeeder extends Seeder
             'mairie_id' => $yaounde->id,
             'role' => 'retrait',
         ]);
+
+        $this->call(MarouaMairieSeeder::class);
     }
 }

@@ -6,6 +6,7 @@ import { AuthResponse, InscriptionPayload, Usager } from '../core/models/usager.
 
 const STORAGE_TOKEN = 'civilpass_citoyen_token';
 const STORAGE_USAGER = 'civilpass_citoyen_usager';
+const storage = () => typeof localStorage === 'undefined' ? null : localStorage;
 
 @Injectable({ providedIn: 'root' })
 export class CitizenAuthService {
@@ -13,10 +14,12 @@ export class CitizenAuthService {
   private baseUrl = `${environment.apiUrl}/api/citoyen`;
 
   private readonly _usager = signal<Usager | null>(this.lireUsagerStocke());
-  private readonly _token = signal<string | null>(localStorage.getItem(STORAGE_TOKEN));
+  private readonly _token = signal<string | null>(storage()?.getItem(STORAGE_TOKEN) ?? null);
+  private readonly _deconnexionEnCours = signal(false);
 
   usager = this._usager.asReadonly();
   estConnecte = computed(() => !!this._token());
+  deconnexionEnCours = this._deconnexionEnCours.asReadonly();
 
   register(payload: InscriptionPayload): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/register`, payload).pipe(
@@ -39,14 +42,18 @@ export class CitizenAuthService {
     return this.http.get<Usager>(`${this.baseUrl}/me`).pipe(
       tap((usager) => {
         this._usager.set(usager);
-        localStorage.setItem(STORAGE_USAGER, JSON.stringify(usager));
+        storage()?.setItem(STORAGE_USAGER, JSON.stringify(usager));
       })
     );
   }
 
   logout(): Observable<{ message: string }> {
+    this._deconnexionEnCours.set(true);
     return this.http.post<{ message: string }>(`${this.baseUrl}/logout`, {}).pipe(
-      finalize(() => this.terminerSession())
+      finalize(() => {
+        this.terminerSession();
+        this._deconnexionEnCours.set(false);
+      })
     );
   }
 
@@ -54,22 +61,32 @@ export class CitizenAuthService {
     return this._token();
   }
 
+  invaliderSession(): void {
+    this.terminerSession();
+  }
+
   private demarrerSession(res: AuthResponse): void {
     this._usager.set(res.usager);
     this._token.set(res.token);
-    localStorage.setItem(STORAGE_TOKEN, res.token);
-    localStorage.setItem(STORAGE_USAGER, JSON.stringify(res.usager));
+    storage()?.setItem(STORAGE_TOKEN, res.token);
+    storage()?.setItem(STORAGE_USAGER, JSON.stringify(res.usager));
   }
 
   private terminerSession(): void {
     this._usager.set(null);
     this._token.set(null);
-    localStorage.removeItem(STORAGE_TOKEN);
-    localStorage.removeItem(STORAGE_USAGER);
+    storage()?.removeItem(STORAGE_TOKEN);
+    storage()?.removeItem(STORAGE_USAGER);
   }
 
   private lireUsagerStocke(): Usager | null {
-    const brut = localStorage.getItem(STORAGE_USAGER);
-    return brut ? JSON.parse(brut) : null;
+    const brut = storage()?.getItem(STORAGE_USAGER);
+    if (!brut) return null;
+    try {
+      return JSON.parse(brut) as Usager;
+    } catch {
+      storage()?.removeItem(STORAGE_USAGER);
+      return null;
+    }
   }
 }

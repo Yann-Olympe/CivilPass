@@ -40,9 +40,9 @@
       <p class="danger-panel__title">Déconnexion</p>
       <p class="danger-panel__subtitle">Vous serez redirigé vers la page de connexion.</p>
     </div>
-    <button type="button" class="btn btn--danger" (click)="deconnexion()">
+    <button type="button" class="btn btn--danger" (click)="deconnexion()" [disabled]="deconnexionEnCours()">
       <app-icon name="log-out" />
-      Se déconnecter
+      {{ deconnexionEnCours() ? 'Déconnexion...' : 'Se déconnecter' }}
     </button>
   </section>
 } @else {

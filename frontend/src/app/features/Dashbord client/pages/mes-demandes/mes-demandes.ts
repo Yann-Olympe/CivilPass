@@ -41,6 +41,6 @@ export class MesDemandes {
   }
 
   nouvelleDemande(): void {
-    this.router.navigate(['/demande/identite']);
+    this.router.navigate(['/demande/acte']);
   }
 }

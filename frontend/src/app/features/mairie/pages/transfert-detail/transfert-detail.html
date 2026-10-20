@@ -1,68 +1,90 @@
-<a class="verif-back" routerLink="/transferts">
+<a class="verif-back" routerLink="/mairie/transferts">
   <app-icon name="chevron-left" />
   Retour aux transferts
 </a>
 
-<div class="transfer-head">
-  <h1 class="transfer-title">Demande {{ demandeId || 'CP-2026-000245' }}</h1>
-  <p class="transfer-subtitle">Suivi de la transmission du dossier d'état civil entre juridictions.</p>
-</div>
-
-<section class="panel">
-  <div class="flow">
-    <div class="flow__node">
-      <span class="flow__icon">
-        <app-icon name="building" />
-        <span class="flow__check"><app-icon name="check" /></span>
-      </span>
-      <span class="flow__label">Mairie d'origine</span>
-      <span class="flow__value">{{ transfert.mairieOrigine }}</span>
-    </div>
-
-    <div class="flow__line">
-      <span class="flow__pill flow__pill--done">
-        <app-icon name="check" />
-        Validée
-      </span>
-      <span class="flow__track"></span>
-      <span class="flow__pill flow__pill--secure">
-        <app-icon name="lock" />
-        Transmission sécurisée
-      </span>
-    </div>
-
-    <div class="flow__node">
-      <span class="flow__icon flow__icon--outline">
-        <app-icon name="building" />
-      </span>
-      <span class="flow__label">Mairie de retrait</span>
-      <span class="flow__value">{{ transfert.mairieRetrait }}</span>
-    </div>
+@if (chargement()) {
+  <p class="transfer-state" role="status">Chargement du transfert…</p>
+} @else if (erreur()) {
+  <section class="panel transfer-state transfer-state--error" role="alert">
+    <p>{{ erreur() }}</p>
+    <a class="btn btn--primary" routerLink="/mairie/transferts">Retour aux transferts</a>
+  </section>
+} @else if (demande(); as dossier) {
+  <div class="transfer-head">
+    <h1 class="transfer-title">Transfert #{{ dossier.transfert?.id }}</h1>
+    <p class="transfer-subtitle">Dossier associé : demande #{{ dossier.id }}</p>
   </div>
 
-  <div class="status-banner">
-    <p class="status-banner__label">Statut du transfert</p>
-    <p class="status-banner__value">
-      <app-icon name="check-circle" />
-      Transfert effectué
-    </p>
-  </div>
+  <section class="panel">
+    <div class="flow">
+      <div class="flow__node">
+        <span class="flow__icon">
+          <app-icon name="building" />
+          @if (dossier.transfert?.date_validation_origine) {
+            <span class="flow__check"><app-icon name="check" /></span>
+          }
+        </span>
+        <span class="flow__label">Mairie d'origine</span>
+        <span class="flow__value">{{ dossier.mairie_origine?.nom ?? '—' }}</span>
+      </div>
 
-  <div class="detail-grid">
-    <div class="detail-card">
-      <span class="detail-card__icon"><app-icon name="file" /></span>
-      <div>
-        <p class="detail-card__label">Date de validation</p>
-        <p class="detail-card__value">{{ transfert.dateValidation }}</p>
+      <div class="flow__line">
+        <app-status-badge [statut]="dossier.transfert!.statut" />
+        <span
+          class="flow__track"
+          [class.flow__track--complete]="dossier.transfert?.statut === 'recu'"
+        ></span>
+      </div>
+
+      <div class="flow__node">
+        <span
+          class="flow__icon flow__icon--outline"
+          [class.flow__icon--received]="!!dossier.transfert?.date_reception_retrait"
+        >
+          <app-icon name="building" />
+          @if (dossier.transfert?.date_reception_retrait) {
+            <span class="flow__check"><app-icon name="check" /></span>
+          }
+        </span>
+        <span class="flow__label">Mairie de retrait</span>
+        <span class="flow__value">{{ dossier.mairie_retrait?.nom ?? '—' }}</span>
       </div>
     </div>
-    <div class="detail-card">
-      <span class="detail-card__icon"><app-icon name="badge" /></span>
-      <div>
-        <p class="detail-card__label">Identifiant agent</p>
-        <p class="detail-card__value">{{ transfert.identifiantAgent }}</p>
-        <p class="detail-card__hint">Signature cryptographique validée</p>
+
+    <div class="status-banner" [class.status-banner--complete]="dossier.transfert?.statut === 'recu'">
+      <p class="status-banner__label">Statut du transfert</p>
+      <p class="status-banner__value">
+        <app-status-badge [statut]="dossier.transfert!.statut" />
+      </p>
+    </div>
+
+    <div class="status-banner">
+      <p class="status-banner__label">Statut de la demande</p>
+      <p class="status-banner__value">
+        <app-status-badge [statut]="dossier.statut" />
+      </p>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <span class="detail-card__icon"><app-icon name="file" /></span>
+        <div>
+          <p class="detail-card__label">Date de validation par la mairie d'origine</p>
+          <p class="detail-card__value">
+            {{ formaterDate(dossier.transfert?.date_validation_origine) }}
+          </p>
+        </div>
+      </div>
+      <div class="detail-card">
+        <span class="detail-card__icon"><app-icon name="building" /></span>
+        <div>
+          <p class="detail-card__label">Date de réception par la mairie de retrait</p>
+          <p class="detail-card__value">
+            {{ formaterDate(dossier.transfert?.date_reception_retrait) }}
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+}

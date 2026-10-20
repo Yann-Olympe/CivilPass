@@ -78,8 +78,8 @@
           <button type="button" class="topbar__avatar-menu-item" (click)="goToProfile()">
             <app-icon name="user" /> Mon profil
           </button>
-          <button type="button" class="topbar__avatar-menu-item topbar__avatar-menu-item--danger" (click)="logout()">
-            <app-icon name="log-out" /> Déconnexion
+          <button type="button" class="topbar__avatar-menu-item topbar__avatar-menu-item--danger" (click)="logout()" [disabled]="deconnexionEnCours()">
+            <app-icon name="log-out" /> {{ deconnexionEnCours() ? 'Déconnexion...' : 'Déconnexion' }}
           </button>
         </div>
       }

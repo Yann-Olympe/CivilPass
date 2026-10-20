@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->prefix('citoyen')->group(function () {
     Route::patch('/profil', [CitoyenAuthController::class, 'updateProfile']);
     Route::get('/dashboard', [CitoyenAuthController::class, 'dashboard']);
     Route::get('/demandes', [CitoyenAuthController::class, 'mesDemandes']);
+    Route::post('/demandes/{demande}/confirmer-retrait', [CitoyenAuthController::class, 'confirmerRetrait']);
+    Route::patch('/demandes/{demande}/correction', [CitoyenAuthController::class, 'soumettreCorrection']);
     Route::get('/demandes/{demande}', [CitoyenAuthController::class, 'detailDemande']);
     Route::get('/demandes/{demande}/pdf', [DemandeController::class, 'pdfCitoyen']);
     Route::get('/notifications', [NotificationController::class, 'citoyenIndex']);
@@ -59,7 +61,9 @@ Route::middleware('auth:sanctum')->prefix('agent')->group(function () {
 
     Route::get('/demandes', [AgentDashboardController::class, 'index']);
     Route::get('/demandes/{demande}', [AgentDashboardController::class, 'show']);
+    Route::get('/transferts/{transfert}', [AgentDashboardController::class, 'showTransfert']);
     Route::post('/demandes/{demande}/valider', [AgentDashboardController::class, 'valider']);
+    Route::post('/demandes/{demande}/demander-correction', [AgentDashboardController::class, 'demanderCorrection']);
     Route::post('/demandes/{demande}/recevoir', [AgentDashboardController::class, 'recevoir']);
     Route::post('/demandes/{demande}/remettre', [AgentDashboardController::class, 'remettre']);
     Route::post('/demandes/{demande}/urgente', [AgentDashboardController::class, 'urgente']);

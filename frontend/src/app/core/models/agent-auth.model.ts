@@ -10,6 +10,11 @@ export interface AgentProfile {
   email: string;
   role: string;
   mairie_id: number;
+  mairie?: {
+    id: number;
+    nom: string;
+    ville: string;
+  };
   mairie_nom?: string;
 }
 
