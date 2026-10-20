@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { CommentCaMarche } from './comment-ca-marche';
 
@@ -9,6 +10,7 @@ describe('CommentCaMarche', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommentCaMarche],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CommentCaMarche);
@@ -18,5 +20,12 @@ describe('CommentCaMarche', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('links to the existing guarded request route', () => {
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.btn-primary').getAttribute('href'))
+      .toBe('/demande/acte');
   });
 });

@@ -11,26 +11,6 @@
     margin:0 0 1.6rem;
   }
 
-  .footer__links {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 1.6rem;
-    margin-bottom: 2rem;
-
-    & a {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--color-gray-600);
-      text-decoration: none;
-      transition: color var(--transition-base);
-
-      &:hover,:focus-visible {
-        color: var(--color-green-700);
-      }
-    }
-  }
-
   .footer__copy {
     font-size: 1.1rem;
     color: var(--color-gray-500);
@@ -50,12 +30,6 @@
   }
 
   .footer__brand {
-    margin: 0;
-  }
-
-  .footer__links {
-    flex-direction: row;
-    gap: 2.8rem;
     margin: 0;
   }
 

@@ -94,31 +94,31 @@ h1 em {
     display: flex;
     flex-direction: row-reverse;
     align-items: stretch;
-    min-height: 60rem;
+    min-height: 48rem;
   }
 
   .hero-image {
-    width: 50%;
+    width: 30%;
     height: auto;
     aspect-ratio: unset;
     object-fit: cover;
   }
 
   .hero-content {
-    width: 50%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4rem 6rem;
+    padding: 3.2rem 4.8rem;
   }
 
   h1,
   h1 em {
-    font-size: 4.2rem;
+    font-size: 3.8rem;
   }
 
   .hero-text {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     max-width: 44rem;
   }
 
@@ -132,11 +132,12 @@ h1 em {
     align-items: center;
     justify-content: center;
     width: auto;
+    padding: 1.2rem 2rem;
   }
 }
 
 @media (min-width: 1280px) {
   .hero-content {
-    padding: 4rem 8rem;
+    padding: 3.6rem 6rem;
   }
 }

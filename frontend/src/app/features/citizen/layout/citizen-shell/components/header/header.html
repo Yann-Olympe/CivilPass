@@ -1,6 +1,7 @@
 <header class="header">
   <a routerLink="/accueil" class="header__logo" (click)="closeMenu()">
-    CivilPass
+    <img src="/assets/logo.png" alt="" class="header__logo-icon" />
+    <span>CivilPass</span>
   </a>
 
   <button
@@ -19,10 +20,10 @@
 
   <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
     <div class="header__anchors">
-      <a href="#probleme" class="header__link" (click)="closeMenu()">Le problème</a>
-      <a href="#comment-ca-marche" class="header__link" (click)="closeMenu()">Comment ça marche</a>
-      <a href="#reseau" class="header__link" (click)="closeMenu()">Réseau</a>
-      <a href="#hors-ligne" class="header__link" (click)="closeMenu()">Sécurité</a>
+      <a routerLink="/accueil" fragment="probleme" class="header__link" (click)="closeMenu()">Le problème</a>
+      <a routerLink="/accueil" fragment="comment-ca-marche" class="header__link" (click)="closeMenu()">Comment ça marche</a>
+      <a routerLink="/accueil" fragment="reseau" class="header__link" (click)="closeMenu()">Réseau</a>
+      <a routerLink="/accueil" fragment="hors-ligne" class="header__link" (click)="closeMenu()">Sécurité</a>
     </div>
 
     <div class="header__actions">

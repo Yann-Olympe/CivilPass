@@ -1,21 +1,36 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.6rem 2rem;
-  background: var(--color-white);
-  box-shadow: var(--shadow-sm);
+:host {
+  display: block;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  padding: 1.6rem 2rem;
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
 .header__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
   font-family: var(--font-family-base);
   font-weight: 700;
   font-size: 1.8rem;
   color: var(--color-green-800);
   text-decoration: none;
+}
+
+.header__logo-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .header-menu {
@@ -32,20 +47,19 @@
 
 /* Nav — contient ancres + actions, structure commune aux deux états */
 .header__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-  margin-left: 3.2rem;
+  display: contents;
 }
 
 .header__anchors {
+  grid-column: 2;
   display: flex;
   align-items: center;
   gap: 2.4rem;
 }
 
 .header__actions {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -114,8 +128,55 @@
   background: var(--color-green-500);
 }
 
+@media (min-width: 1024px) {
+  .header {
+    padding: 1.8rem 3.2rem;
+  }
+
+  .header__logo {
+    gap: 0rem;
+    font-size: 2.2rem;
+  }
+
+  .header__logo-icon {
+    width: 5.2rem;
+    height: 5.2rem;
+  }
+
+  .header__anchors {
+    gap: 3rem;
+  }
+
+  .header__link {
+    font-size: 1.5rem;
+  }
+
+  .header__actions {
+    gap: 1.6rem;
+  }
+
+  .header__connexion-btn {
+    font-size: 1.4rem;
+    padding: 0.9rem 1.8rem;
+  }
+
+  .header__lang {
+    font-size: 1.4rem;
+    padding: 0.7rem 1.4rem;
+  }
+
+  .header__avatar {
+    width: 3.8rem;
+    height: 3.8rem;
+  }
+}
+
 /* Mobile — sous 768px */
 @media (max-width: 768px) {
+  .header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
   .header-menu {
     display: block;
   }
@@ -125,7 +186,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    margin-left: 0;
+    grid-column: auto;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 1.6rem;
