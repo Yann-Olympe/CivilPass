@@ -32,9 +32,9 @@ export interface Demande {
   id: string;
   citoyen: string;
   anneeActe: number;
+  mairieOrigine: string; // ← cette ligne manque actuellement
   mairieRetrait: string;
   date: string;
-  /** Horodatage utilisé pour trier par ancienneté (plus petit = plus ancien). */
   soumisLe: number;
   statut: StatutDemande;
   motifRejet?: string;
@@ -44,11 +44,12 @@ export interface Demande {
 
 export interface DossierTransfere {
   id: string;
+  idBrut: number;
   citoyen: string;
   avatarInitiales: string;
   mairieOrigine: string;
   dateReception: string;
-  statut: 'nouveau' | 'a_preparer' | 'pret';
+  statut: StatutDemande;
 }
 
 export interface StatCard {

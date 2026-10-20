@@ -1,4 +1,4 @@
-import { Demande, DossierTransfere, StatCard } from '../models/demande.model';
+/*import { Demande, DossierTransfere, StatCard } from '../models/demande.model';
 
 const ts = (iso: string) => Date.parse(iso);
 
@@ -235,7 +235,7 @@ export const TRANSFERT_STATS: StatCard[] = [
 ];
 
 export const DOSSIERS_TRANSFERES: DossierTransfere[] = [
-  { id: 'REQ-2026-0891', citoyen: 'Emmanuel Etoo', avatarInitiales: 'EJ', mairieOrigine: 'Mairie Douala 1er', dateReception: '12 Oct 2026, 09:15', statut: 'nouveau' },
-  { id: 'REQ-2026-0842', citoyen: 'Marie Bella', avatarInitiales: 'MB', mairieOrigine: 'Mairie Bafoussam 2', dateReception: '11 Oct 2026, 14:30', statut: 'a_preparer' },
-  { id: 'REQ-2026-0715', citoyen: 'Paul Atangana', avatarInitiales: 'PA', mairieOrigine: 'Mairie Garoua 1', dateReception: '10 Oct 2026, 11:00', statut: 'pret' },
-];
+  { id: 'REQ-2026-0891', idBrut: 891, citoyen: 'Emmanuel Etoo', avatarInitiales: 'EJ', mairieOrigine: 'Mairie Douala 1er', dateReception: '12 Oct 2026, 09:15', statut: 'nouvelle' },
+  { id: 'REQ-2026-0842', idBrut: 842, citoyen: 'Marie Bella', avatarInitiales: 'MB', mairieOrigine: 'Mairie Bafoussam 2', dateReception: '11 Oct 2026, 14:30', statut: 'en_cours' },
+  { id: 'REQ-2026-0715', idBrut: 715, citoyen: 'Paul Atangana', avatarInitiales: 'PA', mairieOrigine: 'Mairie Garoua 1', dateReception: '10 Oct 2026, 11:00', statut: 'validee' },
+];*/

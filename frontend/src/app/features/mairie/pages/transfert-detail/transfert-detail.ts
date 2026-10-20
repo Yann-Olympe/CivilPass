@@ -1,26 +1,27 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Icon } from '../../shared/icon/icon';
+import { DemandesStore } from '../../shared/data/demandes.store';
 
 @Component({
   selector: 'app-transfert-detail',
   standalone: true,
   imports: [Icon, RouterLink],
   templateUrl: './transfert-detail.html',
-  styleUrl: './transfert-detail.css'
+  styleUrl: './transfert-detail.css',
 })
 export class TransfertDetail {
-  demandeId = '';
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private store = inject(DemandesStore);
 
-  transfert = {
-    mairieOrigine: 'Yaoundé I',
-    mairieRetrait: 'Douala',
-    statutValidation: 'Validée',
-    dateValidation: '24 Octobre 2024 à 14h32 (Heure locale)',
-    identifiantAgent: 'AG-YDE-7842',
-  };
+  demandeId = this.route.snapshot.paramMap.get('id') ?? '';
 
-  constructor(private route: ActivatedRoute) {
-    this.demandeId = this.route.snapshot.paramMap.get('id') ?? '';
+  demande = computed(() => this.store.getById(this.demandeId));
+
+  constructor() {
+    if (!this.demande()) {
+      this.router.navigate(['/transferts']);
+    }
   }
 }

@@ -17,13 +17,16 @@ export interface AgentDemandeApiDto {
   updated_at?: string;
   motif_statut?: string | null;
   observation_origine?: string | null;
+  date_remise?: string | null; // ← ajouté
   usager: {
-    id: number;
-    nom: string;
-    prenom: string;
-    telephone: string;
-    [key: string]: any;
-  };
+  id: number;
+  nom: string;
+  prenom: string;
+  telephone: string;
+  email: string;
+  cni_numero?: string;
+  [key: string]: any;
+};
   filiation?: {
     pere_nom: string;
     mere_nom: string;
