@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ScrollRevealDirective } from '../../../share/Directives/scroll-reveal.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-comment-ca-marche',
-  imports: [ScrollRevealDirective],
+  imports: [RouterLink],
   templateUrl: './comment-ca-marche.html',
   styleUrl: './comment-ca-marche.css',
 })

@@ -19,4 +19,10 @@ describe('Footer', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('does not render navigation links for pages that do not exist', () => {
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('a')).toHaveLength(0);
+  });
 });
