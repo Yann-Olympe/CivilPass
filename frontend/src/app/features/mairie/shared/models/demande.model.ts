@@ -2,6 +2,7 @@ export type StatutDemande =
   | 'nouvelle'
   | 'en_cours'
   | 'validee'
+  | 'remise'
   | 'urgente'
   | 'rejetee'
   | 'correction_demandee';
@@ -30,10 +31,14 @@ export interface DetailDemande {
 
 export interface Demande {
   id: string;
+  transfertId?: string;
   citoyen: string;
   anneeActe: number;
+  mairieOrigine?: string;
+  mairieOrigineId?: number;
   mairieRetrait: string;
   mairieRetraitId?: number;
+  transfertStatut?: string;
   date: string;
   /** Horodatage utilisé pour trier par ancienneté (plus petit = plus ancien). */
   soumisLe: number;

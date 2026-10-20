@@ -252,6 +252,159 @@ class CitoyenAuthTest extends TestCase
             ->assertJsonCount(12, 'statistiques.demandes_par_mois');
     }
 
+    public function test_citoyen_can_confirm_retrait_once_for_a_ready_request(): void
+    {
+        $usager = Usager::create([
+            'nom' => 'Kamga',
+            'prenom' => 'Alice',
+            'telephone' => '699888001',
+            'email' => 'alice@example.com',
+            'lieu_naissance' => 'Douala',
+            'sexe' => 'F',
+            'adresse' => 'Rue 1',
+            'ville' => 'Douala',
+            'region' => 'Littoral',
+            'password' => bcrypt('password123'),
+        ]);
+        $demande = Demande::create([
+            'usager_id' => $usager->id,
+            'mairie_origine_id' => 1,
+            'mairie_retrait_id' => 2,
+            'qr_token' => 'QR-RETRAIT-001',
+            'statut' => 'validee',
+        ]);
+
+        Sanctum::actingAs($usager);
+
+        $this->postJson("/api/citoyen/demandes/{$demande->id}/confirmer-retrait")
+            ->assertOk()
+            ->assertJsonPath('message', 'Retrait confirmé avec succès.')
+            ->assertJsonPath('demande.id', $demande->id)
+            ->assertJsonPath('demande.statut', 'remise')
+            ->assertJsonPath('demande.motif_statut', 'Le citoyen a confirmé le retrait du document.')
+            ->assertJsonPath('demande.date_remise', fn ($date) => $date !== null);
+
+        $this->assertDatabaseHas('demandes', [
+            'id' => $demande->id,
+            'usager_id' => $usager->id,
+            'statut' => 'remise',
+        ]);
+
+        $this->postJson("/api/citoyen/demandes/{$demande->id}/confirmer-retrait")
+            ->assertStatus(409);
+    }
+
+    public function test_citoyen_cannot_confirm_another_users_retrait(): void
+    {
+        $demande = Demande::create([
+            'usager_id' => Usager::create([
+                'nom' => 'Owner',
+                'prenom' => 'Request',
+                'telephone' => '699888002',
+                'email' => 'owner@example.com',
+                'lieu_naissance' => 'Douala',
+                'sexe' => 'M',
+                'adresse' => 'Rue 2',
+                'ville' => 'Douala',
+                'region' => 'Littoral',
+                'password' => bcrypt('password123'),
+            ])->id,
+            'mairie_origine_id' => 1,
+            'mairie_retrait_id' => 2,
+            'qr_token' => 'QR-RETRAIT-002',
+            'statut' => 'validee',
+        ]);
+        $intrus = Usager::create([
+            'nom' => 'Other',
+            'prenom' => 'Citizen',
+            'telephone' => '699888003',
+            'email' => 'other@example.com',
+            'lieu_naissance' => 'Yaoundé',
+            'sexe' => 'M',
+            'adresse' => 'Rue 3',
+            'ville' => 'Yaoundé',
+            'region' => 'Centre',
+            'password' => bcrypt('password123'),
+        ]);
+
+        Sanctum::actingAs($intrus);
+
+        $this->postJson("/api/citoyen/demandes/{$demande->id}/confirmer-retrait")
+            ->assertNotFound();
+
+        $this->assertDatabaseHas('demandes', [
+            'id' => $demande->id,
+            'statut' => 'validee',
+            'date_remise' => null,
+        ]);
+    }
+
+    public function test_citoyen_retrait_confirmation_requires_authentication(): void
+    {
+        $usager = Usager::create([
+            'nom' => 'Nana',
+            'prenom' => 'Paul',
+            'telephone' => '699888004',
+            'email' => 'paul.nana@example.com',
+            'lieu_naissance' => 'Douala',
+            'sexe' => 'M',
+            'adresse' => 'Rue 4',
+            'ville' => 'Douala',
+            'region' => 'Littoral',
+            'password' => bcrypt('password123'),
+        ]);
+        $demande = Demande::create([
+            'usager_id' => $usager->id,
+            'mairie_origine_id' => 1,
+            'mairie_retrait_id' => 2,
+            'qr_token' => 'QR-RETRAIT-003',
+            'statut' => 'validee',
+        ]);
+
+        $this->postJson("/api/citoyen/demandes/{$demande->id}/confirmer-retrait")
+            ->assertUnauthorized();
+
+        $this->assertDatabaseHas('demandes', [
+            'id' => $demande->id,
+            'statut' => 'validee',
+            'date_remise' => null,
+        ]);
+    }
+
+    public function test_citoyen_cannot_confirm_retrait_for_an_incompatible_status(): void
+    {
+        $usager = Usager::create([
+            'nom' => 'Talla',
+            'prenom' => 'Marie',
+            'telephone' => '699888005',
+            'email' => 'marie.talla@example.com',
+            'lieu_naissance' => 'Yaoundé',
+            'sexe' => 'F',
+            'adresse' => 'Rue 5',
+            'ville' => 'Yaoundé',
+            'region' => 'Centre',
+            'password' => bcrypt('password123'),
+        ]);
+        $demande = Demande::create([
+            'usager_id' => $usager->id,
+            'mairie_origine_id' => 1,
+            'mairie_retrait_id' => 2,
+            'qr_token' => 'QR-RETRAIT-004',
+            'statut' => 'en_cours',
+        ]);
+
+        Sanctum::actingAs($usager);
+
+        $this->postJson("/api/citoyen/demandes/{$demande->id}/confirmer-retrait")
+            ->assertStatus(409);
+
+        $this->assertDatabaseHas('demandes', [
+            'id' => $demande->id,
+            'statut' => 'en_cours',
+            'date_remise' => null,
+        ]);
+    }
+
     /**
      * Test déconnexion citoyen
      */

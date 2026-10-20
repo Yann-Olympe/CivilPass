@@ -25,6 +25,16 @@
     </section>
   }
 
+  @if (demande.statut === 'correction_demandee' && demande.motif) {
+    <section class="alert alert--warning">
+      <app-icon name="edit" />
+      <div>
+        <p class="alert__title">Une correction est nécessaire</p>
+        <p class="alert__text">{{ demande.motif }}</p>
+      </div>
+    </section>
+  }
+
   <section class="panel">
     <div class="panel__header">
       <h2 class="panel__title">Suivi de la demande</h2>
@@ -74,6 +84,66 @@
     </div>
   </section>
 
+  @if (demande.statut === 'correction_demandee') {
+    <section class="panel correction-form">
+      <div class="panel__header">
+        <h2 class="panel__title">Corriger votre demande</h2>
+      </div>
+      <p class="correction-form__hint">
+        Modifiez les informations demandées par la mairie, puis renvoyez le dossier pour une nouvelle vérification.
+      </p>
+      <div class="correction-form__grid">
+        <label>
+          Numéro de l’acte
+          <input
+            type="text"
+            maxlength="50"
+            required
+            [value]="correctionForm().numeroActe"
+            (input)="modifierCorrection('numeroActe', $any($event.target).value)"
+          />
+        </label>
+        <label>
+          Année d’enregistrement
+          <input
+            type="number"
+            min="1900"
+            [max]="anneeCourante"
+            required
+            [value]="correctionForm().anneeActe"
+            (input)="modifierCorrection('anneeActe', $any($event.target).value)"
+          />
+        </label>
+        <label>
+          Nom du père <span>(facultatif)</span>
+          <input
+            type="text"
+            maxlength="150"
+            [value]="correctionForm().pereNom"
+            (input)="modifierCorrection('pereNom', $any($event.target).value)"
+          />
+        </label>
+        <label>
+          Nom de la mère <span>(facultatif)</span>
+          <input
+            type="text"
+            maxlength="150"
+            [value]="correctionForm().mereNom"
+            (input)="modifierCorrection('mereNom', $any($event.target).value)"
+          />
+        </label>
+      </div>
+      <button
+        type="button"
+        class="btn btn--primary correction-form__submit"
+        (click)="resoumettreCorrection()"
+        [disabled]="!peutSoumettreCorrection() || correctionEnCours()"
+      >
+        {{ correctionEnCours() ? 'Envoi en cours…' : 'Renvoyer la demande corrigée' }}
+      </button>
+    </section>
+  }
+
   <section class="actions-bar">
     @switch (demande.statut) {
       @case ('pret') {
@@ -99,7 +169,14 @@
       }
       @default {
         <p class="actions-bar__hint">
-          Votre dossier est en cours de traitement. Vous serez notifié dès qu'il sera prêt.
+          @if (demande.statut === 'a_preparer') {
+            Votre demande attend encore la validation de {{ demande.mairieOrigine || 'la mairie d’origine' }}.
+          } @else if (demande.statut === 'en_cours') {
+            {{ demande.mairieOrigine || 'La mairie d’origine' }} a validé votre demande.
+            {{ demande.mairieRetrait }} doit encore réceptionner et valider le dossier avant le retrait.
+          } @else {
+            Votre dossier est en cours de traitement. Vous serez notifié dès qu'il sera prêt.
+          }
         </p>
       }
     }
@@ -109,7 +186,8 @@
     <app-confirm-modal
       title="Confirmer le retrait"
       [message]="'Confirmez-vous avoir récupéré le document \'' + demande.titre + '\' à la ' + demande.mairieRetrait + ' ?'"
-      confirmLabel="Oui, j'ai récupéré le document"
+      [confirmLabel]="confirmationRetraitEnCours() ? 'Confirmation…' : 'Oui, j’ai récupéré le document'"
+      [confirmDisabled]="confirmationRetraitEnCours()"
       cancelLabel="Pas encore"
       (confirmed)="confirmerRetrait()"
       (cancelled)="annulerConfirmationRetrait()"

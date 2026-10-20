@@ -70,7 +70,12 @@
 
 .flow__icon--outline {
   background: var(--color-white);
-  border: 0.15rem solid var(--color-green-500);
+  border: 0.15rem solid var(--color-gray-300);
+  color: var(--color-gray-600);
+}
+
+.flow__icon--received {
+  border-color: var(--color-green-500);
   color: var(--color-green-600);
 }
 
@@ -124,8 +129,12 @@
 .flow__track {
   height: 0.2rem;
   width: 100%;
-  background: var(--color-green-300);
+  background: var(--color-gray-300);
   border-radius: var(--radius-pill);
+}
+
+.flow__track--complete {
+  background: var(--color-green-300);
 }
 
 .flow__pill {
@@ -148,24 +157,28 @@
   color: var(--color-green-700);
 }
 
-.flow__pill--secure {
-  background: var(--color-white);
-  border: 0.1rem solid var(--color-gray-250);
-  color: var(--color-gray-600);
+.flow__pill:not(.flow__pill--done) {
+  background: var(--color-yellow-50);
+  color: var(--color-yellow-600);
 }
 
 .status-banner {
-  background: var(--color-green-50);
-  border: 0.1rem solid var(--color-green-100);
+  background: var(--color-gray-50);
+  border: 0.1rem solid var(--color-gray-150);
   border-radius: var(--radius-sm);
   padding: 1.8rem 2rem;
   margin-bottom: 2rem;
 }
 
+.status-banner--complete {
+  background: var(--color-green-50);
+  border-color: var(--color-green-100);
+}
+
 .status-banner__label {
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-green-700);
+  color: var(--color-gray-600);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -177,12 +190,12 @@
   gap: 0.8rem;
   font-size: 1.9rem;
   font-weight: 800;
-  color: var(--color-green-700);
+  color: var(--color-gray-900);
 }
 
-.status-banner__value app-icon {
-  width: 2rem;
-  height: 2rem;
+.status-banner--complete .status-banner__label,
+.status-banner--complete .status-banner__value {
+  color: var(--color-green-700);
 }
 
 .detail-grid {
@@ -242,4 +255,25 @@
   margin-top: 0.3rem;
   font-size: 1.15rem;
   color: var(--color-gray-500);
+}
+
+.transfer-state {
+  margin-top: 2rem;
+  padding: 2rem;
+  color: var(--color-gray-600);
+}
+
+.transfer-state--error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  color: var(--color-red-600);
+}
+
+@media (max-width: 700px) {
+  .transfer-state--error {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

@@ -11,12 +11,16 @@ export class StatusBadge {
 
   label = computed(() => {
     const map: Record<string, string> = {
-      nouvelle: 'Nouvelle',
-      en_cours: 'En cours',
-      validee: 'Validée',
+      nouvelle: 'À vérifier par la mairie d’origine',
+      en_cours: 'Réception en attente',
+      validee: 'Réceptionnée par la mairie de retrait',
+      remise: 'Remise au citoyen',
       urgente: 'Urgente',
       rejetee: 'Rejetée',
       correction_demandee: 'Correction demandée',
+      en_attente: 'En attente',
+      valide: 'Validé à l’origine — réception en attente',
+      recu: 'Réceptionné',
       nouveau: 'Nouveau',
       a_preparer: 'À préparer',
       pret: 'Prêt pour retrait',
@@ -29,12 +33,16 @@ export class StatusBadge {
       nouvelle: 'red',
       en_cours: 'yellow',
       validee: 'green',
+      remise: 'green',
       urgente: 'red',
       rejetee: 'red',
       correction_demandee: 'yellow',
       nouveau: 'yellow',
       a_preparer: 'gray',
       pret: 'green',
+      en_attente: 'yellow',
+      valide: 'yellow',
+      recu: 'green',
     };
     return map[this.statut()] ?? 'gray';
   });

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { Icon } from '../../shared/icon/icon';
 import { AgentAuthService } from '../../../../Services/agent-auth.service';
@@ -20,6 +20,11 @@ interface NavItem {
 export class Sidebar {
   private agentAuth = inject(AgentAuthService);
   private router = inject(Router);
+
+  readonly mairieNom = computed(() => {
+    const agent = this.agentAuth.profile();
+    return agent?.mairie?.nom ?? agent?.mairie_nom ?? 'Mairie non renseignée';
+  });
 
   navItems: NavItem[] = [
     { label: 'Tableau de bord', icon: 'grid', path: '/mairie/tableau-de-bord' },

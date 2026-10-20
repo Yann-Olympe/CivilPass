@@ -1,4 +1,5 @@
 import { Injectable, computed, signal, inject } from '@angular/core';
+import { Observable, map, tap } from 'rxjs';
 import { Demande, StatCard, StatutDemande } from '../models/demande.model';
 import { AgentDemandeService } from '../../../../Services/agentDemande.service';
 import { mapAgentDemandeDto } from '../../../../core/utils/agent-demande.mapper';
@@ -84,53 +85,57 @@ export class DemandesStore {
     return this._demandes().find((d) => d.id === id);
   }
 
-  prochaineAVerifier(): Demande | undefined {
-    return this.fileAttente()[0];
+  prochaineAVerifier(mairieId?: number): Demande | undefined {
+    if (mairieId === undefined) return undefined;
+
+    return this._demandes()
+      .filter(
+        (demande) =>
+          demande.mairieOrigineId === mairieId &&
+          (demande.statut === 'nouvelle' || demande.statut === 'urgente')
+      )
+      .sort((a, b) => a.soumisLe - b.soumisLe)[0];
   }
 
-  valider(id: string, motif?: string) {
-    this.agentDemandeService.valider(id, {
+  valider(id: string, motif?: string): Observable<Demande> {
+    return this.agentDemandeService.valider(id, {
       souche_retrouvee: true,
       motif,
-    }).subscribe({
-      next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
-      error: (err) => console.error(err),
-    });
+    }).pipe(
+      map(mapAgentDemandeDto),
+      tap((demande) => this.update(id, demande))
+    );
   }
 
-  recevoir(id: string) {
-    this.agentDemandeService.recevoir(id).subscribe({
-      next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
-      error: (err) => console.error(err),
-    });
+  recevoir(id: string): Observable<Demande> {
+    return this.agentDemandeService.recevoir(id).pipe(
+      map(mapAgentDemandeDto),
+      tap((demande) => this.update(id, demande))
+    );
   }
 
-  remettre(id: string) {
-    this.agentDemandeService.remettre(id).subscribe({
-      next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
-      error: (err) => console.error(err),
-    });
+  remettre(id: string): Observable<Demande> {
+    return this.agentDemandeService.remettre(id).pipe(
+      map(mapAgentDemandeDto),
+      tap((demande) => this.update(id, demande))
+    );
   }
 
-  rejeter(id: string, motif: string) {
-    this.agentDemandeService.valider(id, {
+  rejeter(id: string, motif: string): Observable<Demande> {
+    return this.agentDemandeService.valider(id, {
       souche_retrouvee: false,
       motif,
-    }).subscribe({
-      next: (dto) => this.update(id, mapAgentDemandeDto(dto)),
-      error: (err) => console.error(err),
-    });
+    }).pipe(
+      map(mapAgentDemandeDto),
+      tap((demande) => this.update(id, demande))
+    );
   }
 
-  /**
-   * ⚠️ TEMPORAIRE — aucun endpoint backend n'existe encore pour demander une correction.
-   * Met à jour uniquement l'état local (ne persiste pas après rechargement de page).
-   * À remplacer par un vrai appel HTTP dès que le backend expose
-   * POST /api/agent/demandes/{id}/corriger
-   */
-  demanderCorrection(id: string, motif: string) {
-    console.warn('demanderCorrection() : action locale uniquement, endpoint backend non disponible');
-    this.update(id, { statut: 'correction_demandee', motifCorrection: motif });
+  demanderCorrection(id: string, motif: string): Observable<Demande> {
+    return this.agentDemandeService.demanderCorrection(id, motif).pipe(
+      map(mapAgentDemandeDto),
+      tap((demande) => this.update(id, demande))
+    );
   }
 
   private update(id: string, patch: Partial<Demande>) {
