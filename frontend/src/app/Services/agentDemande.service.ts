@@ -33,7 +33,15 @@ export interface AgentDemandeApiDto {
   };
   mairie_origine?: { id: number; nom: string; ville: string };
   mairie_retrait?: { id: number; nom: string; ville: string };
-  transfert?: any;
+  transfert?: AgentTransfertApiDto | null;
+}
+
+export interface AgentTransfertApiDto {
+  id: number;
+  demande_id: number;
+  statut: 'en_attente' | 'valide' | 'recu' | string;
+  date_validation_origine: string | null;
+  date_reception_retrait: string | null;
 }
 @Injectable({ providedIn: 'root' })
 export class AgentDemandeService {
@@ -44,12 +52,23 @@ export class AgentDemandeService {
     return this.http.get<AgentDemandeApiDto[]>(`${this.baseUrl}/demandes`);
   }
 
+  getTransfert(id: string): Observable<AgentDemandeApiDto> {
+    return this.http.get<AgentDemandeApiDto>(`${this.baseUrl}/transferts/${id}`);
+  }
+
   valider(id: string, payload: {
     souche_retrouvee: boolean;
     observation_origine?: string;
     motif?: string;
   }): Observable<AgentDemandeApiDto> {
     return this.http.post<AgentDemandeApiDto>(`${this.baseUrl}/demandes/${id}/valider`, payload);
+  }
+
+  demanderCorrection(id: string, motif: string): Observable<AgentDemandeApiDto> {
+    return this.http.post<AgentDemandeApiDto>(
+      `${this.baseUrl}/demandes/${id}/demander-correction`,
+      { motif }
+    );
   }
 
   recevoir(id: string): Observable<AgentDemandeApiDto> {

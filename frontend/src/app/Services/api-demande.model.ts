@@ -45,3 +45,8 @@ export interface ApiDemande {
   filiation?: ApiFiliation;
   transfert?: ApiTransfert | null;
 }
+
+export interface ApiDemandeActionResponse {
+  message: string;
+  demande: ApiDemande;
+}

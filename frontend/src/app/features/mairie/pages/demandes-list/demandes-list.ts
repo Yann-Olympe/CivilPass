@@ -13,6 +13,7 @@ const TITRES: Record<FiltreStatut, { titre: string; sousTitre: string }> = {
   en_cours: { titre: 'Demandes en cours', sousTitre: 'Demandes actuellement en cours de vérification.' },
   urgente: { titre: 'Demandes urgentes', sousTitre: 'Demandes signalées comme prioritaires.' },
   validee: { titre: 'Demandes validées', sousTitre: 'Demandes vérifiées et validées.' },
+  remise: { titre: 'Documents remis', sousTitre: 'Demandes dont le document a été remis au citoyen.' },
   rejetee: { titre: 'Demandes rejetées', sousTitre: 'Demandes refusées après vérification.' },
   correction_demandee: { titre: 'Corrections demandées', sousTitre: 'Demandes en attente de correction par le citoyen.' },
 };
@@ -24,6 +25,7 @@ const FILTRES_DISPONIBLES: { value: FiltreStatut; label: string }[] = [
   { value: 'urgente', label: 'Urgentes' },
   { value: 'correction_demandee', label: 'Correction demandée' },
   { value: 'validee', label: 'Validées' },
+  { value: 'remise', label: 'Remises' },
   { value: 'rejetee', label: 'Rejetées' },
 ];
 
@@ -35,9 +37,6 @@ const FILTRES_DISPONIBLES: { value: FiltreStatut; label: string }[] = [
   styleUrl: './demandes-list.css',
 })
 export class DemandesList implements OnInit {
-  constructor() {
-    console.log('DemandesList chargé - version test');
-  }
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(DemandesStore);
@@ -77,12 +76,10 @@ export class DemandesList implements OnInit {
   }
 
   ouvrir(id: string) {
-   console.log('ID reçu :', id, typeof id);
-   console.log('Navigation vers :', ['/mairie/demandes', id]);
     this.router.navigate(['/mairie/demandes', id]);
   }
 
   estFinalisee(statut: StatutDemande) {
-    return statut === 'validee' || statut === 'rejetee';
+    return statut === 'validee' || statut === 'rejetee' || statut === 'remise';
   }
 }

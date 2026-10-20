@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\ChecklistController;
 use App\Models\Demande;
+use App\Models\Notification;
 use App\Models\Usager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -135,7 +137,7 @@ class CitoyenAuthController extends Controller
             'Le filtre doit être toutes, actives ou pretes.');
 
         if ($filtre === 'actives') {
-            $query->whereIn('statut', ['nouvelle', 'en_cours', 'urgente']);
+            $query->whereIn('statut', ['nouvelle', 'en_cours', 'urgente', 'correction_demandee']);
         } elseif ($filtre === 'pretes') {
             $query->where('statut', 'validee');
         }
@@ -169,6 +171,83 @@ class CitoyenAuthController extends Controller
         return response()->json($donnees);
     }
 
+    public function soumettreCorrection(Request $request, Demande $demande)
+    {
+        abort_unless($demande->usager_id === $request->user()->id, 404);
+
+        $data = $request->validate([
+            'numero_acte' => 'required|string|max:50',
+            'annee_acte' => 'required|integer|min:1900|max:' . date('Y'),
+            'filiation.pere_nom' => 'nullable|string|max:150',
+            'filiation.mere_nom' => 'nullable|string|max:150',
+        ]);
+
+        $demande = DB::transaction(function () use ($request, $demande, $data) {
+            $demande = Demande::query()->lockForUpdate()->findOrFail($demande->id);
+
+            abort_unless($demande->usager_id === $request->user()->id, 404);
+            abort_unless($demande->statut === 'correction_demandee', 409,
+                "Cette demande n'attend pas de correction.");
+
+            $demande->update([
+                'numero_acte' => trim($data['numero_acte']),
+                'annee_acte' => $data['annee_acte'],
+                'statut' => 'nouvelle',
+                'souche_retrouvee' => null,
+                'observation_origine' => null,
+                'motif_statut' => 'Les corrections ont été soumises. La demande attend une nouvelle vérification de la mairie d’origine.',
+            ]);
+
+            $demande->filiation()->updateOrCreate(
+                ['demande_id' => $demande->id],
+                [
+                    'pere_nom' => $data['filiation']['pere_nom'] ?? null,
+                    'mere_nom' => $data['filiation']['mere_nom'] ?? null,
+                ]
+            );
+
+            Notification::create([
+                'mairie_id' => $demande->mairie_origine_id,
+                'usager_id' => $demande->usager_id,
+                'demande_id' => $demande->id,
+                'type' => 'statut_demande',
+                'message' => "Le citoyen a corrigé et resoumis la demande n°{$demande->id}. Elle attend une nouvelle vérification.",
+            ]);
+
+            return $demande->fresh()->load([
+                'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+            ]);
+        });
+
+        return response()->json($demande);
+    }
+
+    public function confirmerRetrait(Request $request, Demande $demande)
+    {
+        $demande = DB::transaction(function () use ($request, $demande) {
+            $demande = Demande::query()->lockForUpdate()->findOrFail($demande->id);
+
+            abort_unless($demande->usager_id === $request->user()->id, 404);
+            abort_unless($demande->statut === 'validee', 409,
+                "Cette demande ne peut plus être confirmée comme retirée.");
+
+            $demande->update([
+                'statut' => 'remise',
+                'date_remise' => now(),
+                'motif_statut' => 'Le citoyen a confirmé le retrait du document.',
+            ]);
+
+            return $demande->fresh()->load([
+                'filiation', 'mairieOrigine', 'mairieRetrait', 'transfert',
+            ]);
+        });
+
+        return response()->json([
+            'message' => 'Retrait confirmé avec succès.',
+            'demande' => $demande,
+        ]);
+    }
+
     public function dashboard(Request $request)
     {
         $usager = $request->user();
@@ -190,7 +269,9 @@ class CitoyenAuthController extends Controller
 
         return response()->json([
             'compteurs' => [
-                'en_cours' => (clone $demandes)->whereIn('statut', ['nouvelle', 'en_cours', 'urgente'])->count(),
+                'en_cours' => (clone $demandes)->whereIn('statut', [
+                    'nouvelle', 'en_cours', 'urgente', 'correction_demandee',
+                ])->count(),
                 'pret_a_retirer' => $pretARetirer,
                 'historique' => (clone $demandes)->count(),
             ],

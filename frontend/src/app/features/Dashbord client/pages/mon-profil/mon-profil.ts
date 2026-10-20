@@ -23,6 +23,7 @@ export class MonProfil {
   profile = this.userService.profile;
   initiales = this.userService.initiales;
   saving = this.userService.saving;
+  deconnexionEnCours = this.auth.deconnexionEnCours;
 
   mode = signal<'view' | 'edit'>('view');
 
@@ -64,9 +65,11 @@ export class MonProfil {
   }
 
 deconnexion(): void {
+  if (this.deconnexionEnCours()) return;
+
   this.auth.logout().subscribe({
     next: () => this.router.navigate(['/login']),
-    error: () => this.router.navigate(['/login']), // on déconnecte localement même si le réseau échoue
+    error: () => this.router.navigate(['/login']),
   });
 }
 }

@@ -12,6 +12,7 @@ export class ConfirmModal {
   title = input.required<string>();
   message = input.required<string>();
   confirmLabel = input('Confirmer');
+  confirmDisabled = input(false);
   cancelLabel = input('Annuler');
   tone = input<'primary' | 'danger'>('primary');
 

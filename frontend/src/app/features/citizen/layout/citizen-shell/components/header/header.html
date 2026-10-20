@@ -1,58 +1,44 @@
 <header class="header">
   <a routerLink="/accueil" class="header__logo" (click)="closeMenu()">
-    CivilPass
+    <img src="/assets/logo.png" alt="" class="header__logo-icon" />
+    <span>CivilPass</span>
   </a>
-  <button
-    type="button"
-    class="header-menu"
-    aria-label="Menu"
-    [attr.aria-expanded]="mobileMenuOpen()"
-    (click)="toggleMenu()"
-  >
+  <button type="button" class="header-menu" aria-label="Menu" [attr.aria-expanded]="mobileMenuOpen()"
+    (click)="toggleMenu()">
     @if (mobileMenuOpen()) {
-      ✕
+    ✕
     } @else {
-      ☰
+    ☰
     }
   </button>
   <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
     <div class="header__anchors">
-      
-       <a href="#probleme"
-        class="header__link"
-        [class.header__link--active]="activeSection() === 'probleme'"
-        (click)="closeMenu()"
-      >Le problème</a>
-      
-      <a href="#comment-ca-marche"
-        class="header__link"
-        [class.header__link--active]="activeSection() === 'comment-ca-marche'"
-        (click)="closeMenu()"
-      >Comment ça marche</a>
-      
-      <a href="#reseau"
-        class="header__link"
-        [class.header__link--active]="activeSection() === 'reseau'"
-        (click)="closeMenu()"
-      >Réseau</a>
-      
-      <a href="#hors-ligne"
-        class="header__link"
-        [class.header__link--active]="activeSection() === 'hors-ligne'"
-        (click)="closeMenu()"
-      >Sécurité</a>
+
+      <a href="#probleme" class="header__link" [class.header__link--active]="activeSection() === 'probleme'"
+        (click)="closeMenu()">Le problème</a>
+
+      <a href="#comment-ca-marche" class="header__link"
+        [class.header__link--active]="activeSection() === 'comment-ca-marche'" (click)="closeMenu()">Comment ça
+        marche</a>
+
+      <a href="#reseau" class="header__link" [class.header__link--active]="activeSection() === 'reseau'"
+        (click)="closeMenu()">Réseau</a>
+
+      <a href="#hors-ligne" class="header__link" [class.header__link--active]="activeSection() === 'hors-ligne'"
+        (click)="closeMenu()">Sécurité</a>
     </div>
     <div class="header__actions">
       @if (auth.estConnecte()) {
-        <a routerLink="/espace/demandes" class="header__link" (click)="closeMenu()">Mes demandes</a>
-        <a routerLink="/espace" class="header__avatar" (click)="closeMenu()" aria-label="Profil connecté">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="9" cy="6" r="3" stroke="white" stroke-width="1.5"/>
-            <path d="M3 15C3 11.5 5.5 9.5 9 9.5C12.5 9.5 15 11.5 15 15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </a>
+      <a routerLink="/espace/demandes" class="header__link" (click)="closeMenu()">Mes demandes</a>
+      <a routerLink="/espace" class="header__avatar" (click)="closeMenu()" aria-label="Profil connecté">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="6" r="3" stroke="white" stroke-width="1.5" />
+          <path d="M3 15C3 11.5 5.5 9.5 9 9.5C12.5 9.5 15 11.5 15 15" stroke="white" stroke-width="1.5"
+            stroke-linecap="round" />
+        </svg>
+      </a>
       } @else {
-        <a routerLink="/login" class="header__connexion-btn" (click)="closeMenu()">Connexion</a>
+      <a routerLink="/login" class="header__connexion-btn" (click)="closeMenu()">Connexion</a>
       }
       <button type="button" class="header__lang" disabled title="Bientôt disponible">
         FR

@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CitizenAuthService } from '../../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-hero',
@@ -10,18 +9,8 @@ import { CitizenAuthService } from '../../../../../Services/citizen-auth.service
 })
 export class Hero {
   private router = inject(Router);
-  private citizenAuth = inject(CitizenAuthService);
 
   onRequest(): void {
-    if (this.citizenAuth.estConnecte()) {
-      this.router.navigate(['/demande/acte']);
-    } else {
-      this.router.navigate(['/login']);
-    }
+    this.router.navigate(['/demande/acte']);
   }
-
-  onVerification(){
-    this.router.navigate(['/accueil']);
-  }
-
 }

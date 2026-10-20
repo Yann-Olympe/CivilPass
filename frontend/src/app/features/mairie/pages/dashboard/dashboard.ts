@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Topbar } from '../../layout/topbar/topbar';
 import { StatCard } from '../../shared/components/stat-card/stat-card';
 import { StatusBadge } from '../../shared/components/status-badge/status-badge';
@@ -9,7 +9,7 @@ import { DemandesStore } from '../../shared/data/demandes.store';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [Topbar, StatCard, StatusBadge, Icon],
+  imports: [Topbar, StatCard, StatusBadge, Icon, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -28,7 +28,4 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/mairie/demandes', id]);
   }
 
-  voirTout() {
-    this.router.navigate(['/mairie/demandes']);
-  }
 }

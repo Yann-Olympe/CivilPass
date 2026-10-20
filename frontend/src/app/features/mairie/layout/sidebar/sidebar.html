@@ -4,13 +4,13 @@
     <span class="sidebar__brand-name">CIVILPASS</span>
   </div>
 
-<div class="sidebar__profile">
-  <div class="sidebar__avatar">{{ initiale() }}</div>
-  <div>
-    <p class="sidebar__profile-name">{{ nomMairie() }}</p>
-    <p class="sidebar__profile-role">{{ nomAgent() }}</p>
+  <div class="sidebar__profile">
+    <div class="sidebar__avatar">{{ initiale() }}</div>
+    <div>
+      <p class="sidebar__profile-name">{{ nomMairie() }}</p>
+      <p class="sidebar__profile-role">{{ nomAgent() }}</p>
+    </div>
   </div>
-</div>
 
   <button class="sidebar__cta" routerLink="/demandes/nouvelle">
     <app-icon name="plus" />
@@ -19,20 +19,16 @@
 
   <nav class="sidebar__nav">
     @for (item of navItems; track item.path) {
-      <a
-        class="sidebar__link"
-        [routerLink]="item.path"
-        routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{ exact: false }"
-      >
-        <app-icon [name]="item.icon" />
-        {{ item.label }}
-      </a>
+    <a class="sidebar__link" [routerLink]="item.path" routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: false }">
+      <app-icon [name]="item.icon" />
+      {{ item.label }}
+    </a>
     }
   </nav>
 
- <button class="sidebar__logout" (click)="onLogout()">
-  <app-icon name="logout" />
-  Déconnexion
-</button>
+  <button class="sidebar__logout" (click)="onLogout()">
+    <app-icon name="logout" />
+    Déconnexion
+  </button>
 </aside>

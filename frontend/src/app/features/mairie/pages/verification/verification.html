@@ -29,7 +29,8 @@
     }
   </div>
   <p class="verif-subtitle">
-    Citoyen : {{ demande()?.citoyen }} · Mairie de retrait : {{ demande()?.mairieRetrait }} · Soumise le {{ demande()?.date }}
+    Citoyen : {{ demande()?.citoyen }} · Mairie d’origine : {{ demande()?.mairieOrigine || '—' }} ·
+    Mairie de retrait : {{ demande()?.mairieRetrait }} · Soumise le {{ demande()?.date }}
   </p>
 
   @if (demande()?.statut === 'rejetee' && demande()?.motifRejet) {
@@ -152,14 +153,15 @@
       <textarea
         rows="3"
         placeholder="Ex : Aucune correspondance trouvée dans le registre pour l'année déclarée..."
+        maxlength="200"
         [value]="motif()"
         (input)="motif.set($any($event.target).value)"
       ></textarea>
       <div class="action-panel__buttons">
-        <button class="btn btn--ghost" (click)="fermerPanneau()">Annuler</button>
-        <button class="btn btn--danger" [disabled]="!motif().trim()" (click)="confirmerRejet()">
+        <button class="btn btn--ghost" (click)="fermerPanneau()" [disabled]="uneActionEnCours()">Annuler</button>
+        <button class="btn btn--danger" [disabled]="!motif().trim() || uneActionEnCours()" (click)="confirmerRejet()">
           <app-icon name="x" />
-          Confirmer le rejet
+          {{ rejetEnCours() ? 'Enregistrement…' : 'Confirmer le rejet' }}
         </button>
       </div>
     </div>
@@ -167,51 +169,66 @@
 
   @if (panelAction() === 'correction') {
     <div class="action-panel action-panel--warn">
-      <h3><app-icon name="edit" /> Demander une correction</h3>
-      <p>Indiquez précisément ce que le citoyen doit corriger avant de soumettre à nouveau sa demande.</p>
+      <h3><app-icon name="edit" /> Motif de la correction demandée</h3>
+      <p>Précisez les informations à corriger ou les éléments à compléter. Le citoyen pourra mettre à jour sa demande avant une nouvelle vérification.</p>
       <textarea
         rows="3"
-        placeholder="Ex : Le numéro d'acte déclaré ne correspond à aucune souche du registre..."
+        maxlength="1000"
+        placeholder="Ex : Le numéro de l'acte est incomplet. Merci de vérifier le numéro sur votre récépissé."
         [value]="motif()"
         (input)="motif.set($any($event.target).value)"
       ></textarea>
       <div class="action-panel__buttons">
-        <button class="btn btn--ghost" (click)="fermerPanneau()">Annuler</button>
-        <button class="btn btn--primary" [disabled]="!motif().trim()" (click)="confirmerCorrection()">
-          <app-icon name="check" />
-          Envoyer la demande de correction
+        <button class="btn btn--ghost" (click)="fermerPanneau()" [disabled]="uneActionEnCours()">Annuler</button>
+        <button class="btn btn--primary" (click)="confirmerCorrection()" [disabled]="!motif().trim() || uneActionEnCours()">
+          <app-icon name="edit" />
+          {{ correctionEnCours() ? 'Envoi…' : 'Envoyer au citoyen' }}
         </button>
       </div>
     </div>
   }
 
   <footer class="verif-footer">
-    <p>Assurez-vous de vérifier toutes les divergences avant validation.</p>
+    @if (peutVerifierDemande()) {
+      <p>Assurez-vous de vérifier toutes les divergences avant validation.</p>
+    } @else if (peutReceptionner()) {
+      @if (isMairieRetrait()) {
+        <p>La mairie d’origine a transféré le dossier. Vérifiez-le puis réceptionnez-le.</p>
+      }
+    } @else if (isMairieRetrait() && demande()?.statut === 'validee') {
+      <p>Le dossier est validé. Marquez-le comme remis au citoyen au guichet.</p>
+    } @else if (demande()?.statut === 'nouvelle' || demande()?.statut === 'urgente') {
+      <p>Cette demande est en attente de validation par la mairie d’origine.</p>
+    } @else {
+      <p>Aucune action n’est disponible pour cette mairie à cette étape.</p>
+    }
     <div class="verif-footer__actions">
-      @if (isMairieRetrait() && demande()?.statut === 'en_cours') {
-        <button class="btn btn--primary" (click)="recevoir()">
+      @if (peutReceptionner()) {
+        <button class="btn btn--primary" (click)="recevoir()" [disabled]="uneActionEnCours()">
           <app-icon name="download" />
-          Réceptionner le dossier
+          {{ receptionEnCours() ? 'Réception en cours…' : 'Réceptionner le dossier' }}
         </button>
       }
       @if (isMairieRetrait() && demande()?.statut === 'validee') {
-        <button class="btn btn--primary" (click)="remettre()">
+        <button class="btn btn--primary" (click)="remettre()" [disabled]="uneActionEnCours()">
           <app-icon name="check" />
-          Marquer comme remis
+          {{ remiseEnCours() ? 'Enregistrement…' : 'Marquer comme remis' }}
         </button>
       }
-      <button class="btn btn--danger" (click)="ouvrirPanneau('reject')">
-        <app-icon name="x" />
-        Rejeter
-      </button>
-      <button class="btn btn--ghost" (click)="ouvrirPanneau('correction')">
-        <app-icon name="edit" />
-        Demander une correction
-      </button>
-      <button class="btn btn--primary" (click)="valider()">
-        <app-icon name="check" />
-        Valider la demande
-      </button>
+      @if (peutVerifierDemande()) {
+        <button class="btn btn--ghost" (click)="ouvrirPanneau('correction')" [disabled]="uneActionEnCours()">
+          <app-icon name="edit" />
+          Demander une correction
+        </button>
+        <button class="btn btn--danger" (click)="ouvrirPanneau('reject')" [disabled]="uneActionEnCours()">
+          <app-icon name="x" />
+          Rejeter
+        </button>
+        <button class="btn btn--primary" (click)="valider()" [disabled]="uneActionEnCours()">
+          <app-icon name="check" />
+          {{ validationEnCours() ? 'Validation…' : 'Valider la demande' }}
+        </button>
+      }
     </div>
   </footer>
 }

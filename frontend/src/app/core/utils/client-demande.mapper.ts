@@ -7,30 +7,28 @@ import {
   CLIENT_TYPE_LABEL,
 } from '../../features/Dashbord client/shared/models/client-demande.model';
 
-// Statuts réels envoyés par le backend (partagés avec le workflow agent/mairie) :
-// 'nouvelle' | 'en_cours' | 'validee' | 'urgente' | 'rejetee' | 'correction_demandee'
-//
-// ⚠️ 'urgente' est traité comme un simple 'en_cours' faute de mieux : ce statut
-// semble écraser l'info d'étape réelle (une demande urgente en vérification vs
-// urgente et déjà validée ont la même valeur `statut`). À clarifier avec le
-// backend — idéalement l'urgence devrait être un champ booléen séparé plutôt
-// que de partager l'enum de statut.
+// 'urgente' est appliqué par la mairie d'origine avant ou après sa validation.
+// La date de validation du transfert permet de distinguer ces deux étapes.
 const STATUT_API_VERS_CLIENT: Record<string, ClientDemandeStatut> = {
   nouvelle: 'a_preparer',
   en_cours: 'en_cours',
   validee: 'pret',
-  urgente: 'en_cours',
+  remise: 'validee',
   rejetee: 'rejetee',
   correction_demandee: 'correction_demandee',
 };
 
 const STATUT_PAR_DEFAUT: ClientDemandeStatut = 'a_preparer';
 
-function resoudreStatut(statutApi: string): ClientDemandeStatut {
-  const statut = STATUT_API_VERS_CLIENT[statutApi];
+function resoudreStatut(api: ApiDemande): ClientDemandeStatut {
+  if (api.statut === 'urgente') {
+    return api.transfert?.date_validation_origine ? 'en_cours' : 'a_preparer';
+  }
+
+  const statut = STATUT_API_VERS_CLIENT[api.statut];
   if (!statut) {
     console.warn(
-      `[client-demande.mapper] Statut backend inconnu : "${statutApi}". ` +
+      `[client-demande.mapper] Statut backend inconnu : "${api.statut}". ` +
         `Ajoute-le à STATUT_API_VERS_CLIENT (valeur par défaut "${STATUT_PAR_DEFAUT}" utilisée pour l'instant).`
     );
     return STATUT_PAR_DEFAUT;
@@ -49,6 +47,29 @@ function formaterDate(iso: string): string {
 function construireEtapes(api: ApiDemande, statutClient: ClientDemandeStatut): ClientDemandeEtape[] {
   const dateMaj = formaterDate(api.updated_at);
   const descriptionBackend = api.motif_statut ?? undefined;
+  const mairieOrigine = api.mairie_origine?.nom ?? 'la mairie d’origine';
+  const mairieRetrait = api.mairie_retrait?.nom ?? 'la mairie de retrait';
+
+  if (statutClient === 'a_preparer') {
+    return [
+      {
+        label: 'Demande soumise',
+        description: 'Votre dossier a été enregistré.',
+        date: formaterDate(api.date_creation),
+        atteinte: true,
+      },
+      {
+        label: 'Validation par la mairie d’origine',
+        description: `Votre demande attend encore la validation de ${mairieOrigine}.`,
+        atteinte: false,
+      },
+      {
+        label: 'Validation par la mairie de retrait',
+        description: 'Cette étape commencera après la validation de la mairie d’origine.',
+        atteinte: false,
+      },
+    ];
+  }
 
   if (statutClient === 'correction_demandee') {
     return [
@@ -95,6 +116,30 @@ function construireEtapes(api: ApiDemande, statutClient: ClientDemandeStatut): C
     ];
   }
 
+  if (statutClient === 'en_cours') {
+    return [
+      {
+        label: 'Demande soumise',
+        description: 'Votre dossier a été enregistré.',
+        date: formaterDate(api.date_creation),
+        atteinte: true,
+      },
+      {
+        label: 'Validation par la mairie d’origine',
+        description: `${mairieOrigine} a validé votre demande.`,
+        date: formaterDate(api.transfert?.date_validation_origine ?? api.updated_at),
+        atteinte: true,
+      },
+      {
+        label: 'Validation par la mairie de retrait',
+        description: `${mairieRetrait} doit encore réceptionner et valider votre dossier.`,
+        atteinte: false,
+      },
+    ];
+  }
+
+  const retraitConfirme = statutClient === 'validee';
+
   return [
     {
       label: 'Demande soumise',
@@ -104,30 +149,31 @@ function construireEtapes(api: ApiDemande, statutClient: ClientDemandeStatut): C
     },
     {
       label: 'Vérification',
-      description:
-        statutClient === 'a_preparer'
-          ? (descriptionBackend ?? "Contrôle des informations par l'agent d'état civil.")
-          : "Contrôle effectué par l'agent d'état civil.",
-      date: statutClient !== 'a_preparer' ? dateMaj : undefined,
-      atteinte: statutClient !== 'a_preparer',
+      description: "Contrôle effectué par l'agent d'état civil.",
+      date: formaterDate(api.transfert?.date_validation_origine ?? api.updated_at),
+      atteinte: true,
     },
     {
-      label: 'Prêt pour retrait',
+      label: retraitConfirme ? 'Retrait confirmé' : 'Prêt pour retrait',
       description:
-        statutClient === 'validee'
+        retraitConfirme
           ? 'Document retiré au guichet.'
           : statutClient === 'pret'
             ? (descriptionBackend ?? 'Le document est disponible au guichet.')
             : 'Le document sera disponible au guichet.',
-      date: statutClient === 'pret' || statutClient === 'validee' ? dateMaj : undefined,
-      atteinte: statutClient === 'pret' || statutClient === 'validee',
+      date: retraitConfirme
+        ? formaterDate(api.date_remise ?? api.updated_at)
+        : statutClient === 'pret'
+          ? formaterDate(api.transfert?.date_reception_retrait ?? api.updated_at)
+          : undefined,
+      atteinte: statutClient === 'pret' || retraitConfirme,
     },
   ];
 }
 
 export function mapperDemandeApiVersClient(api: ApiDemande): ClientDemande {
   const type: ClientDemandeType = api.type_demande;
-  const statutClient = resoudreStatut(api.statut);
+  const statutClient = resoudreStatut(api);
 
   return {
     id: String(api.id),
@@ -136,9 +182,14 @@ export function mapperDemandeApiVersClient(api: ApiDemande): ClientDemande {
     titre: CLIENT_TYPE_LABEL[type],
     dateCreation: formaterDate(api.date_creation),
     dateCreationTs: Date.parse(api.date_creation),
+    mairieOrigine: api.mairie_origine?.nom,
     mairieRetrait: api.mairie_retrait?.nom ?? '—',
     statut: statutClient,
     motif: api.observation_origine ?? api.motif_statut ?? undefined,
+    numeroActe: api.numero_acte ?? undefined,
+    anneeActe: api.annee_acte ?? undefined,
+    pereNom: api.filiation?.pere_nom ?? undefined,
+    mereNom: api.filiation?.mere_nom ?? undefined,
     etapes: construireEtapes(api, statutClient),
   };
 }

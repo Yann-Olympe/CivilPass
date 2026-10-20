@@ -12,7 +12,7 @@ class Demande extends Model
 {
     use HasFactory;
 
-    public const STATUTS = ['nouvelle', 'en_cours', 'validee', 'remise', 'urgente', 'rejetee'];
+    public const STATUTS = ['nouvelle', 'en_cours', 'validee', 'remise', 'urgente', 'rejetee', 'correction_demandee'];
 
     protected $fillable = [
         'type_demande',
@@ -24,6 +24,7 @@ class Demande extends Model
         'observation_origine',
         'motif_statut',
         'date_remise',
+        'remis_par_agent_id',
         'usager_id',
         'mairie_origine_id',
         'mairie_retrait_id',
@@ -62,6 +63,11 @@ class Demande extends Model
     public function transfert(): HasOne
     {
         return $this->hasOne(Transfert::class);
+    }
+
+    public function agentRemise(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class, 'remis_par_agent_id');
     }
 
     public function notifications(): HasMany

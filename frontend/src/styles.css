@@ -75,6 +75,11 @@ html, body {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 8rem;
+}
+
 body {
   background: var(--color-gray-50);
   color: var(--color-gray-900);
@@ -211,4 +216,5 @@ ul, ol {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { animation: none; }
+  html { scroll-behavior: auto; }
 }

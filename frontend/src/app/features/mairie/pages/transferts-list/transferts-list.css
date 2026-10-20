@@ -25,6 +25,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .list-search {
@@ -63,6 +64,36 @@
   background: var(--color-green-800);
 }
 
+.list-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--color-green-700);
+  color: var(--color-white);
+  border: 0.1rem solid var(--color-green-700);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 1.2rem;
+}
+
+.list-filter app-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.list-filter select {
+  max-width: 20rem;
+  border: 0;
+  outline: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+.list-filter option {
+  color: var(--color-gray-900);
+}
+
 .list-actions .btn app-icon {
   width: 1.4rem;
   height: 1.4rem;
@@ -79,6 +110,23 @@
 .stats-grid app-stat-card:nth-child(2) { animation-delay: 60ms; }
 .stats-grid app-stat-card:nth-child(3) { animation-delay: 120ms; }
 .stats-grid app-stat-card:nth-child(4) { animation-delay: 180ms; }
+
+.transfer-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  min-height: 12rem;
+  padding: 2rem;
+  color: var(--color-gray-500);
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.transfer-state--error {
+  color: var(--color-red-600);
+}
 
 @media (max-width: 1100px) {
   .stats-grid {
@@ -138,6 +186,17 @@
 
 .pagination__nav button:hover {
   background: var(--color-gray-50);
+}
+
+.pagination__nav button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination__current {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.6rem;
 }
 
 .pagination__nav app-icon {

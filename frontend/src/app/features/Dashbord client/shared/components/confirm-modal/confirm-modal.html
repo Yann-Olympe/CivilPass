@@ -16,6 +16,7 @@
         class="btn"
         [class.btn--primary]="tone() === 'primary'"
         [class.btn--danger]="tone() === 'danger'"
+        [disabled]="confirmDisabled()"
         (click)="confirmed.emit()"
       >
         {{ confirmLabel() }}

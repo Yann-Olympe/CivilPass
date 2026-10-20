@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { ClientDemande, ClientDemandeStatut } from '../models/client-demande.model';
-import { ApiDemande } from '../../../../Services/api-demande.model';
+import { ApiDemande, ApiDemandeActionResponse } from '../../../../Services/api-demande.model';
 import { mapperDemandeApiVersClient } from '../../../../core/utils/client-demande.mapper';
 
 export type ClientDemandeFiltre = 'all' | 'actives' | 'pret';
 
-const ACTIVE_STATUTS: ClientDemandeStatut[] = ['en_cours', 'a_preparer'];
+const ACTIVE_STATUTS: ClientDemandeStatut[] = ['en_cours', 'a_preparer', 'correction_demandee'];
 
 export interface ClientDemandesStats {
   actives: number;
@@ -19,6 +19,15 @@ export interface ClientDemandesStats {
 export interface StatistiqueMois {
   label: string;
   total: number;
+}
+
+export interface CorrectionDemandePayload {
+  numero_acte: string;
+  annee_acte: number;
+  filiation: {
+    pere_nom: string;
+    mere_nom: string;
+  };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -154,15 +163,43 @@ readonly repartitionParStatut = computed(() => {
     );
   }
 
+  telechargerRecepisse(id: string) {
+    return this.http.get(`${this.baseUrl}/${id}/pdf`, { responseType: 'blob' });
+  }
+
   prochainePrete(): ClientDemande | undefined {
     return this.demandes().find((d) => d.statut === 'pret');
   }
 
-  confirmerRetrait(id: string): void {
-    // TODO(API) : aucun endpoint de confirmation de retrait côté citoyen dans le
-    // contrat actuel — seul /agent/demandes/{id}/remettre existe, côté agent.
-    // À clarifier avec le backend : le retrait est-il uniquement déclenché par
-    // la mairie, ou faut-il un endpoint citoyen dédié ?
-    console.warn('confirmerRetrait : endpoint backend manquant, action non exécutée.');
+  confirmerRetrait(id: string): Observable<ClientDemande> {
+    return this.http
+      .post<ApiDemandeActionResponse>(`${this.baseUrl}/${id}/confirmer-retrait`, {})
+      .pipe(
+        map((response) => mapperDemandeApiVersClient(response.demande)),
+        tap((demandeMiseAJour) => {
+          this._demandes.update((demandes) => {
+            const existe = demandes.some((demande) => demande.id === id);
+            return existe
+              ? demandes.map((demande) => (demande.id === id ? demandeMiseAJour : demande))
+              : [...demandes, demandeMiseAJour];
+          });
+        })
+      );
+  }
+
+  soumettreCorrection(id: string, payload: CorrectionDemandePayload): Observable<ClientDemande> {
+    return this.http
+      .patch<ApiDemande>(`${this.baseUrl}/${id}/correction`, payload)
+      .pipe(
+        map(mapperDemandeApiVersClient),
+        tap((demandeMiseAJour) => {
+          this._demandes.update((demandes) => {
+            const existe = demandes.some((demande) => demande.id === id);
+            return existe
+              ? demandes.map((demande) => (demande.id === id ? demandeMiseAJour : demande))
+              : [...demandes, demandeMiseAJour];
+          });
+        })
+      );
   }
 }
