@@ -232,8 +232,4 @@ export class TransfertsList implements OnInit {
   ouvrir(id: string): void {
     this.router.navigate(['/mairie/transferts', id]);
   }
-
-  ouvrir(id: number) {
-    this.router.navigate(['/transferts', id]);
-  }
 }

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ScrollRevealDirective } from '../../../share/Directives/scroll-reveal.directive';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-reseau',
-  imports: [ScrollRevealDirective],
+  imports: [RouterLink],
   templateUrl: './reseau.html',
   styleUrl: './reseau.css',
 })
-export class Reseau {}
+export class Reseau { }

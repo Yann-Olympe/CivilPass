@@ -1,27 +1,89 @@
-/* reseau.css */
-.reseau { position: relative; }
+   :host {
+     display: block;
+     padding: 4rem 2rem;
+     background: var(--color-green-50);
+   }
 
-.reseau-image { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+   .reseau {
+     position: relative;
+     border-radius: var(--radius-lg);
+     overflow: hidden;
+   }
 
-h2 {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  margin: 0;
-  padding: 2.4rem 2rem;
-  font-size: 2.2rem;
-  line-height: 1.3;
-  color: var(--color-white);
-  background: linear-gradient(180deg, transparent 0%, var(--color-green-950-a40) 60%, var(--color-green-950) 100%);
-}
-@media (min-width: 768px) {
-  .reseau-image {
-    aspect-ratio: 21 / 9;
-  }
+   .reseau-image {
+     width: 100%;
+     aspect-ratio: 16 / 10;
+     object-fit: cover;
+     display: block;
+   }
 
-  h2 {
-    font-size: 3rem;
-    padding: 4rem;
-  }
-}
+   .reseau-overlay {
+     position: absolute;
+     inset: 0;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-end;
+     padding: 2.4rem 2rem;
+     background: linear-gradient(to bottom,
+         transparent 0%,
+         rgba(0, 28, 12, 0.45) 40%,
+         rgba(0, 28, 12, 0.82) 75%,
+         rgba(0, 28, 12, 0.95) 100%);
+   }
+
+   h2 {
+     margin: 0 0 1.6rem;
+     font-size: 2.2rem;
+     font-weight: 700;
+     line-height: 1.3;
+     color: var(--color-white);
+   }
+
+   .reseau-cta {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.8rem;
+     background: var(--color-white);
+     color: var(--color-green-900);
+     font-size: 1.4rem;
+     font-weight: 700;
+     padding: 1rem 2rem;
+     border-radius: var(--radius-pill);
+     text-decoration: none;
+     transition: background var(--transition-base), transform var(--transition-base);
+     width: fit-content;
+   }
+
+   .reseau-cta:hover {
+     background: var(--color-green-50);
+     transform: translateY(-0.2rem);
+   }
+
+   .reseau-cta:focus-visible {
+     outline: 0.2rem solid var(--color-green-300);
+     outline-offset: 0.2rem;
+   }
+
+   @media (min-width: 768px) {
+     :host {
+       padding: 6rem 4rem;
+     }
+
+     .reseau {
+       max-width: 120rem;
+       margin: 0 auto;
+     }
+
+     .reseau-image {
+       aspect-ratio: 21 / 9;
+     }
+
+     .reseau-overlay {
+       padding: 4rem;
+     }
+
+     h2 {
+       font-size: 3rem;
+       max-width: 72rem;
+     }
+   }

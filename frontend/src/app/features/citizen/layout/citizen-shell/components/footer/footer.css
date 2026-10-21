@@ -4,19 +4,35 @@
   color: var(--color-gray-700);
   text-align: left;
 }
-  .footer__brand {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: var(--color-green-700);
-    margin:0 0 1.6rem;
-  }
 
-  .footer__copy {
-    font-size: 1.1rem;
-    color: var(--color-gray-500);
-    line-height: 1.5;
-    margin: 0;
-  }
+.footer__brand {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 1.6rem;
+  text-decoration: none;
+}
+
+.footer__logo-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  object-fit: contain;
+}
+
+.footer__logo-text {
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-green-950);
+}
+
+.footer__copy {
+  font-size: 1.1rem;
+  color: var(--color-gray-500);
+  line-height: 1.5;
+  margin: 0;
+}
+
 @media (min-width: 1024px) {
   .footer {
     display: flex;

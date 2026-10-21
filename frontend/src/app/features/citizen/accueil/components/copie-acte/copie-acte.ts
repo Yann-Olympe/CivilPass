@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ScrollRevealDirective } from '../../../share/Directives/scroll-reveal.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-copie-acte',
-  imports: [ScrollRevealDirective],
+  imports: [RouterLink],
   templateUrl: './copie-acte.html',
   styleUrl: './copie-acte.css',
 })

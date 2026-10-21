@@ -1,32 +1,30 @@
 <header class="header">
   <a routerLink="/accueil" class="header__logo" (click)="closeMenu()">
-    <img src="/assets/logo.png" alt="" class="header__logo-icon" />
-    <span>CivilPass</span>
+    <img src="/assets/logo.png" alt="CivilPass" class="header__logo-icon" />
+    <span class="header__logo-text">ivilpass</span>
   </a>
+
   <button type="button" class="header-menu" aria-label="Menu" [attr.aria-expanded]="mobileMenuOpen()"
     (click)="toggleMenu()">
-    @if (mobileMenuOpen()) {
-    ✕
-    } @else {
-    ☰
-    }
+    @if (mobileMenuOpen()) { ✕ } @else { ☰ }
   </button>
+
   <nav class="header__nav" [class.header__nav--open]="mobileMenuOpen()">
     <div class="header__anchors">
+      <a routerLink="/accueil" fragment="probleme" class="header__link"
+        [class.header__link--active]="activeSection() === 'probleme'" (click)="closeMenu()">Le problème</a>
 
-      <a href="#probleme" class="header__link" [class.header__link--active]="activeSection() === 'probleme'"
-        (click)="closeMenu()">Le problème</a>
+      <a routerLink="/accueil" fragment="reseau" class="header__link"
+        [class.header__link--active]="activeSection() === 'reseau'" (click)="closeMenu()">Réseau</a>
 
-      <a href="#comment-ca-marche" class="header__link"
+      <a routerLink="/accueil" fragment="comment-ca-marche" class="header__link"
         [class.header__link--active]="activeSection() === 'comment-ca-marche'" (click)="closeMenu()">Comment ça
         marche</a>
 
-      <a href="#reseau" class="header__link" [class.header__link--active]="activeSection() === 'reseau'"
-        (click)="closeMenu()">Réseau</a>
-
-      <a href="#hors-ligne" class="header__link" [class.header__link--active]="activeSection() === 'hors-ligne'"
-        (click)="closeMenu()">Sécurité</a>
+      <a routerLink="/accueil" fragment="hors-ligne" class="header__link"
+        [class.header__link--active]="activeSection() === 'hors-ligne'" (click)="closeMenu()">Hors-ligne</a>
     </div>
+
     <div class="header__actions">
       @if (auth.estConnecte()) {
       <a routerLink="/espace/demandes" class="header__link" (click)="closeMenu()">Mes demandes</a>
@@ -40,9 +38,7 @@
       } @else {
       <a routerLink="/login" class="header__connexion-btn" (click)="closeMenu()">Connexion</a>
       }
-      <button type="button" class="header__lang" disabled title="Bientôt disponible">
-        FR
-      </button>
+      <button type="button" class="header__lang" disabled title="Bientôt disponible">FR</button>
     </div>
   </nav>
 </header>

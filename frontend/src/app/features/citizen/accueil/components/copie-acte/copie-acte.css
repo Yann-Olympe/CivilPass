@@ -1,72 +1,128 @@
-/* copie-acte.css */
-.copie-acte { padding: 4rem 2rem; background: var(--color-green-900); color: var(--color-white); }
+.copie-acte {
+  padding: 4rem 2rem;
+  background: var(--color-green-900);
+  color: var(--color-white);
+}
+
+.copie-acte-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
 
 h2 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-weight: 400;
+  font-family: var(--font-family-base);
+  font-weight: 700;
   font-size: 2.4rem;
   line-height: 1.3;
+  color: var(--color-white);
   margin: 0 0 1.6rem;
 }
 
-.copie-acte p {
-  font-family: var(--font-family-base);
+.copie-acte-intro {
   font-size: 1.4rem;
   line-height: 1.5;
   color: var(--color-green-100);
   margin: 0 0 2.4rem;
 }
 
-.copie-acte-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+.btn-primary {
+  display: inline-block;
+  padding: 1.4rem 3.2rem;
+  border-radius: var(--radius-pill);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--color-white);
+  color: var(--color-green-800);
+  min-height: 4.4rem;
+  transition: background var(--transition-base);
+}
+
+.btn-primary:hover {
+  background: var(--color-green-50);
+}
+
+.btn-primary:focus-visible {
+  outline: 0.2rem solid var(--color-green-300);
+  outline-offset: 0.2rem;
+}
+
+.copie-acte-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
 
 .copie-acte-features li {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--color-white);
+  align-items: flex-start;
+  gap: 1.4rem;
   background: var(--color-green-800);
-  border: 0.1rem solid var(--color-green-600);
-  border-radius: var(--radius-pill);
-  padding: 1.2rem 1.8rem;
-  width: fit-content;
+  border: 0.1rem solid var(--color-green-700);
+  border-radius: var(--radius-md);
+  padding: 1.6rem 1.8rem;
+  transition: background var(--transition-base), border-color var(--transition-base);
 }
 
 .feature-icon {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: var(--color-green-700);
   color: var(--color-green-300);
 }
+
+.feature-titre {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 0.3rem;
+}
+
+.feature-desc {
+  display: block;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--color-green-100);
+}
+
 @media (min-width: 1024px) {
   .copie-acte {
     padding: 7.2rem 6rem;
   }
 
+  .copie-acte-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 6rem;
+    max-width: 120rem;
+    margin: 0 auto;
+  }
+
+  .copie-acte-texte,
+  .copie-acte-features {
+    flex: 1;
+  }
+
   h2 {
     font-size: 3.2rem;
-    max-width: 60rem;
   }
 
-  .copie-acte p {
+  .copie-acte-intro {
     font-size: 1.6rem;
-    max-width: 56rem;
   }
 
-  .copie-acte-features {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1.6rem;
-  }
-
-  .copie-acte-features li {
-    font-size: 1.5rem;
-    padding: 1.4rem 2.2rem;
-    transition: background var(--transition-base), border-color var(--transition-base);
-
-    &:hover {
-      background: var(--color-green-700);
-      border-color: var(--color-green-400);
-    }
+  .copie-acte-features li:hover {
+    background: var(--color-green-700);
+    border-color: var(--color-green-400);
   }
 }
