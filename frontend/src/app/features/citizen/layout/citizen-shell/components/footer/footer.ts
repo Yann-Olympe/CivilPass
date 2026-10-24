@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CitizenAuthService } from '../../../../../../Services/citizen-auth.service';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })
 export class Footer {
-    currentYear = new Date().getFullYear();
+  auth = inject(CitizenAuthService);
+  currentYear = new Date().getFullYear();
 }

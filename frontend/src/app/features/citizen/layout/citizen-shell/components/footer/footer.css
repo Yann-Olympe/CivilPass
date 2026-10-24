@@ -1,14 +1,29 @@
-.footer {
-  padding: 3.2rem 2rem 2.4rem;
+:host {
+  display: block;
   background: var(--color-gray-50);
-  color: var(--color-gray-700);
-  text-align: left;
+  border-top: 0.1rem solid var(--color-gray-200);
+}
+
+.footer {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 4rem 2rem 2.4rem;
+}
+
+/* Mobile : logo en haut, puis les colonnes de liens deux par deux */
+.footer__top {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.2rem 2rem;
+}
+
+.footer__brand-block {
+  grid-column: 1 / -1;
 }
 
 .footer__brand {
   display: inline-flex;
   align-items: center;
-  margin: 0 0 1.6rem;
   text-decoration: none;
 }
 
@@ -16,44 +31,83 @@
   width: 3.2rem;
   height: 3.2rem;
   object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .footer__logo-text {
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 2.2rem;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--color-green-950);
 }
 
-.footer__copy {
-  font-size: 1.1rem;
-  color: var(--color-gray-500);
+.footer__tagline {
+  margin: 1.2rem 0 0;
+  max-width: 32rem;
+  font-size: 1.4rem;
   line-height: 1.5;
-  margin: 0;
+  color: var(--color-gray-600);
+}
+
+.footer__title {
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-green-700);
+}
+
+.footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem; /* zone tactile confortable sur mobile */
+  font-size: 1.4rem;
+  color: var(--color-gray-700);
+  transition: color var(--transition-base);
+}
+
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--color-green-600);
+  text-decoration: underline;
+}
+
+.footer__link:focus-visible {
+  outline: 0.2rem solid var(--color-green-400);
+  outline-offset: 0.2rem;
+  border-radius: var(--radius-sm);
+}
+
+.footer__copy {
+  margin: 2.4rem 0 0;
+  padding-top: 2rem;
+  border-top: 0.1rem solid var(--color-gray-200);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--color-gray-600);
 }
 
 @media (min-width: 1024px) {
   .footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2.4rem;
-    padding: 4rem 6rem 3.2rem;
-    max-width: 112rem;
-    margin: 0 auto;
+    padding: 6rem 6rem 3.2rem;
   }
 
-  .footer__brand {
-    margin: 0;
+  .footer__top {
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: 4rem;
+  }
+
+  .footer__brand-block {
+    grid-column: auto;
+  }
+
+  .footer__link {
+    min-height: 3.2rem;
   }
 
   .footer__copy {
-    flex-basis: 100%;
-    padding-top: 2rem;
-    margin-top: 0.4rem;
-    border-top: 0.1rem solid var(--color-gray-200);
-    text-align: center;
+    margin-top: 4rem;
   }
 }

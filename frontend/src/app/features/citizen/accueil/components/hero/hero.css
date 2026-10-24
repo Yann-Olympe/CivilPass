@@ -1,8 +1,13 @@
 /* hero.component.css */
+/* Le vert devient le fond de toute la section : la photo s'y fond */
+.hero {
+  background: var(--color-green-700);
+}
+
+/* Mobile : l'image est au-dessus du texte, elle se fond vers le bas */
 .hero-image {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
 }
 
 .hero-content {
@@ -125,6 +130,18 @@ h1 em {
     height: auto;
     aspect-ratio: unset;
     object-fit: cover;
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.15) 12%,
+        rgba(0, 0, 0, 0.5) 28%,
+        rgba(0, 0, 0, 0.85) 45%,
+        #000 60%);
+    mask-image: linear-gradient(to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.15) 12%,
+        rgba(0, 0, 0, 0.5) 28%,
+        rgba(0, 0, 0, 0.85) 45%,
+        #000 60%);
   }
 
   .hero-content {

@@ -1,9 +1,45 @@
 <footer class="footer">
-  <a routerLink="/accueil" class="footer__brand" aria-label="CivilPass, retour à l'accueil">
-    <img src="/assets/logo.png" alt="" class="footer__logo-icon" />
-    <span class="footer__logo-text">ivilpass</span>
-  </a>
+  <div class="footer__top">
+    <div class="footer__brand-block">
+      <a routerLink="/accueil" class="footer__brand" aria-label="CivilPass, retour à l'accueil">
+        <img src="/assets/logo.png" alt="" class="footer__logo-icon" />
+        <span class="footer__logo-text">ivilpass</span>
+      </a>
+      <p class="footer__tagline">Vos démarches d'état civil, plus simples.</p>
+    </div>
 
-  <p class="footer__copy">
-    © {{ currentYear }} CivilPass Cameroun. </p>
+    <nav class="footer__col" aria-label="Découvrir CivilPass">
+      <h2 class="footer__title">Découvrir</h2>
+      <ul>
+        <li><a routerLink="/accueil" fragment="probleme" class="footer__link">Le problème</a></li>
+        <li><a routerLink="/accueil" fragment="reseau" class="footer__link">Réseau</a></li>
+        <li><a routerLink="/accueil" fragment="comment-ca-marche" class="footer__link">Comment ça marche</a></li>
+        <li><a routerLink="/accueil" fragment="hors-ligne" class="footer__link">Hors-ligne</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Votre compte">
+      <h2 class="footer__title">Votre compte</h2>
+      <ul>
+        <li><a routerLink="/demande" class="footer__link">Nouvelle demande</a></li>
+        @if (auth.estConnecte()) {
+          <li><a routerLink="/espace" class="footer__link">Mon espace</a></li>
+          <li><a routerLink="/espace/demandes" class="footer__link">Mes demandes</a></li>
+        } @else {
+          <li><a routerLink="/login" class="footer__link">Connexion</a></li>
+          <li><a routerLink="/inscription" class="footer__link">Créer un compte</a></li>
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Informations légales">
+      <h2 class="footer__title">Informations</h2>
+      <ul>
+        <li><a routerLink="/mentions-legales" class="footer__link">Mentions légales</a></li>
+        <li><a routerLink="/confidentialite" class="footer__link">Confidentialité</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <p class="footer__copy">© {{ currentYear }} CivilPass Cameroun. Tous droits réservés.</p>
 </footer>
